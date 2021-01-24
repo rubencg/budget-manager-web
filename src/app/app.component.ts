@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { AccountService } from './account/account.service';
 import { ExpenseService } from './expense/expense.service';
 import { IncomeService } from './income/income.service';
 
@@ -9,7 +9,7 @@ import { IncomeService } from './income/income.service';
   template: `
     <ul>
       <li *ngFor='let item of items$ | async'>
-        {{item.category.name}}
+        {{item.amount}}
       </li>
     </ul>
     <router-outlet></router-outlet>

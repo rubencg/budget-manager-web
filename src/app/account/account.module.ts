@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IncomeService } from './income.service';
+import { AccountService } from './account.service';
 
 
 
 @NgModule({
-  declarations: [
-    
-  ],
+  declarations: [],
   imports: [
     CommonModule
   ],
+  exports: [],
   providers: [
-    IncomeService
+    AccountService
   ]
 })
-export class IncomeModule { }
+export class AccountModule { }

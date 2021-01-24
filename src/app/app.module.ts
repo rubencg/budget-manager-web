@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
+import { AccountModule } from './account/account.module';
+import { IncomeModule } from './income/income.module';
+import { ExpenseModule } from './expense/expense.module';
 
 @NgModule({
   declarations: [
@@ -13,9 +16,14 @@ import { environment } from 'src/environments/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AccountModule,
+    IncomeModule,
+    ExpenseModule,
     AngularFireModule.initializeApp(environment.firebase)
   ],
-  providers: [],
+  providers: [
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
