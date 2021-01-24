@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AccountModule } from './account/account.module';
 import { IncomeModule } from './income/income.module';
 import { ExpenseModule } from './expense/expense.module';
+import { IncomeCategoryModule } from './income-category/income-category.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ExpenseModule } from './expense/expense.module';
     AccountModule,
     IncomeModule,
     ExpenseModule,
+    IncomeCategoryModule,
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [
