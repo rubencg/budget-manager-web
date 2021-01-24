@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccountService } from './account/account.service';
 import { ExpenseService } from './expense/expense.service';
-import { IncomeCategoryService } from './income-category/income-category.service';
+import { IncomeCategoryService } from './category/income-category.service';
 import { IncomeService } from './income/income.service';
+import { ExpenseCategoryService } from './category/expense-category.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent {
   title = 'budget-manager-web';
   items$!: Observable<any[]>;
 
-  constructor(public service: IncomeCategoryService){
+  constructor(public service: ExpenseCategoryService){
     this.items$ = service.getAll();
     
   }

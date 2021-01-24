@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ExpenseCategoryService } from './expense-category.service';
 import { IncomeCategoryService } from './income-category.service';
 
 
@@ -10,7 +11,8 @@ import { IncomeCategoryService } from './income-category.service';
     CommonModule
   ],
   providers: [
+    ExpenseCategoryService,
     IncomeCategoryService
   ]
 })
-export class IncomeCategoryModule { }
+export class CategoryModule { }
