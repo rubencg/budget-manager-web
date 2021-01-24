@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ExpenseService } from './expense/expense.service';
 import { IncomeService } from './income/income.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { IncomeService } from './income/income.service';
   template: `
     <ul>
       <li *ngFor='let item of items$ | async'>
-        {{item.amount}}
+        {{item.category.name}}
       </li>
     </ul>
     <router-outlet></router-outlet>
@@ -19,8 +20,8 @@ export class AppComponent {
   title = 'budget-manager-web';
   items$!: Observable<any[]>;
 
-  constructor(public incomeService: IncomeService){
-    this.items$ = incomeService.getAllIncomes();
+  constructor(public service: ExpenseService){
+    this.items$ = service.getAll();
     
   }
 }
