@@ -1,0 +1,3 @@
+interface AccountType{
+    name: String
+}
