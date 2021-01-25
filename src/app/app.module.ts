@@ -9,6 +9,9 @@ import { AccountModule } from './account/account.module';
 import { IncomeModule } from './income/income.module';
 import { ExpenseModule } from './expense/expense.module';
 import { CategoryModule } from './category/category.module';
+import { BudgetManagerState } from './state/budget-manager.state';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,10 @@ import { CategoryModule } from './category/category.module';
     IncomeModule,
     ExpenseModule,
     CategoryModule,
+    NgxsModule.forRoot([BudgetManagerState], {
+      developmentMode: !environment.production
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [

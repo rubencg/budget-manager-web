@@ -1,3 +1,3 @@
-interface AccountType{
+export interface AccountType{
     name: String
 }

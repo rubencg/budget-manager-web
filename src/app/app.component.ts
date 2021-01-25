@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccountService } from './account/account.service';
-import { ExpenseService } from './expense/expense.service';
-import { IncomeCategoryService } from './category/income-category.service';
-import { IncomeService } from './income/income.service';
-import { ExpenseCategoryService } from './category/expense-category.service';
-import { TransferService } from './transfer/transfer.service';
+import { Select, Store } from '@ngxs/store';
+import { AccountActions } from './state/budget-manager.actions';
+import { Account } from './account/account';
+import { BudgetManagerState } from './state/budget-manager.state';
 
 @Component({
   selector: 'app-root',
   template: `
     <ul>
       <li *ngFor='let item of items$ | async'>
-        {{item.amount}}
+        {{item.description}}
       </li>
     </ul>
     <router-outlet></router-outlet>
@@ -21,10 +19,10 @@ import { TransferService } from './transfer/transfer.service';
 })
 export class AppComponent {
   title = 'budget-manager-web';
-  items$!: Observable<any[]>;
+  @Select(BudgetManagerState.selectAccounts) items$: Observable<Account[]>;
 
-  constructor(public service: TransferService){
-    this.items$ = service.getAll();
+  constructor(private store: Store){
+    this.store.dispatch(new AccountActions.Get());
     
   }
 }

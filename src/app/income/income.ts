@@ -1,3 +1,5 @@
+import { Category } from "../category/category";
+
 interface Income{
     amount: number,
     date: Date,
