@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module';
 import { BudgetManagerState } from './state/budget-manager.state';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,10 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
       developmentMode: !environment.production
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot({
+      // Do not log in production mode
+      disabled: environment.production,
+    }),
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [
