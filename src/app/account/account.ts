@@ -1,4 +1,4 @@
-import { AccountType } from "./account-type";
+import { AccountType } from "./";
 
 export interface Account{
     description?: String,

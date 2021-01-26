@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { AccountActions } from './state/budget-manager.actions';
-import { Account } from './account/account';
-import { BudgetManagerState } from './state/budget-manager.state';
+import { Account } from './account';
+import { AccountSelectors, AccountActions } from './state';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +18,7 @@ import { BudgetManagerState } from './state/budget-manager.state';
 })
 export class AppComponent {
   title = 'budget-manager-web';
-  @Select(BudgetManagerState.selectAccounts) items$: Observable<Account[]>;
+  @Select(AccountSelectors.selectAccounts) items$: Observable<Account[]>;
 
   constructor(private store: Store){
     this.store.dispatch(new AccountActions.Get());
