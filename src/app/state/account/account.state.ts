@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { AccountService, Account } from 'src/app/account';
-import { AccountActions, AccountStateModel } from './';
 import { map } from 'rxjs/operators';
+import { AccountActions } from './account.actions';
+
+export class AccountStateModel {
+  public accounts: Account[];
+}
 
 const defaults = {
   accounts: []
@@ -17,6 +21,11 @@ export class AccountState {
 
   constructor(private accountService: AccountService){
 
+  }
+
+  @Selector()
+  static selectAccounts(state: AccountStateModel) {
+    return state.accounts;
   }
 
   @Action(AccountActions.Get)
@@ -46,7 +55,7 @@ export class AccountState {
   }
 
   @Action(AccountActions.GetSuccess)
-  usersLoaded(
+  accountsLoaded(
     ctx: StateContext<AccountStateModel>,
     action: AccountActions.GetSuccess
   ) {

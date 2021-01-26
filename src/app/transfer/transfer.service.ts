@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TransferService {
 
   entityName: String = 'transfers';

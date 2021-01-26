@@ -5,9 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
-import { AccountState } from './state';
+import { budgetManagerState } from './state';
 import { AccountModule } from './account';
-import { IncomeModule } from './income/income.module';
+import { IncomeModule } from './income';
 import { ExpenseModule } from './expense/expense.module';
 import { CategoryModule } from './category/category.module';
 import { NgxsModule } from '@ngxs/store';
@@ -25,16 +25,14 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
     IncomeModule,
     ExpenseModule,
     CategoryModule,
-    NgxsModule.forRoot([
-      AccountState
-    ], {
+    NgxsModule.forRoot(
+      budgetManagerState, {
       developmentMode: !environment.production
     }),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({
-      // Do not log in production mode
       disabled: environment.production,
     }),
     AngularFireModule.initializeApp(environment.firebase)

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AccountService } from './';
-
-
+import { AccountService } from './account.service';
 
 @NgModule({
   declarations: [],

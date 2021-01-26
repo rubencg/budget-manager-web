@@ -151,5 +151,9 @@
       }
     }
   },
-  "defaultProject": "budget-manager-web"
+  "defaultProject": "budget-manager-web",
+  "cli": {
+    "analytics": "32bf7041-70e3-4373-a62a-c618ffb810f7",
+    "defaultCollection": "@ngxs/schematics"
+  }
 }

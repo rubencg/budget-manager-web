@@ -1,11 +1,12 @@
-import { Category } from "../category/category";
+import { Category } from "../category";
+import { Account } from '../account';
 
-interface Income{
+export interface Income{
     amount: number,
-    date: Date,
-    isApplied: Boolean,
-    notes: String,
-    toAccount: Account,
-    category: Category,
+    date?: Date,
+    isApplied?: Boolean,
+    notes?: String,
+    toAccount?: Account,
+    category?: Category,
     subCategory?: String
 }
