@@ -7,7 +7,17 @@ export namespace CategoryActions{
   }
 
   export class GetIncomeCategorySuccess {
-    static readonly type = '[Firebase] CategorysLoaded';
+    static readonly type = '[Firebase] IncomeCategoriesLoaded';
+    constructor(public payload: Category[]) {}
+  }
+
+  export class GetExpenseCategories {
+    static readonly type = '[Dashboard] GetExpenseCategories';
+    constructor() {}
+  }
+
+  export class GetExpenseCategorySuccess {
+    static readonly type = '[Firebase] ExpenseCategoriesLoaded';
     constructor(public payload: Category[]) {}
   }
 }

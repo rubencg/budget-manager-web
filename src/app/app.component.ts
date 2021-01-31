@@ -27,6 +27,7 @@ export class AppComponent {
     this.store.dispatch(new AccountActions.Get());
     this.store.dispatch(new ExpenseActions.Get());
     this.store.dispatch(new CategoryActions.GetIncomeCategories());
+    this.store.dispatch(new CategoryActions.GetExpenseCategories());
     
   }
 }
