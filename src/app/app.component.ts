@@ -5,6 +5,7 @@ import { AccountActions, IncomeState, IncomeActions, ExpenseActions, ExpenseStat
 import { Income } from './income';
 import { Expense } from './expense';
 import { Account } from './account';
+import { TransferActions } from './state/transfer/transfer.actions';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,7 @@ export class AppComponent {
     this.store.dispatch(new ExpenseActions.Get());
     this.store.dispatch(new CategoryActions.GetIncomeCategories());
     this.store.dispatch(new CategoryActions.GetExpenseCategories());
+    this.store.dispatch(new TransferActions.Get());
     
   }
 }
