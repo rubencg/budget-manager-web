@@ -1,0 +1,9 @@
+<div class="container">
+    <account-nav-card 
+        [accountName]="card.accountName"
+        [accountBalance]="card.accountBalance"
+        [cardLastFour]="card.cardLastFour"
+        [color]="card.color"
+        *ngFor="let card of cards"
+    ></account-nav-card>
+</div>

@@ -1,0 +1,39 @@
+@import '../../../styles.scss';
+
+.account-card{
+    width: 280px;
+    height: 170px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    &.purple{
+        background-color: $purple;
+    }
+    &.pink{
+        background-color: $pink;
+    }
+    &.light-blue{
+        background-color: $light-blue;
+    }
+}
+
+.configuration{
+    float: right;
+}
+
+.account-card div.row div.col{
+    padding: 0px;
+}
+
+.account-card div.row.balance{
+    margin: 20px 0 0 0;
+}
+
+.account-card div.row.card-number{
+    margin: 10px 0 0 0;
+    opacity: 0.5;
+}
+
+.account-card div.row.title{
+    margin-top: 5px;
+}
