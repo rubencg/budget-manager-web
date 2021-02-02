@@ -13,6 +13,7 @@ import { TransferModule } from './transfer';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { ComponentsModule } from './components';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
     ExpenseModule,
     CategoryModule,
     TransferModule,
+    ComponentsModule,
     NgxsModule.forRoot(
       budgetManagerState, {
       developmentMode: !environment.production

@@ -1,0 +1,28 @@
+@import "../../../styles.scss";
+
+ul.navbar-nav li.nav-item a.nav-link {
+  color: $disabled-text-color;
+}
+
+ul.navbar-nav li.nav-item a.nav-link.active {
+  color: $active-text-color;
+}
+
+ul.navbar-nav li.nav-item {
+  margin: 0em 1.5em;
+}
+
+div.profile {
+  padding: 10px;
+}
+
+.avatar-profile {
+  width: 35px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}
