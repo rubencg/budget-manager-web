@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AccountNavComponent } from './account-nav/account-nav.component';
 import { AccountNavCardComponent } from './account-nav-card/account-nav-card.component';
+import { TopExpensesComponent } from './top-expenses/top-expenses.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -10,15 +12,18 @@ import { AccountNavCardComponent } from './account-nav-card/account-nav-card.com
   declarations: [
     NavbarComponent,
     AccountNavComponent,
-    AccountNavCardComponent
+    AccountNavCardComponent,
+    TopExpensesComponent
   ],
   exports: [
     NavbarComponent,
     AccountNavComponent,
-    AccountNavCardComponent
+    AccountNavCardComponent,
+    TopExpensesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ChartsModule
   ]
 })
 export class ComponentsModule { }

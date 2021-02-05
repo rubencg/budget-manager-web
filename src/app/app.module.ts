@@ -14,6 +14,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { ComponentsModule } from './components';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ComponentsModule } from './components';
     CategoryModule,
     TransferModule,
     ComponentsModule,
+    ChartsModule,
     NgxsModule.forRoot(
       budgetManagerState, {
       developmentMode: !environment.production
