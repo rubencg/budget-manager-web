@@ -1,0 +1,48 @@
+@import "../../../styles.scss";
+
+.list-group-item {
+  background-color: transparent;
+  border: transparent;
+  padding: 5px 0px;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
+.date {
+    text-align: right;
+}
+
+.transactions {
+  width: 350px;
+}
+
+.amount {
+  color: white;
+}
+
+.transfer {
+  width: 50px;
+  height: 60px;
+  background-color: $purple;
+  border-radius: 10px;
+}
+
+.expense {
+  width: 50px;
+  height: 60px;
+  background-color: $pink;
+  border-radius: 10px;
+}
+
+.income {
+  width: 50px;
+  height: 60px;
+  background-color: $light-blue;
+  border-radius: 10px;
+}

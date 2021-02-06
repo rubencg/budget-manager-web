@@ -8,8 +8,28 @@ $purple: #8a16ff;
 $pink: #ff25c2;
 $light-blue: #24dffe;
 
-
 body {
   background-color: $secondary-color;
   color: white;
+}
+
+a {
+  color: $disabled-text-color;
+}
+
+a:hover {
+  color: $active-text-color;
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
 }

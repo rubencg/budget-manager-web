@@ -5,6 +5,7 @@ import { AccountNavComponent } from './account-nav/account-nav.component';
 import { AccountNavCardComponent } from './account-nav-card/account-nav-card.component';
 import { TopExpensesComponent } from './top-expenses/top-expenses.component';
 import { ChartsModule } from 'ng2-charts';
+import { LastTransactionsComponent } from './last-transactions/last-transactions.component';
 
 
 
@@ -13,13 +14,15 @@ import { ChartsModule } from 'ng2-charts';
     NavbarComponent,
     AccountNavComponent,
     AccountNavCardComponent,
-    TopExpensesComponent
+    TopExpensesComponent,
+    LastTransactionsComponent
   ],
   exports: [
     NavbarComponent,
     AccountNavComponent,
     AccountNavCardComponent,
-    TopExpensesComponent
+    TopExpensesComponent,
+    LastTransactionsComponent
   ],
   imports: [
     CommonModule,
