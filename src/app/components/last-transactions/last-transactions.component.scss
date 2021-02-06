@@ -7,42 +7,44 @@
 }
 
 .vertical-center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-  
-.date {
-    text-align: right;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
-.transactions {
-  width: 350px;
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.date {
+  text-align: right;
 }
 
 .amount {
   color: white;
 }
 
-.transfer {
+.transaction{
   width: 50px;
-  height: 60px;
-  background-color: $purple;
+  height: 40px;
   border-radius: 10px;
+}
+
+.transfer {
+  background-color: $purple;
 }
 
 .expense {
-  width: 50px;
-  height: 60px;
   background-color: $pink;
-  border-radius: 10px;
 }
 
 .income {
-  width: 50px;
-  height: 60px;
   background-color: $light-blue;
-  border-radius: 10px;
 }

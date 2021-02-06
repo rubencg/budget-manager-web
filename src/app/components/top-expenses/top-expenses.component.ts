@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Color } from 'ng2-charts';
-import { TopExpensesModel } from 'src/app/models';
+import { TopExpense } from 'src/app/models';
 
 @Component({
   selector: 'top-expenses',
@@ -8,7 +8,7 @@ import { TopExpensesModel } from 'src/app/models';
   styleUrls: ['./top-expenses.component.scss'],
 })
 export class TopExpensesComponent implements OnInit {
-  @Input() data: TopExpensesModel[];
+  @Input() data: TopExpense[];
   constructor() {}
 
   public barChartOptions = {

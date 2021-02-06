@@ -6,7 +6,7 @@ import { AccountNavCardComponent } from './account-nav-card/account-nav-card.com
 import { TopExpensesComponent } from './top-expenses/top-expenses.component';
 import { ChartsModule } from 'ng2-charts';
 import { LastTransactionsComponent } from './last-transactions/last-transactions.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -26,7 +26,8 @@ import { LastTransactionsComponent } from './last-transactions/last-transactions
   ],
   imports: [
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    FontAwesomeModule
   ]
 })
 export class ComponentsModule { }

@@ -1,13 +1,6 @@
 <h6>Top gastos por categoria</h6>
-<div class="top-expenses">
-    <div style="display: block">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [colors]="barChartColors"
-              [legend]="barChartLegend"
-              [chartType]="barChartType">
-      </canvas>
-    </div>
-  </div>
+<div style="display: block">
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+    [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+  </canvas>
+</div>

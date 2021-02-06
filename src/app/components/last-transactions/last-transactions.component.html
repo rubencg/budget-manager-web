@@ -1,31 +1,29 @@
-<div class="transactions">
-    <div class="d-flex w-100 justify-content-between">
-        <h6>Transacciones</h6>
-        <small><a href="#">Ver todas</a></small>
-    </div>
-    <div class="list-group">
-        <a href="#" class="list-group-item" *ngFor="let item of data">
-            <div class="row">
-                <div class="col-md-2">
-                    <div [class]="[item.type, 'vertical-center']">
-
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h7>
-                                {{item.title}}
-                            </h7>
-                        </div>
-                        <div class="col-md-4 date">
-                            <small>{{item.date | date : 'd MMM yyyy' : undefined :'es-ES' }}</small>
-                        </div>
-                    </div>
-                    <small class="amount">{{item.amount | currency }}</small>
+<div class="d-flex w-100 justify-content-between">
+    <h6>Transacciones</h6>
+    <small><a href="#">Ver todas</a></small>
+</div>
+<div class="list-group">
+    <a href="#" class="list-group-item" *ngFor="let item of data">
+        <div class="row">
+            <div class="col-md-2">
+                <div [class]="[item.type, 'vertical-center', 'transaction']">
+                    <fa-icon class="center" [icon]="getIcon(item.type)"></fa-icon>
                 </div>
             </div>
-        </a>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h7>
+                            {{item.title}}
+                        </h7>
+                    </div>
+                    <div class="col-md-4 date">
+                        <small>{{item.date | date : 'd MMM yyyy' : undefined :'es-ES' }}</small>
+                    </div>
+                </div>
+                <small class="amount">{{item.amount | currency }}</small>
+            </div>
+        </div>
+    </a>
 
-    </div>
 </div>

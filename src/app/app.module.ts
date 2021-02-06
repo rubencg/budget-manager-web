@@ -18,6 +18,7 @@ import { ChartsModule } from 'ng2-charts';
 import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
 
+
 registerLocaleData(localeES);
 
 @NgModule({
