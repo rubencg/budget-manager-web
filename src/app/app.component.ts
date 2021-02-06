@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import * as Chart from 'chart.js';
-import { TopExpense, Transaction } from './models';
+import { MonthlyBudget, TopExpense, Transaction } from './models';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +13,11 @@ import { TopExpense, Transaction } from './models';
 })
 export class AppComponent {
   title = 'budget-manager-web';
+  monthlyBudgetData: MonthlyBudget = {
+    budgetExpensesAmount: 25000,
+    expensesAmount: 24356.93,
+    incomesAmount: 52345.34
+  }
   topExpenses: TopExpense[] = [
     {name: 'Servicios', amount: 11235.78},
     {name: 'Casa', amount: 5300},

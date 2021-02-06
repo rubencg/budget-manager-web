@@ -12,12 +12,23 @@
             <account-nav></account-nav>
         </div>
         <div class="col-md-9 no-float content">
-            <div class="row">
-                <div class="col-md-6">
-                    <top-expenses [data]="topExpenses"></top-expenses>
+            <div>
+                <div class="row dashboard-row">
+                    <div class="col-md-6">
+
+                    </div>
+                    <div class="col-md-6">
+                        <monthly-budget [monthlyBudgetData]="monthlyBudgetData"></monthly-budget>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <last-transactions [data]="transactions"></last-transactions>
+                <div class="content-divider"></div>
+                <div class="row dashboard-row">
+                    <div class="col-md-6">
+                        <top-expenses [data]="topExpenses"></top-expenses>
+                    </div>
+                    <div class="col-md-6">
+                        <last-transactions [data]="transactions"></last-transactions>
+                    </div>
                 </div>
             </div>
         </div>

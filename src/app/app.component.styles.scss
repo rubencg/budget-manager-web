@@ -1,16 +1,20 @@
 @import "../styles.scss";
 
+.content-divider{
+  height: 50px;
+}
+
 .content {
   overflow: hidden;
   background-color: $primary-color;
   padding: 0;
-  div {
-    background-color: $secondary-color;
-    border-radius: 25px 0px 0px 0px;
-    height: 100%;
-    margin: 0;
-    padding: 1.5rem;
-  }
+}
+.content>div {
+  background-color: $secondary-color;
+  border-radius: 25px 0px 0px 0px;
+  height: 100%;
+  margin: 0;
+  padding: 1.5rem;
 }
 
 .accounts {

@@ -7,6 +7,7 @@ import { TopExpensesComponent } from './top-expenses/top-expenses.component';
 import { ChartsModule } from 'ng2-charts';
 import { LastTransactionsComponent } from './last-transactions/last-transactions.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MonthlyBudgetComponent } from './monthly-budget/monthly-budget.component';
 
 
 @NgModule({
@@ -15,14 +16,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AccountNavComponent,
     AccountNavCardComponent,
     TopExpensesComponent,
-    LastTransactionsComponent
+    LastTransactionsComponent,
+    MonthlyBudgetComponent
   ],
   exports: [
     NavbarComponent,
     AccountNavComponent,
     AccountNavCardComponent,
     TopExpensesComponent,
-    LastTransactionsComponent
+    LastTransactionsComponent,
+    MonthlyBudgetComponent
   ],
   imports: [
     CommonModule,
