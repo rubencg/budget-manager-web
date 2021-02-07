@@ -16,7 +16,8 @@ export class AppComponent {
   monthlyBudgetData: MonthlyBudget = {
     budgetExpensesAmount: 25000,
     expensesAmount: 24356.93,
-    incomesAmount: 52345.34
+    incomesAmount: 52345.34,
+    currentBalance: 28234.34
   }
   topExpenses: TopExpense[] = [
     {name: 'Servicios', amount: 11235.78},

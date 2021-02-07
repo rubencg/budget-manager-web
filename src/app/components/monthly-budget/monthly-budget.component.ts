@@ -11,6 +11,7 @@ import { MonthlyBudget } from 'src/app/models';
 export class MonthlyBudgetComponent implements OnInit {
 
   @Input() monthlyBudgetData: MonthlyBudget;
+  public totalforMonth: number;
 
   // Doughnut
   public doughnutChartLabels: Label[] = ['Gasto proyectado', 'Gastos', 'Entradas'];
@@ -39,6 +40,12 @@ export class MonthlyBudgetComponent implements OnInit {
     this.doughnutChartData.push(this.monthlyBudgetData.budgetExpensesAmount);
     this.doughnutChartData.push(this.monthlyBudgetData.expensesAmount);
     this.doughnutChartData.push(this.monthlyBudgetData.incomesAmount);
+    this.totalforMonth = this.calculateTotalForMonth();
+  }
+
+  calculateTotalForMonth() : number{
+    return this.monthlyBudgetData.currentBalance
+      - this.monthlyBudgetData.budgetExpensesAmount;
   }
 
 }

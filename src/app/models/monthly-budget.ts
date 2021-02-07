@@ -1,5 +1,6 @@
 export interface MonthlyBudget{
     budgetExpensesAmount: number,
     expensesAmount: number,
-    incomesAmount: number
+    incomesAmount: number,
+    currentBalance: number
 }
