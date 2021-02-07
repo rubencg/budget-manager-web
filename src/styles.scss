@@ -33,3 +33,59 @@ a:visited {
 a:active {
   text-decoration: none;
 }
+
+/* Calendar */
+.cal-month-view{
+  background-color: transparent;
+}
+
+.cal-month-view .cal-day-cell.cal-today {
+  background-color: transparent;
+}
+
+.cal-month-view .cal-cell.cal-has-events.cal-open{
+  background-color: transparent;
+  color: $purple;
+}
+
+.cal-month-view .cal-day-cell{
+  min-height: 50px;
+
+}
+
+.day-cell {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.cal-month-view .cal-day-number{
+  margin: 0;
+  float: none;
+  font-size: 1rem;
+}
+
+.cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
+  color: white;
+}
+
+.cal-month-view .cal-day-cell.cal-today .cal-day-number{
+  font-size: 1rem;
+  color: $pink;
+}
+
+.cal-month-view .cal-cell-row:hover {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.cal-month-view .cal-cell-row .cal-cell:hover{
+  background-color: transparent;
+}
+
+.cal-month-view .cal-day-cell.cal-weekend .cal-day-number:hover{
+  opacity: 1.0;
+}
