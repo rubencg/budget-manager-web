@@ -14,32 +14,32 @@
         <div class="cal-cell cal-past "> M </div>
         <div class="cal-cell cal-past "> J </div>
         <div class="cal-cell cal-past "> V </div>
-        <div class="cal-cell cal-past cal-weekend"> S </div>
-        <div class="cal-cell cal-past cal-weekend"> D </div>
+        <div class="cal-cell cal-past"> S </div>
+        <div class="cal-cell cal-past"> D </div>
     </div>
+    <div class="cal-days-header"></div>
 </ng-template>
 
 
 
-<div class="row text-center">
-    <div class="col-md-4">
-        <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+<div class="cal-header-container">
+    <div class="cal-month-header">
+        <span>{{ viewDate | date : 'MMMM, yyyy' : undefined :'es-ES' }}</span>
+    </div>
+    <div class="cal-month-controls">
+        <div class="cal-button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
             (viewDateChange)="closeOpenMonthViewDay()">
-            Previous
+            <fa-icon [icon]="leftArrow"></fa-icon>
         </div>
-    </div>
-    <div class="col-md-4">
-        <h6>{{ viewDate | date : 'MMMM, yyyy' : undefined :'es-ES' }}</h6>
-    </div>
-    <div class="col-md-4">
-        <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        <div class="cal-today-button cal-button" mwlCalendarToday [(viewDate)]="viewDate">
+            <span>Hoy</span>
+        </div>
+        <div class="cal-button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
             (viewDateChange)="closeOpenMonthViewDay()">
-            Next
+            <fa-icon [icon]="rightArrow"></fa-icon>
         </div>
     </div>
 </div>
-<br />
-
 <div [ngSwitch]="view" class="calendar-container">
     <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
         [refresh]="refresh" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"

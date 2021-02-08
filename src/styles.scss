@@ -66,6 +66,7 @@ a:active {
   margin: 0;
   float: none;
   font-size: 1rem;
+  opacity: 1.0;
 }
 
 .cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
@@ -84,8 +85,52 @@ a:active {
 
 .cal-month-view .cal-cell-row .cal-cell:hover{
   background-color: transparent;
+  color: $light-blue;
+}
+
+.cal-month-view .cal-cell-row .cal-weekend .cal-cell:hover{
+  background-color: transparent;
 }
 
 .cal-month-view .cal-day-cell.cal-weekend .cal-day-number:hover{
+  color: $light-blue;
   opacity: 1.0;
+}
+
+.cal-cell.cal-day-cell.cal-past.cal-weekend.cal-in-month.cal-has-events:hover{
+  color: $light-blue;
+}
+
+.cal-month-view .cal-day-cell:hover{
+  color: $light-blue;
+}
+
+.cal-month-view .cal-day-cell.cal-in-month.cal-has-events:hover{
+  color: $light-blue;
+}
+
+.cal-month-view .cal-day-cell:not(:last-child){
+  border: 0px;
+}
+
+.cal-month-view .cal-days .cal-cell-row{
+  border: 0px;
+}
+
+.cal-month-view .cal-days{
+  border: 0px;
+}
+
+.cal-days-header{
+  border-bottom: 1px solid rgba($color: $disabled-text-color, $alpha: 0.3);
+}
+
+.cal-cell-row.cal-header{
+  color: $disabled-text-color;
+}
+
+.cal-month-view .cal-day-cell.cal-out-month .cal-day-number{
+  cursor: pointer;
+  opacity: 0.8;
+  color: $disabled-text-color;
 }

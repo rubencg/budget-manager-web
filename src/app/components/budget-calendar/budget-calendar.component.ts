@@ -5,6 +5,7 @@ import {
   TemplateRef,
   OnInit,
 } from '@angular/core';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   startOfDay,
   endOfDay,
@@ -42,14 +43,15 @@ const colors: any = {
 @Component({
   selector: 'budget-calendar',
   templateUrl: './budget-calendar.component.html',
-  styleUrls: ['./budget-calendar.component.scss']
+  styleUrls: ['./budget-calendar.component.scss'],
 })
 export class BudgetCalendarComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  rightArrow = faChevronRight;
+  leftArrow = faChevronLeft;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
@@ -140,7 +142,6 @@ export class BudgetCalendarComponent implements OnInit {
     //   this.viewDate = date;
     // }
     console.log('logged', date);
-    
   }
 
   eventTimesChanged({
