@@ -1,12 +1,10 @@
-<div style="display: block">
-  <canvas baseChart
-  [data]="doughnutChartData"
-  [labels]="doughnutChartLabels"
-  [chartType]="doughnutChartType"
-  [colors]="barChartColors"
-  [options]="options">
-</canvas>
-</div>
-<div class="box">
-  <h3>{{ totalforMonth | currency }}</h3>
+<div class="chart-container">
+  <div>
+    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+      [colors]="barChartColors" [options]="options">
+    </canvas>
+  </div>
+  <div class="box">
+    <h3>{{ totalforMonth | currency }}</h3>
+  </div>
 </div>

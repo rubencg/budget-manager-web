@@ -20,8 +20,6 @@
     <div class="cal-days-header"></div>
 </ng-template>
 
-
-
 <div class="cal-header-container">
     <div class="cal-month-header">
         <span>{{ viewDate | date : 'MMMM, yyyy' : undefined :'es-ES' }}</span>
@@ -40,6 +38,7 @@
         </div>
     </div>
 </div>
+
 <div [ngSwitch]="view" class="calendar-container">
     <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
         [refresh]="refresh" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
