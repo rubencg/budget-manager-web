@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-9">
-            <app-navbar></app-navbar>
+            <navbar></navbar>
         </div>
     </div>
 </div>
@@ -13,23 +13,7 @@
         </div>
         <div class="col-md-9 no-float content">
             <div>
-                <div class="row dashboard-row">
-                    <div class="col-md-6">
-                        <budget-calendar></budget-calendar>
-                    </div>
-                    <div class="col-md-6">
-                        <monthly-budget [monthlyBudgetData]="monthlyBudgetData"></monthly-budget>
-                    </div>
-                </div>
-                <div class="content-divider"></div>
-                <div class="row dashboard-row">
-                    <div class="col-md-6">
-                        <top-expenses [data]="topExpenses"></top-expenses>
-                    </div>
-                    <div class="col-md-6">
-                        <last-transactions [data]="transactions"></last-transactions>
-                    </div>
-                </div>
+                <dashboard></dashboard>
             </div>
         </div>
     </div>
