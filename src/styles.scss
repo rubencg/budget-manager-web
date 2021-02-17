@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+
 $primary-color: #14224f;
 $secondary-color: #081945;
 $disabled-text-color: #828bc2;
@@ -11,6 +13,7 @@ $light-blue: #24dffe;
 body {
   background-color: $secondary-color;
   color: white;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 a {

@@ -47,5 +47,6 @@ export class AppComponent {
   
   constructor(private store: Store){
     Chart.defaults.global.defaultFontColor = '#828bc2';
+    Chart.defaults.global.defaultFontFamily = 'Maven Pro';
   }
 }
