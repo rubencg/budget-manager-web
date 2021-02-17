@@ -8,7 +8,6 @@
 
 <ng-template #headerTemplate>
     <div class="cal-cell-row cal-header ">
-        <!---->
         <div class="cal-cell cal-past "> L </div>
         <div class="cal-cell cal-past "> M </div>
         <div class="cal-cell cal-past "> M </div>
@@ -25,31 +24,18 @@
         <span>{{ viewDate | date : 'MMMM, yyyy' : undefined :'es-ES' }}</span>
     </div>
     <div class="cal-month-controls">
-        <div class="cal-button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-            (viewDateChange)="closeOpenMonthViewDay()">
+        <div class="cal-button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
             <fa-icon [icon]="leftArrow"></fa-icon>
         </div>
         <div class="cal-today-button cal-button" mwlCalendarToday [(viewDate)]="viewDate">
             <span>Hoy</span>
         </div>
-        <div class="cal-button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-            (viewDateChange)="closeOpenMonthViewDay()">
+        <div class="cal-button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
             <fa-icon [icon]="rightArrow"></fa-icon>
         </div>
     </div>
 </div>
 
-<div [ngSwitch]="view" class="calendar-container">
-    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
-        [refresh]="refresh" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)" [cellTemplate]="customCellTemplate" weekStartsOn="1"
-        [headerTemplate]="headerTemplate">
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
-        [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)">
-    </mwl-calendar-week-view>
-    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
-    </mwl-calendar-day-view>
-</div>
+<mwl-calendar-month-view [viewDate]="viewDate" [events]="events" (dayClicked)="dayClicked($event.day)"
+    [cellTemplate]="customCellTemplate" weekStartsOn="1" [headerTemplate]="headerTemplate">
+</mwl-calendar-month-view>
