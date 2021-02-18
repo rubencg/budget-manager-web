@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Quieres eliminar esta transaccion?</h1>
+<div mat-dialog-content>
+    <div>
+        <span>Fecha: {{data.date | date : 'd MMMM, yyyy' : undefined : 'es-ES'}}</span>
+    </div>
+    <div>
+        <span>Categoria: {{data.category}}</span>
+    </div>
+    <div>
+        <span>Cantidad: {{data.amount}}</span>
+    </div>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button color="ok-button" [mat-dialog-close]="true">ELIMINAR</button>
+</div>

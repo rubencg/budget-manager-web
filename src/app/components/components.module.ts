@@ -12,10 +12,12 @@ import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
 import { TableComponent } from './transactions/table/table.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import { DeleteComponent } from './transactions/dialogs/delete/delete.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { MatSortModule } from '@angular/material/sort';
     DashboardComponent,
     TransactionsComponent,
     HeaderComponent,
-    TableComponent
+    TableComponent,
+    DeleteComponent
   ],
   exports: [
     NavbarComponent,
@@ -46,6 +49,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatDialogModule,
+    MatButtonModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

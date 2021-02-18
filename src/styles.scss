@@ -4,6 +4,7 @@
 
 $primary-color: #14224f;
 $secondary-color: #081945;
+$third-color: #192a63;
 $disabled-text-color: #828bc2;
 $active-text-color: #f3f3fd;
 $purple: #8a16ff;
@@ -143,3 +144,12 @@ a:active {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// material
+.mat-ok-button {
+  background-color: $pink;
+}
+
+.mat-dialog-container {
+  background-color: $third-color;
+}
