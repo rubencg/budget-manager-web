@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
 import { TableComponent } from './transactions/table/table.component';
 import {MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -42,6 +44,8 @@ import {MatTableModule} from '@angular/material/table';
     FontAwesomeModule,
     BrowserAnimationsModule,
     MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

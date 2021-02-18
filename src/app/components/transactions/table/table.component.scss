@@ -5,11 +5,17 @@
   background-color: $primary-color;
   width: 100%;
   min-height: 80%;
-  border-radius: 25px 25px 0px 0px;
 }
 
 .mat-table {
   width: 100%;
+  font-family: 'Maven Pro', sans-serif;
+  background-color: $primary-color;
+}
+
+.mat-paginator{
+  font-family: 'Maven Pro', sans-serif;
+  background-color: $primary-color;
 }
 
 .action-container {
