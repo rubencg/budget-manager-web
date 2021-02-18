@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from 'src/app/models';
-import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ELEMENT_DATA: Transaction[] = [
   {type: 'expense', amount: 157.64, date: new Date(), account: 'Ruben Debito', notes: 'Pastillas para la alergia', category: 'Farmacia'},
@@ -29,9 +28,6 @@ export class TableComponent implements OnInit {
 
   displayedColumns: string[] = ['date', 'category', 'account', 'amount', 'notes', 'actions'];
   dataSource = ELEMENT_DATA;
-
-  editIcon = faPencilAlt;
-  deleteIcon = faTrash;
 
   constructor() { }
 

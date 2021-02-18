@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  faChevronRight,
-  faChevronLeft,
-} from '@fortawesome/free-solid-svg-icons';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 
 @Component({
@@ -12,9 +8,6 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 })
 export class BudgetCalendarComponent implements OnInit {
   constructor() {}
-
-  rightArrow = faChevronRight;
-  leftArrow = faChevronLeft;
 
   ngOnInit(): void {}
 

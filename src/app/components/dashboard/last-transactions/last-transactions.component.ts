@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faExchangeAlt, faAngleDoubleDown, faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons';
 import { Transaction } from 'src/app/models';
 
 
@@ -9,7 +8,6 @@ import { Transaction } from 'src/app/models';
   styleUrls: ['./last-transactions.component.scss'],
 })
 export class LastTransactionsComponent implements OnInit {
-  faExchangeAlt = faExchangeAlt;
   @Input() data: Transaction[];
 
   constructor() {}
@@ -19,11 +17,11 @@ export class LastTransactionsComponent implements OnInit {
   getIcon(type: String){    
     switch (type) {
       case 'expense':
-        return faAngleDoubleDown;
-      case 'income':
-        return faAngleDoubleUp;
-      case 'transfer':
-        return faExchangeAlt;
+        return "angle-double-down";
+        case 'income':
+        return "angle-double-up";
+        case 'transfer':
+        return "exchange-alt";
     }
   }
 }
