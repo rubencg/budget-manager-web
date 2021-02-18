@@ -11,6 +11,7 @@ import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
 import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
+import { TableComponent } from './transactions/table/table.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HeaderComponent } from './transactions/header/header.component';
     BudgetCalendarComponent,
     DashboardComponent,
     TransactionsComponent,
-    HeaderComponent
+    HeaderComponent,
+    TableComponent
   ],
   exports: [
     NavbarComponent,
