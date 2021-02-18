@@ -8,6 +8,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
+import { TransactionsComponent } from './transactions';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -18,15 +20,18 @@ import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
     LastTransactionsComponent,
     MonthlyBudgetComponent,
     BudgetCalendarComponent,
-    DashboardComponent
+    DashboardComponent,
+    TransactionsComponent
   ],
   exports: [
     NavbarComponent,
     DashboardComponent,
-    AccountNavComponent
+    AccountNavComponent,
+    TransactionsComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
     ChartsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
