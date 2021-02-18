@@ -12,6 +12,8 @@ import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
 import { TableComponent } from './transactions/table/table.component';
+import {MatTableModule} from '@angular/material/table';
+
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { TableComponent } from './transactions/table/table.component';
     ChartsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
+    MatTableModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

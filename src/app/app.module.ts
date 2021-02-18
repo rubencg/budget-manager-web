@@ -17,7 +17,10 @@ import { ComponentsModule } from './components';
 import { ChartsModule } from 'ng2-charts';
 import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 registerLocaleData(localeES);
 
@@ -45,11 +48,16 @@ registerLocaleData(localeES);
     NgxsLoggerPluginModule.forRoot({
       disabled: environment.production,
     }),
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    BrowserAnimationsModule
   ],
   providers: [
     
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, far);
+  }
+}

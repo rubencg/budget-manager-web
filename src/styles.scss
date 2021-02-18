@@ -13,7 +13,7 @@ $light-blue: #24dffe;
 body {
   background-color: $secondary-color;
   color: white;
-  font-family: 'Maven Pro', sans-serif;
+  font-family: 'Maven Pro', sans-serif !important;
 }
 
 a {
@@ -35,6 +35,10 @@ a:visited {
 
 a:active {
   text-decoration: none;
+}
+
+.disable-select{
+  user-select:none;
 }
 
 /* Calendar */
@@ -137,3 +141,5 @@ a:active {
   opacity: 0.8;
   color: $disabled-text-color;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
