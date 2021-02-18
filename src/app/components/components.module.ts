@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
 import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from './transactions/header/header.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RouterModule } from '@angular/router';
     MonthlyBudgetComponent,
     BudgetCalendarComponent,
     DashboardComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    HeaderComponent
   ],
   exports: [
     NavbarComponent,
