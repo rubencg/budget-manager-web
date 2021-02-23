@@ -2,12 +2,12 @@
 <div mat-dialog-content>
     <form [formGroup]="form" class="transaction-dialog-content">
         <mat-form-field appearance="fill">
-            <span matPrefix>$ &nbsp;</span>
+            <span class="amount" matPrefix>$ &nbsp;</span>
             <mat-label>Cantidad</mat-label>
-            <input type="number" formControlName="amount" matInput>
+            <input type="number" formControlName="amount" class="amount" matInput>
         </mat-form-field>
-        <mat-slide-toggle class="applied-input" formControlName="applied" [color]="color">
-            {{ applied ? 'Recibido' : 'No recibido' }}
+        <mat-slide-toggle class="applied-input" formControlName="applied">
+            {{ form.get('applied').value ? 'Recibido' : 'No recibido' }}
         </mat-slide-toggle>
         <mat-form-field appearance="fill">
             <mat-label>Fecha</mat-label>
@@ -47,5 +47,5 @@
 </div>
 <div mat-dialog-actions class="buttons-box">
     <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
-    <button mat-raised-button color="ok-button" [mat-dialog-close]="true">GUARDAR</button>
+    <button mat-raised-button [disabled]="form.invalid" color="ok-button" [mat-dialog-close]="true">GUARDAR</button>
 </div>

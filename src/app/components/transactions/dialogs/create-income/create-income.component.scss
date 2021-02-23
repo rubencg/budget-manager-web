@@ -1,24 +1,33 @@
-@import './../../transactions.component.scss';
+@import "./../../transactions.component.scss";
 
-.transaction-dialog-content{
-    display: flex;
-    flex-direction: column;
+.transaction-dialog-content {
+  display: flex;
+  flex-direction: column;
 }
 
-.element-circle{
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
+.element-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
 }
 
-.autocomplete-option{
-    display: flex;
+.autocomplete-option {
+  display: flex;
 }
 
-.applied-input{
-    margin-bottom: 10px;
+.applied-input {
+  margin-bottom: 10px;
+}
+
+.amount {
+  color: #00c853;
+  font-weight: bold;
+}
+
+.mat-ok-button {
+  background-color: #00c853 !important;
 }

@@ -81,10 +81,16 @@ export class CreateIncomeComponent implements OnInit {
   ];
 
   // Form Controls
-  categoryCtrl = new FormControl('');
-  accountCtrl = new FormControl('');
+  categoryCtrl = new FormControl('',[
+    Validators.required
+  ]);
+  accountCtrl = new FormControl('',[
+    Validators.required
+  ]);
   form: FormGroup = new FormGroup({
-    date: new FormControl(new Date()),
+    date: new FormControl(new Date(),[
+      Validators.required
+    ]),
     category: this.categoryCtrl,
     account: this.accountCtrl,
     applied: new FormControl(true),
