@@ -7,12 +7,12 @@ import { map, startWith } from 'rxjs/operators';
 import { AutocompleteElement } from 'src/app/models';
 
 @Component({
-  selector: 'app-create-income',
-  templateUrl: './create-income.component.html',
-  styleUrls: ['./create-income.component.scss'],
+  selector: 'app-income',
+  templateUrl: './income.component.html',
+  styleUrls: ['./income.component.scss'],
 })
-export class CreateIncomeComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<CreateIncomeComponent>) {
+export class IncomeComponent implements OnInit {
+  constructor(public dialogRef: MatDialogRef<IncomeComponent>) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
       startWith(''),
       map((category) =>
@@ -39,7 +39,6 @@ export class CreateIncomeComponent implements OnInit {
     
   }
 
-  applied: Boolean = true;
   color: ThemePalette = 'warn';
 
   filteredCategories: Observable<AutocompleteElement[]>;

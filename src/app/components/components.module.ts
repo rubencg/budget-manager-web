@@ -18,7 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { DeleteComponent } from './transactions/dialogs/delete/delete.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { CreateIncomeComponent } from './transactions/dialogs/create-income/create-income.component';
+import { IncomeComponent } from './transactions/dialogs/income/income.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +45,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     HeaderComponent,
     TableComponent,
     DeleteComponent,
-    CreateIncomeComponent
+    IncomeComponent
   ],
   exports: [
     NavbarComponent,
@@ -72,6 +74,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatMenuModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

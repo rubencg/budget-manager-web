@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateIncomeComponent } from '../dialogs';
+import { IncomeComponent } from '../dialogs';
 
 @Component({
   selector: 'transactions-header',
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   }
 
   createIncomeDialog(){
-    const dialogRef = this.dialog.open(CreateIncomeComponent, {
+    const dialogRef = this.dialog.open(IncomeComponent, {
       maxWidth: '600px',
       width: 'calc(100% - 64px)'      
     });
