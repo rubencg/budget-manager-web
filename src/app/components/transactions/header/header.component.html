@@ -12,7 +12,7 @@
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="createIncomeDialog()">Agregar ingreso</button>
             <button mat-menu-item (click)="createExpenseDialog()">Agregar gasto</button>
-            <button mat-menu-item>Agregar transferencia</button>
+            <button mat-menu-item (click)="createTransferDialog()">Agregar transferencia</button>
         </mat-menu>
         <div class="header-button">
             <fa-icon [icon]="['fas', 'filter']"></fa-icon>

@@ -1,0 +1,12 @@
+@import "./../../transactions.component.scss";
+
+$transfer-color: #42A5F6;
+
+.amount {
+  color: $transfer-color;
+  font-weight: bold;
+}
+
+.mat-ok-button {
+  background-color: $transfer-color !important;
+}

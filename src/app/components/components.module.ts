@@ -30,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { ExpenseComponent } from './transactions/dialogs/expense/expense.component';
+import { TransferComponent } from './transactions/dialogs/transfer/transfer.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { ExpenseComponent } from './transactions/dialogs/expense/expense.compone
     TableComponent,
     DeleteComponent,
     IncomeComponent,
-    ExpenseComponent
+    ExpenseComponent,
+    TransferComponent
   ],
   exports: [
     NavbarComponent,
