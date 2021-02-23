@@ -18,6 +18,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { DeleteComponent } from './transactions/dialogs/delete/delete.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { CreateIncomeComponent } from './transactions/dialogs/create-income/create-income.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -32,7 +42,8 @@ import { MatButtonModule } from '@angular/material/button';
     TransactionsComponent,
     HeaderComponent,
     TableComponent,
-    DeleteComponent
+    DeleteComponent,
+    CreateIncomeComponent
   ],
   exports: [
     NavbarComponent,
@@ -51,6 +62,16 @@ import { MatButtonModule } from '@angular/material/button';
     MatSortModule,
     MatDialogModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

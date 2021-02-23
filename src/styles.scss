@@ -14,7 +14,7 @@ $light-blue: #24dffe;
 body {
   background-color: $secondary-color;
   color: white;
-  font-family: 'Maven Pro', sans-serif !important;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 a {
@@ -142,8 +142,6 @@ a:active {
   opacity: 0.8;
   color: $disabled-text-color;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // material
 .mat-ok-button {
@@ -152,4 +150,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-dialog-container {
   background-color: $third-color;
+}
+
+.mat-option-text {
+  display: flex !important;
+  align-items: center;
 }
