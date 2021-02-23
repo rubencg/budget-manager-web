@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AutocompleteElement } from 'src/app/models';
 
 @Component({
-  selector: 'app-income',
-  templateUrl: './income.component.html',
-  styleUrls: ['./income.component.scss'],
+  selector: 'app-expense',
+  templateUrl: './expense.component.html',
+  styleUrls: ['./expense.component.scss']
 })
-export class IncomeComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<IncomeComponent>) {
+export class ExpenseComponent implements OnInit {
+
+  constructor(public dialogRef: MatDialogRef<ExpenseComponent>) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
       startWith(''),
       map((category) =>
@@ -96,4 +96,5 @@ export class IncomeComponent implements OnInit {
     ]),
     notes: new FormControl('')
   });
+
 }

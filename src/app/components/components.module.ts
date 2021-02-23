@@ -29,6 +29,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { ExpenseComponent } from './transactions/dialogs/expense/expense.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { MatMenuModule } from '@angular/material/menu';
     HeaderComponent,
     TableComponent,
     DeleteComponent,
-    IncomeComponent
+    IncomeComponent,
+    ExpenseComponent
   ],
   exports: [
     NavbarComponent,

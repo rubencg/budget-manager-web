@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IncomeComponent } from '../dialogs';
+import { ExpenseComponent, IncomeComponent } from '../dialogs';
 
 @Component({
   selector: 'transactions-header',
@@ -24,7 +24,22 @@ export class HeaderComponent implements OnInit {
       if(result === true){
         console.log('Created income');
       }else{
-        console.log('Nothing was deleted');
+        console.log('Nothing was created');
+      }
+    });
+  }
+  
+  createExpenseDialog(){
+    const dialogRef = this.dialog.open(ExpenseComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)'      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === true){
+        console.log('Created expense');
+      }else{
+        console.log('Nothing was created');
       }
     });
   }

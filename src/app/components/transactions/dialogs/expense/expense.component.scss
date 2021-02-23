@@ -1,12 +1,12 @@
 @import "./../../transactions.component.scss";
 
-$income-color: #00c853;
+$expense-color: #ef5350;
 
 .amount {
-  color: $income-color;
+  color: $expense-color;
   font-weight: bold;
 }
 
 .mat-ok-button {
-  background-color: $income-color !important;
+  background-color: $expense-color !important;
 }
