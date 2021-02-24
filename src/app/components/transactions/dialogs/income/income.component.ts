@@ -12,14 +12,7 @@ import { AutocompleteElement } from 'src/app/models';
   styleUrls: ['./income.component.scss'],
 })
 export class IncomeComponent implements OnInit {
-  showAdditionalData: Boolean = false;
-  recurrences = [
-    { value: 0, viewValue: 'Dias' },
-    { value: 1, viewValue: 'Semanas' },
-    { value: 2, viewValue: 'Meses' },
-    { value: 3, viewValue: 'Años' },
-  ];
-
+  
   constructor(public dialogRef: MatDialogRef<IncomeComponent>) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
       startWith(''),
@@ -51,12 +44,7 @@ export class IncomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form.patchValue({
-      recurrence: 2,
-    });
-
-    this.timesCtrl.disable();
-    this.recurrenceCtrl.disable();
+    
   }
 
   filteredCategories: Observable<AutocompleteElement[]>;
@@ -100,10 +88,6 @@ export class IncomeComponent implements OnInit {
   // Form Controls
   categoryCtrl = new FormControl('', [Validators.required]);
   accountCtrl = new FormControl('', [Validators.required]);
-  repeatCtrl = new FormControl(false);
-  timesCtrl = new FormControl('2');
-  recurrenceCtrl = new FormControl(2);
-  monthlyRecurrent = new FormControl('');
   form: FormGroup = new FormGroup({
     date: new FormControl(new Date(), [Validators.required]),
     category: this.categoryCtrl,
@@ -111,29 +95,9 @@ export class IncomeComponent implements OnInit {
     applied: new FormControl(true),
     amount: new FormControl('', [Validators.required]),
     notes: new FormControl(''),
-    monthlyRecurrent: this.monthlyRecurrent,
-    repeat: this.repeatCtrl,
-    times: this.timesCtrl,
-    recurrence: this.recurrenceCtrl,
+    monthlyRecurrent: new FormControl(''),
+    repeat: new FormControl(false),
+    times: new FormControl(''),
+    recurrence: new FormControl(''),
   });
-
-  monthlyRecurrenceChanged() {
-    this.repeatCtrl.patchValue(false);
-    this.enableRecurrenceControls(false);
-  }
-  
-  repeatChanged($event) {
-    this.monthlyRecurrent.patchValue(false);
-    this.enableRecurrenceControls($event.checked);
-  }
-
-  private enableRecurrenceControls(enable: Boolean){
-    if (enable) {
-      this.timesCtrl.enable();
-      this.recurrenceCtrl.enable();
-    } else {
-      this.timesCtrl.disable();
-      this.recurrenceCtrl.disable();
-    }
-  }
 }

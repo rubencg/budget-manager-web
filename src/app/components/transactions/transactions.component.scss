@@ -1,65 +1,34 @@
 $disabled-text-color: #828bc2;
 
 // Modals shared styles
-.buttons-box{
-    display: flex;
-    justify-content: space-between;
+.buttons-box {
+  display: flex;
+  justify-content: space-between;
 }
 
 .transaction-dialog-content {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .element-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
-  }
-  
-  .autocomplete-option {
-    display: flex;
-  }
-  
-  .applied-input {
-    margin-bottom: 15px;
-  }
+  display: flex;
+  flex-direction: column;
+}
 
-  .show-details-box {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .details {
-    padding: 12px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    border-radius: 35px;
-    cursor: pointer;
-  }
-  
-  .details:hover {
-    background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
-  }
-  
-  .details h5 {
-    display: contents;
-  }
-  
-  .prefixIcon {
-    margin-right: 12px;
-  }
-  
-  .repeat-box {
-    display: flex;
-  }
-  
-  .suffixTimesText {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  
+.element-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.prefixIcon {
+  margin-right: 12px;
+}
+
+.autocomplete-option {
+  display: flex;
+}
+
+.applied-input {
+  margin-bottom: 15px;
+}

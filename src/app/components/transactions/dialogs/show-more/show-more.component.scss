@@ -1,0 +1,32 @@
+@import "./../../transactions.component.scss";
+
+.show-details-box {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .details {
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border-radius: 35px;
+    cursor: pointer;
+  }
+  
+  .details:hover {
+    background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
+  }
+  
+  .details h5 {
+    display: contents;
+  }
+  
+  .repeat-box {
+    display: flex;
+  }
+  
+  .suffixTimesText {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  

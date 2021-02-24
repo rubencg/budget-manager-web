@@ -31,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { ExpenseComponent } from './transactions/dialogs/expense/expense.component';
 import { TransferComponent } from './transactions/dialogs/transfer/transfer.component';
+import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { TransferComponent } from './transactions/dialogs/transfer/transfer.comp
     DeleteComponent,
     IncomeComponent,
     ExpenseComponent,
-    TransferComponent
+    TransferComponent,
+    ShowMoreComponent
   ],
   exports: [
     NavbarComponent,

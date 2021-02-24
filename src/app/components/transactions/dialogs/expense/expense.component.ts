@@ -94,7 +94,11 @@ export class ExpenseComponent implements OnInit {
     amount: new FormControl('', [
       Validators.required
     ]),
-    notes: new FormControl('')
+    notes: new FormControl(''),
+    monthlyRecurrent: new FormControl(''),
+    repeat: new FormControl(false),
+    times: new FormControl(''),
+    recurrence: new FormControl(''),
   });
 
 }

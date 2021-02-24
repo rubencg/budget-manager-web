@@ -49,47 +49,7 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-        <div [class]="!showAdditionalData ? 'show-details-box' : 'hide'">
-            <div class="details" (click)="showAdditionalData = true">
-                <h5>Mostrar mas</h5>
-            </div>
-        </div>
-        <div [class]="showAdditionalData ? '' : 'hide'">
-            <div class="transaction-dialog-content">
-                <mat-form-field appearance="fill">
-                    <span matPrefix class="prefixIcon">
-                        <fa-icon [icon]="['fas', 'sticky-note']"></fa-icon>
-                    </span>
-                    <mat-label>Notas</mat-label>
-                    <input matInput formControlName="notes">
-                </mat-form-field>
-                <mat-slide-toggle class="applied-input" (change)="monthlyRecurrenceChanged()" formControlName="monthlyRecurrent">
-                    Ingreso mensual
-                </mat-slide-toggle>
-                <mat-slide-toggle class="applied-input" (change)="repeatChanged($event)" formControlName="repeat">
-                    Repetir
-                </mat-slide-toggle>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="fill">
-                            <input matInput formControlName="times">
-                            <span matSuffix class="suffixTimesText">
-                                veces
-                            </span>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="fill">
-                            <mat-select formControlName="recurrence">
-                                <mat-option *ngFor="let rec of recurrences" [value]="rec.value">
-                                    {{rec.viewValue}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <show-more [parentForm]="form"></show-more>
     </form>
 </div>
 <div mat-dialog-actions class="buttons-box">
