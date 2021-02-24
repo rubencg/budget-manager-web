@@ -1,6 +1,7 @@
 @import "./../../transactions.component.scss";
 
 $income-color: #00c853;
+$disabled-text-color: #828bc2;
 
 .amount {
   color: $income-color;
@@ -9,4 +10,38 @@ $income-color: #00c853;
 
 .mat-ok-button {
   background-color: $income-color !important;
+}
+
+.show-details-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.details {
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-radius: 35px;
+  cursor: pointer;
+}
+
+.details:hover {
+  background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
+}
+
+.details h5 {
+  display: contents;
+}
+
+.prefixIcon {
+  margin-right: 12px;
+}
+
+.repeat-box {
+  display: flex;
+}
+
+.suffixTimesText {
+  color: rgba(255, 255, 255, 0.7);
 }
