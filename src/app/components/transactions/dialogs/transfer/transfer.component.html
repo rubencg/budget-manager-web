@@ -2,7 +2,9 @@
 <div mat-dialog-content>
     <form [formGroup]="form" class="transaction-dialog-content">
         <mat-form-field appearance="fill">
-            <span class="amount" matPrefix>$ &nbsp;</span>
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+            </span>
             <mat-label>Cantidad</mat-label>
             <input type="number" formControlName="amount" class="amount" matInput>
         </mat-form-field>
@@ -13,6 +15,9 @@
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
             <mat-label>Cuenta Origen</mat-label>
             <input matInput [matAutocomplete]="autoOriginAccount" formControlName="originAccount">
             <mat-autocomplete #autoOriginAccount="matAutocomplete">
@@ -25,6 +30,9 @@
             </mat-autocomplete>
         </mat-form-field>
         <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
             <mat-label>Cuenta Destino</mat-label>
             <input matInput [matAutocomplete]="autoDestinationAccount" formControlName="destinationAccount">
             <mat-autocomplete #autoDestinationAccount="matAutocomplete">
@@ -37,6 +45,9 @@
             </mat-autocomplete>
         </mat-form-field>
         <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'sticky-note']"></fa-icon>
+            </span>
             <mat-label>Notas</mat-label>
             <input matInput formControlName="notes">
         </mat-form-field>
