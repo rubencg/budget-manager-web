@@ -2,9 +2,10 @@
     <div>
         <h2>Febrero 2021</h2>
     </div>
-    <div class="header-buttons">
-        <div class="header-button">
-            <fa-icon [icon]="['fas', 'search']"></fa-icon>
+    <div class="header-buttons disable-select">
+        <div [ngClass]="['header-button', searchOpen ? 'active' : '']">
+            <input matInput #searchInput [(ngModel)]="searchText" (focusout)="displaySearch($event)">
+            <fa-icon [icon]="['fas', 'search']" (click)="displaySearch($event)"></fa-icon>
         </div>
         <div class="header-button" [matMenuTriggerFor]="menu">
             <fa-icon [icon]="['fas', 'plus']"></fa-icon>
