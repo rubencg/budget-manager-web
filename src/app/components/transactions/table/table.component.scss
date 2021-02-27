@@ -35,3 +35,15 @@
 .action-button:hover {
   background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
 }
+
+.expense-amount {
+  color: rgb(239, 83, 80);
+}
+
+.income-amount {
+  color: rgb(102, 187, 106);
+}
+
+.transfer-amount {
+  color: rgb(66, 165, 245);
+}
