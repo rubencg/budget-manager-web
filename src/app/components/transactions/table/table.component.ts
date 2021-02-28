@@ -18,11 +18,12 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'income',
+    applied: false,
     amount: 200.64,
     date: new Date(2021, 2, 3),
     account: 'Ruben Debito',
-    notes: 'Pastillas para la alergia',
-    category: 'Farmacia',
+    notes: '',
+    category: 'Salario',
   },
   {
     type: 'transfer',
@@ -49,6 +50,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'income',
+    applied: true,
     amount: 300.64,
     date: new Date(2021, 2, 6),
     account: 'Ruben Debito',
@@ -63,6 +65,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'income',
+    applied: true,
     amount: 500.64,
     date: new Date(2021, 2, 8),
     account: 'Ruben Debito',
@@ -77,6 +80,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'income',
+    applied: true,
     amount: 700.64,
     date: new Date(2021, 2, 10),
     account: 'Ruben Debito',
@@ -127,18 +131,27 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 
   editTransaction(transaction: Transaction) {
-    const dialogRef = this.dialog.open(IncomeComponent, {
-      data: transaction,
-      autoFocus: false,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        console.log('Deleting transaction', transaction);
-      } else {
-        console.log('Nothing was deleted');
-      }
-    });
+    switch (transaction.type) {
+      case 'expense':
+        return 'expense-amount';
+      case 'transfer':
+        return 'transfer-amount';
+      case 'income':
+        const incomeDialogRef = this.dialog.open(IncomeComponent, {
+          data: transaction,
+          maxWidth: '600px',
+          width: 'calc(100% - 64px)',
+          autoFocus: false
+        });
+        incomeDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Edit income', result);
+          } else {
+            console.log('Dont edit income');
+          }
+        });
+        break;
+    }
   }
 
   getAmountClassByType(transaction: Transaction) {

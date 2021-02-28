@@ -5,13 +5,6 @@
 </div>
 <div [class]="showAdditionalData ? '' : 'hide'" [formGroup]="parentForm">
     <div class="transaction-dialog-content">
-        <mat-form-field appearance="fill">
-            <span matPrefix class="prefixIcon">
-                <fa-icon [icon]="['fas', 'sticky-note']"></fa-icon>
-            </span>
-            <mat-label>Notas</mat-label>
-            <input matInput formControlName="notes">
-        </mat-form-field>
         <mat-slide-toggle class="applied-input" (change)="monthlyRecurrenceChanged()"
             formControlName="monthlyRecurrent">
             Ingreso mensual

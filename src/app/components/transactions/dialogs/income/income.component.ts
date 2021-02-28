@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement } from 'src/app/models';
+import { AutocompleteElement, Transaction } from 'src/app/models';
 
 @Component({
   selector: 'app-income',
@@ -12,8 +12,10 @@ import { AutocompleteElement } from 'src/app/models';
   styleUrls: ['./income.component.scss'],
 })
 export class IncomeComponent implements OnInit {
+  showMoreEnabled: Boolean = true;
   
-  constructor(public dialogRef: MatDialogRef<IncomeComponent>) {
+  constructor(public dialogRef: MatDialogRef<IncomeComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: Transaction) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
       startWith(''),
       map((category) =>
@@ -44,25 +46,32 @@ export class IncomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    if(this.data != undefined && this.data != null){
+      this.showMoreEnabled = false;
+      let transaction: Transaction = this.data;
+      
+      this.form.patchValue({
+        amount: transaction.amount,
+        date: transaction.date,
+        notes: transaction.notes,
+        category: transaction.category, // ToDo: Change these values to get from key
+        account: transaction.account,
+        applied: transaction.applied,
+      })
+    }
   }
 
   filteredCategories: Observable<AutocompleteElement[]>;
   categories: AutocompleteElement[] = [
     {
-      image: 'hamburger',
+      image: 'briefcase',
       color: '#32a852',
-      name: 'Comida',
+      name: 'Salario',
     },
     {
-      image: 'tshirt',
-      color: '#328ba8',
-      name: 'Ropa',
-    },
-    {
-      image: 'book',
+      image: 'hand-holding-usd',
       color: '#c4412f',
-      name: 'Educacion',
+      name: 'Bono',
     },
     {
       image: 'bible',
@@ -100,4 +109,18 @@ export class IncomeComponent implements OnInit {
     times: new FormControl(''),
     recurrence: new FormControl(''),
   });
+
+  save(){
+    let transaction: Transaction = {
+      amount: this.form.get('amount').value,
+      type: 'income',
+      date: this.form.get('date').value,
+      account: this.form.get('account').value,
+      category: this.form.get('category').value,
+      notes: this.form.get('notes').value,
+      applied: this.form.get('applied').value,
+    }
+
+    this.dialogRef.close(transaction);
+  }
 }

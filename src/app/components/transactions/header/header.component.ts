@@ -45,8 +45,8 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result === true){
-        console.log('Created income');
+      if(result){
+        console.log('Created income', result);
       }else{
         console.log('Nothing was created');
       }
