@@ -33,8 +33,8 @@
             <th mat-header-cell *matHeaderCellDef> Acciones </th>
             <td mat-cell *matCellDef="let transaction">
                 <div class="action-container">
-                    <div class="action-button disable-select">
-                        <fa-icon [icon]="['far', 'edit']" (click)="editTransaction(transaction)"></fa-icon>
+                    <div class="action-button disable-select" (click)="editTransaction(transaction)">
+                        <fa-icon [icon]="['far', 'edit']"></fa-icon>
                     </div>
                     <div class="action-button disable-select" (click)="deleteDialog(transaction)">
                         <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>

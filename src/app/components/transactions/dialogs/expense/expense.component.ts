@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement } from 'src/app/models';
+import { AutocompleteElement, Transaction } from 'src/app/models';
 
 @Component({
   selector: 'app-expense',
@@ -11,8 +11,10 @@ import { AutocompleteElement } from 'src/app/models';
   styleUrls: ['./expense.component.scss']
 })
 export class ExpenseComponent implements OnInit {
+  showMoreEnabled: Boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<ExpenseComponent>) {
+  constructor(public dialogRef: MatDialogRef<ExpenseComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: Transaction) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
       startWith(''),
       map((category) =>
@@ -36,7 +38,19 @@ export class ExpenseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    if(this.data != undefined && this.data != null){
+      this.showMoreEnabled = false;
+      let transaction: Transaction = this.data;
+      
+      this.form.patchValue({
+        amount: transaction.amount,
+        date: transaction.date,
+        notes: transaction.notes,
+        category: transaction.category, // ToDo: Change these values to get from key
+        account: transaction.account,
+        applied: transaction.applied,
+      })
+    }
   }
 
   filteredCategories: Observable<AutocompleteElement[]>;
@@ -101,4 +115,17 @@ export class ExpenseComponent implements OnInit {
     recurrence: new FormControl(''),
   });
 
+  save(){
+    let transaction: Transaction = {
+      amount: this.form.get('amount').value,
+      type: 'expense',
+      date: this.form.get('date').value,
+      account: this.form.get('account').value,
+      category: this.form.get('category').value,
+      notes: this.form.get('notes').value,
+      applied: this.form.get('applied').value,
+    }
+
+    this.dialogRef.close(transaction);
+  }
 }

@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
-import { IncomeComponent } from '../dialogs';
+import { ExpenseComponent, IncomeComponent } from '../dialogs';
 
 const ELEMENT_DATA: Transaction[] = [
   {
@@ -133,7 +133,20 @@ export class TableComponent implements AfterViewInit, OnInit {
   editTransaction(transaction: Transaction) {
     switch (transaction.type) {
       case 'expense':
-        return 'expense-amount';
+        const expenseDialogRef = this.dialog.open(ExpenseComponent, {
+          data: transaction,
+          maxWidth: '600px',
+          width: 'calc(100% - 64px)',
+          autoFocus: false
+        });
+        expenseDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Edit expense', result);
+          } else {
+            console.log('Dont edit expense');
+          }
+        });
+        break;
       case 'transfer':
         return 'transfer-amount';
       case 'income':
