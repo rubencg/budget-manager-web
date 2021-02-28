@@ -5,6 +5,7 @@ export interface Transaction {
   date: Date;
   category?: String;
   account?: String;
+  transferAccount?: String;
   notes?: String;
   applied?: Boolean;
 }

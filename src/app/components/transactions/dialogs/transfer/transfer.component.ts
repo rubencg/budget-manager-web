@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement } from 'src/app/models';
+import { AutocompleteElement, Transaction } from 'src/app/models';
 
 @Component({
   selector: 'app-transfer',
@@ -12,7 +12,8 @@ import { AutocompleteElement } from 'src/app/models';
 })
 export class TransferComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<TransferComponent>) {
+  constructor(public dialogRef: MatDialogRef<TransferComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: Transaction) {
     this.filteredOriginAccounts = this.originAccountCtrl.valueChanges.pipe(
       startWith(''),
       map((account) =>
@@ -37,6 +38,18 @@ export class TransferComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    Math.abs(+this.form.get('amount').value)
+    if(this.data != undefined && this.data != null){
+      let transaction: Transaction = this.data;
+      
+      this.form.patchValue({
+        amount: Math.abs(transaction.amount),
+        date: transaction.date,
+        notes: transaction.notes,
+        originAccount: transaction.amount < 0 ? transaction.account : transaction.transferAccount,
+        destinationAccount: transaction.amount > 0 ? transaction.account : transaction.transferAccount,
+      })
+    }
     
   }
   
@@ -52,6 +65,16 @@ export class TransferComponent implements OnInit {
       image: 'money-check-alt',
       color: '#328ba8',
       name: 'Ruben Credito',
+    },
+    {
+      image: 'money-check-alt',
+      color: '#a8323a',
+      name: 'Ruben Debito',
+    },
+    {
+      image: 'money-bill',
+      color: '#50a832',
+      name: 'Sarahi Debito',
     },
   ];
 
@@ -74,4 +97,16 @@ export class TransferComponent implements OnInit {
     notes: new FormControl('')
   });
 
+  save(){
+    let transaction: Transaction = {
+      amount: this.form.get('amount').value,
+      type: 'transfer',
+      date: this.form.get('date').value,
+      account: this.data.amount < 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
+      transferAccount: this.data.amount > 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
+      notes: this.form.get('notes').value,
+    }
+
+    this.dialogRef.close(transaction);
+  }
 }

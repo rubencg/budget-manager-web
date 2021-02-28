@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
-import { ExpenseComponent, IncomeComponent } from '../dialogs';
+import { ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 const ELEMENT_DATA: Transaction[] = [
   {
@@ -30,6 +30,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 100.59,
     date: new Date(2020, 2, 4),
     account: 'Ruben Debito',
+    transferAccount: 'Sarahi Debito',
     notes: 'Transferencia de Sarahi Debito',
     category: 'Transferencia',
   },
@@ -38,6 +39,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: -100.59,
     date: new Date(2020, 2, 4),
     account: 'Sarahi Debito',
+    transferAccount: 'Ruben Debito',
     notes: 'Transferencia a Ruben Debito',
     category: 'Transferencia',
   },
@@ -148,7 +150,20 @@ export class TableComponent implements AfterViewInit, OnInit {
         });
         break;
       case 'transfer':
-        return 'transfer-amount';
+        const transferDialogRef = this.dialog.open(TransferComponent, {
+          data: transaction,
+          maxWidth: '600px',
+          width: 'calc(100% - 64px)',
+          autoFocus: false
+        });
+        transferDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Edit transfer', result);
+          } else {
+            console.log('Dont edit transfer');
+          }
+        });
+        break;
       case 'income':
         const incomeDialogRef = this.dialog.open(IncomeComponent, {
           data: transaction,

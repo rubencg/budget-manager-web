@@ -55,5 +55,5 @@
 </div>
 <div mat-dialog-actions class="buttons-box">
     <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
-    <button mat-raised-button [disabled]="form.invalid" color="ok-button" [mat-dialog-close]="true">GUARDAR</button>
+    <button mat-raised-button [disabled]="!form.dirty || form.invalid" color="ok-button" (click)="save()">GUARDAR</button>
 </div>
