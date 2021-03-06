@@ -76,7 +76,7 @@ export class ApplyTransactionComponent implements OnInit {
   save(){
     let transaction: Transaction = {
       amount: this.form.get('amount').value,
-      type: 'income',
+      type: this.data.type,
       date: this.form.get('date').value,
       account: this.form.get('account').value
     }
