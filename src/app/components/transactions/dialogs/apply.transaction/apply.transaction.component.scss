@@ -1,0 +1,18 @@
+@import "./../../transactions.component.scss";
+
+.amount-income {
+  color: $income-color;
+  font-weight: bold;
+}
+.amount-expense {
+    color: $expense-color;
+    font-weight: bold;
+  }
+
+.mat-ok-button-income {
+  background-color: $income-color !important;
+}
+
+.mat-ok-button-expense {
+    background-color: $expense-color !important;
+  }

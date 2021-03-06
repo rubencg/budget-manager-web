@@ -15,10 +15,9 @@ import { TableComponent } from './transactions/table/table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { DeleteComponent } from './transactions/dialogs/delete/delete.component';
+import { DeleteComponent, ApplyTransactionComponent, IncomeComponent, ExpenseComponent, TransferComponent } from './transactions/dialogs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { IncomeComponent } from './transactions/dialogs/income/income.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -28,9 +27,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatMenuModule } from '@angular/material/menu';
-import { ExpenseComponent } from './transactions/dialogs/expense/expense.component';
-import { TransferComponent } from './transactions/dialogs/transfer/transfer.component';
+import { MatMenuModule } from '@angular/material/menu';;
 import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.component';
 
 
@@ -51,7 +48,8 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
     IncomeComponent,
     ExpenseComponent,
     TransferComponent,
-    ShowMoreComponent
+    ShowMoreComponent,
+    ApplyTransactionComponent
   ],
   exports: [
     NavbarComponent,

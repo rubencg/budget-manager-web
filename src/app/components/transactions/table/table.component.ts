@@ -5,11 +5,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
-import { ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import { ApplyTransactionComponent, ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 const ELEMENT_DATA: Transaction[] = [
   {
     type: 'expense',
+    applied: false,
     amount: 157.64,
     date: new Date(2020, 1, 3),
     account: 'Ruben Debito',
@@ -27,6 +28,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'transfer',
+    applied: true,
     amount: 100.59,
     date: new Date(2020, 2, 4),
     account: 'Ruben Debito',
@@ -36,6 +38,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'transfer',
+    applied: true,
     amount: -100.59,
     date: new Date(2020, 2, 4),
     account: 'Sarahi Debito',
@@ -45,6 +48,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'expense',
+    applied: true,
     amount: 257.64,
     date: new Date(2020, 1, 5),
     account: 'Ruben Debito',
@@ -60,6 +64,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'expense',
+    applied: true,
     amount: 457.64,
     date: new Date(2020, 1, 7),
     account: 'Ruben Debito',
@@ -75,6 +80,7 @@ const ELEMENT_DATA: Transaction[] = [
   },
   {
     type: 'expense',
+    applied: true,
     amount: 657.64,
     date: new Date(2020, 1, 9),
     account: 'Ruben Debito',
@@ -193,5 +199,21 @@ export class TableComponent implements AfterViewInit, OnInit {
       default:
         return '';
     }
+  }
+
+  applyTransaction(transaction: Transaction){
+    const applyTransactionDialogRef = this.dialog.open(ApplyTransactionComponent, {
+      data: transaction,
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      autoFocus: false
+    });
+    applyTransactionDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Apply transaction', result);
+      } else {
+        console.log('Transaction not applied');
+      }
+    });
   }
 }
