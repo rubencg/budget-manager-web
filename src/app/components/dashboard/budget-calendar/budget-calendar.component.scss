@@ -1,11 +1,12 @@
 @import '../../../../styles.scss';
+@import '../../../../colors.scss';
 
 h3 {
   margin: 0 0 10px;
 }
 
 pre {
-  background-color: #f5f5f5;
+  background-color: $calendar-pre-text;
   padding: 15px;
 }
 
