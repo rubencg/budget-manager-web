@@ -15,7 +15,7 @@ import { TableComponent } from './transactions/table/table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { DeleteComponent, ApplyTransactionComponent, IncomeComponent, ExpenseComponent, TransferComponent } from './transactions/dialogs';
+import { DeleteComponent, ApplyTransactionComponent, IncomeComponent, ExpenseComponent, TransferComponent, FiltersComponent } from './transactions/dialogs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,7 +49,8 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
     ExpenseComponent,
     TransferComponent,
     ShowMoreComponent,
-    ApplyTransactionComponent
+    ApplyTransactionComponent,
+    FiltersComponent
   ],
   exports: [
     NavbarComponent,

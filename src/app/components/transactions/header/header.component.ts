@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
   selector: 'transactions-header',
@@ -79,6 +79,21 @@ export class HeaderComponent implements OnInit {
         console.log('Created transfer');
       } else {
         console.log('Nothing was created');
+      }
+    });
+  }
+
+  createFilterDialog(){
+    const dialogRef = this.dialog.open(FiltersComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Filters', result);
+      } else {
+        console.log('No filters applies');
       }
     });
   }
