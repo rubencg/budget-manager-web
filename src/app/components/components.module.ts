@@ -8,6 +8,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
+import { AccountsComponent } from './accounts';
 import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
@@ -50,13 +51,15 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
     TransferComponent,
     ShowMoreComponent,
     ApplyTransactionComponent,
-    FiltersComponent
+    FiltersComponent,
+    AccountsComponent
   ],
   exports: [
     NavbarComponent,
     DashboardComponent,
     AccountNavComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    AccountsComponent
   ],
   imports: [
     CommonModule,
