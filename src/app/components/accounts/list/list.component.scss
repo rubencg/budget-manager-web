@@ -1,0 +1,55 @@
+@import "./../../../../colors.scss";
+
+.account-group {
+  background-color: $primary-color;
+  border-radius: 25px;
+  width: 400px;
+  margin: 10px;
+}
+
+.account-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.account-buttons-container {
+  display: flex;
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.account-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.account-button:hover {
+  background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
+}
+
+.disable-select {
+  user-select: none;
+}
+
+.negative-amount{
+    color: $expense-color;
+}
+
+.positive-amount{
+    color: $income-color;
+}

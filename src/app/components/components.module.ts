@@ -31,6 +31,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';;
 import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ListComponent } from './accounts/list/list.component';
+import { MatListModule } from '@angular/material/list';
+
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ApplyTransactionComponent,
     FiltersComponent,
     AccountsComponent,
-    AccountsHeaderComponent
+    AccountsHeaderComponent,
+    ListComponent
   ],
   exports: [
     NavbarComponent,
@@ -85,6 +89,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatAutocompleteModule,
     MatMenuModule,
     MatTooltipModule,
+    MatListModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

@@ -1,0 +1,30 @@
+<div class="groups">
+    <mat-list class="account-group" *ngFor="let accountGroup of accountGroups">
+        <div mat-subheader>
+            <div class="group-header">
+                <div>
+                    {{accountGroup.name}}
+                </div>
+                <div class="group-total">
+                    {{ accountGroup.balance | currency }}
+                </div>
+            </div>
+        </div>
+        <mat-list-item *ngFor="let account of accountGroup.accounts">
+            <div class="account-container">
+                <div>
+                    <div mat-line>{{account.description}}</div>
+                    <div mat-line [class]="account.currentBalance < 0 ? 'negative-amount' : 'positive-amount' ">{{account.currentBalance | currency}}</div>
+                </div>
+                <div class="account-buttons-container">
+                    <div class="account-button disable-select" matTooltip="Editar cuenta">
+                        <fa-icon [icon]="['far', 'edit']"></fa-icon>
+                    </div>
+                    <div class="account-button disable-select" matTooltip="Archivar cuenta">
+                        <fa-icon [icon]="['fas', 'archive']"></fa-icon>
+                    </div>
+                </div>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</div>
