@@ -8,7 +8,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountNavCardComponent, AccountNavComponent } from './account-nav';
-import { AccountsComponent } from './accounts';
+import { AccountsComponent, AccountsHeaderComponent } from './accounts';
 import { TransactionsComponent } from './transactions';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './transactions/header/header.component';
@@ -30,7 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';;
 import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.component';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,8 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
     ShowMoreComponent,
     ApplyTransactionComponent,
     FiltersComponent,
-    AccountsComponent
+    AccountsComponent,
+    AccountsHeaderComponent
   ],
   exports: [
     NavbarComponent,
@@ -83,6 +84,7 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatMenuModule,
+    MatTooltipModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

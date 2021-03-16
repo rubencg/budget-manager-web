@@ -7,7 +7,7 @@
             <input matInput #searchInput [(ngModel)]="searchText" (focusout)="displaySearch($event)">
             <fa-icon [icon]="['fas', 'search']" (click)="displaySearch($event)"></fa-icon>
         </div>
-        <div class="header-button" [matMenuTriggerFor]="menu">
+        <div class="header-button" [matMenuTriggerFor]="menu" matTooltip="Nuevo...">
             <fa-icon [icon]="['fas', 'plus']"></fa-icon>
         </div>
         <mat-menu #menu="matMenu">
@@ -15,13 +15,13 @@
             <button mat-menu-item (click)="createExpenseDialog()">Agregar gasto</button>
             <button mat-menu-item (click)="createTransferDialog()">Agregar transferencia</button>
         </mat-menu>
-        <div class="header-button" (click)="createFilterDialog()">
+        <div class="header-button" (click)="createFilterDialog()" matTooltip="Filtrar transacciones">
             <fa-icon [icon]="['fas', 'filter']"></fa-icon>
         </div>
-        <div class="header-button">
+        <div class="header-button" matTooltip="Mes anterior">
             <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
         </div>
-        <div class="header-button">
+        <div class="header-button" matTooltip="Nes siguiente">
             <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
         </div>
     </div>
