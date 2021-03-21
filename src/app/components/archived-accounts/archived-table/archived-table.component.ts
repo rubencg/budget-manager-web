@@ -22,7 +22,7 @@ export class ArchivedTableComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#eb34c9',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*158).toFixed(2),
       image: 'money-check-alt',
@@ -52,7 +52,7 @@ export class ArchivedTableComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#dedb16',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',
@@ -62,7 +62,7 @@ export class ArchivedTableComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#dedb16',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',
@@ -72,7 +72,7 @@ export class ArchivedTableComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#dedb16',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',
@@ -82,7 +82,7 @@ export class ArchivedTableComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#dedb16',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',
