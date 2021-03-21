@@ -1,0 +1,79 @@
+import { Color } from '@angular-material-components/color-picker';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { Account, AccountIcons } from 'src/app/account';
+import { AutocompleteElement } from 'src/app/models';
+
+@Component({
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.scss'],
+})
+export class NewAccountComponent implements OnInit {
+  accountIcons = AccountIcons;
+  constructor(public dialogRef: MatDialogRef<NewAccountComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: Account) {
+    this.filteredAccountTypes = this.accountTypeCtrl.valueChanges.pipe(
+      startWith(''),
+      map((account) =>
+        account ? this._filterElements(account, this.accountTypes) : this.accountTypes.slice()
+      )
+    );
+  }
+
+  private _filterElements(value: string, allElements: AutocompleteElement[]): AutocompleteElement[] {
+    const filterValue = value.toLowerCase();
+
+    return allElements.filter(
+      (element) => element.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  ngOnInit(): void {}
+
+  save() {
+    let account: Account = {
+      accountType: {
+        name: this.accountTypeCtrl.value
+      },
+      color: this.form.get('color').value,
+      description: this.form.get('name').value,
+      image: this.form.get('icon').value,
+      sumsToMonthlyBudget: this.form.get('isSummable').value,
+    };
+
+    this.dialogRef.close(account);
+  }
+
+  filteredAccountTypes: Observable<AutocompleteElement[]>;
+  accountTypes: AutocompleteElement[] = [
+    {
+      name: 'Efectivo',
+    },
+    {
+      name: 'Debito',
+    },
+    {
+      name: 'Credito',
+    },
+    {
+      name: 'Ruben Ahorros',
+    },
+    {
+      name: 'Sarahi Ahorros',
+    },
+  ];
+
+  accountTypeCtrl = new FormControl(this.accountTypes[0].name, [Validators.required]);
+  form: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    currentBalance: new FormControl('0', [Validators.required]),
+    color: new FormControl(new Color(255, 243, 0), [Validators.required]),
+    accountType: this.accountTypeCtrl,
+    isSummable: new FormControl(true),
+    icon: new FormControl(this.accountIcons[0]),
+  });
+}

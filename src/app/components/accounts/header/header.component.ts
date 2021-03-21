@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { NewAccountComponent } from '../dialogs';
 
 @Component({
   selector: 'accounts-header',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountsHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  createAccountDialog() {
+    const dialogRef = this.dialog.open(NewAccountComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Created account', result);
+      } else {
+        console.log('Nothing was created');
+      }
+    });
   }
 
 }

@@ -33,6 +33,8 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ListComponent } from './accounts/list/list.component';
 import { MatListModule } from '@angular/material/list';
+import { NewAccountComponent } from './accounts/dialogs/new-account/new-account.component';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 
 @NgModule({
@@ -57,7 +59,8 @@ import { MatListModule } from '@angular/material/list';
     FiltersComponent,
     AccountsComponent,
     AccountsHeaderComponent,
-    ListComponent
+    ListComponent,
+    NewAccountComponent
   ],
   exports: [
     NavbarComponent,
@@ -90,7 +93,11 @@ import { MatListModule } from '@angular/material/list';
     MatMenuModule,
     MatTooltipModule,
     MatListModule,
+    NgxMatColorPickerModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+  ],
+  providers: [
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
   ]
 })
 export class ComponentsModule { }
