@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NewAccountComponent } from '../dialogs';
+import { AccountDialogComponent } from '../dialogs';
 
 @Component({
   selector: 'accounts-header',
@@ -15,7 +15,7 @@ export class AccountsHeaderComponent implements OnInit {
   }
 
   createAccountDialog() {
-    const dialogRef = this.dialog.open(NewAccountComponent, {
+    const dialogRef = this.dialog.open(AccountDialogComponent, {
       maxWidth: '600px',
       width: 'calc(100% - 64px)',
     });

@@ -33,7 +33,7 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ListComponent } from './accounts/list/list.component';
 import { MatListModule } from '@angular/material/list';
-import { NewAccountComponent } from './accounts/dialogs/new-account/new-account.component';
+import { AccountDialogComponent } from './accounts/dialogs/account-dialog/account-dialog.component';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 
@@ -60,7 +60,7 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
     AccountsComponent,
     AccountsHeaderComponent,
     ListComponent,
-    NewAccountComponent
+    AccountDialogComponent
   ],
   exports: [
     NavbarComponent,

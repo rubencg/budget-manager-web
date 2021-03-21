@@ -8,13 +8,13 @@ import { Account, AccountIcons } from 'src/app/account';
 import { AutocompleteElement } from 'src/app/models';
 
 @Component({
-  selector: 'app-new-account',
-  templateUrl: './new-account.component.html',
-  styleUrls: ['./new-account.component.scss'],
+  selector: 'app-account-dialog',
+  templateUrl: './account-dialog.component.html',
+  styleUrls: ['./account-dialog.component.scss'],
 })
-export class NewAccountComponent implements OnInit {
+export class AccountDialogComponent implements OnInit {
   accountIcons = AccountIcons;
-  constructor(public dialogRef: MatDialogRef<NewAccountComponent>, 
+  constructor(public dialogRef: MatDialogRef<AccountDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Account) {
     this.filteredAccountTypes = this.accountTypeCtrl.valueChanges.pipe(
       startWith(''),
