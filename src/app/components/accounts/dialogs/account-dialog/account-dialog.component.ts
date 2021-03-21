@@ -32,17 +32,16 @@ export class AccountDialogComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
-
   save() {
     let account: Account = {
       accountType: {
         name: this.accountTypeCtrl.value
       },
-      color: this.form.get('color').value,
+      color: '#' + this.form.get('color').value.hex,
       description: this.form.get('name').value,
       image: this.form.get('icon').value,
       sumsToMonthlyBudget: this.form.get('isSummable').value,
+      currentBalance: this.form.get('currentBalance').value,
     };
 
     this.dialogRef.close(account);
@@ -76,4 +75,29 @@ export class AccountDialogComponent implements OnInit {
     isSummable: new FormControl(true),
     icon: new FormControl(this.accountIcons[0]),
   });
+
+  ngOnInit(): void {
+    if(this.data != undefined && this.data != null){
+      let account: Account = this.data;
+      let color = this.hexToRgb(account.color.substring(1, account.color.length));
+      
+      this.form.patchValue({
+        name: account.description,
+        currentBalance: account.currentBalance,
+        accountType: account.accountType.name,
+        color: new Color(color.r, color.g, color.b), // ToDo: Change these values to get from key
+        isSummable: account.sumsToMonthlyBudget,
+        icon: account.image,
+      })
+    }
+  }
+  
+  hexToRgb(hex: String): any {
+    var aRgbHex = hex.match(/.{1,2}/g);
+    return {
+        r: parseInt(aRgbHex[0], 16),
+        g: parseInt(aRgbHex[1], 16),
+        b: parseInt(aRgbHex[2], 16)
+    };
+  }
 }

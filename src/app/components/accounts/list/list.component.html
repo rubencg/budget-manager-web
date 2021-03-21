@@ -17,7 +17,7 @@
                     <div mat-line [class]="account.currentBalance < 0 ? 'negative-amount' : 'positive-amount' ">{{account.currentBalance | currency}}</div>
                 </div>
                 <div class="account-buttons-container">
-                    <div class="account-button disable-select" matTooltip="Editar cuenta">
+                    <div class="account-button disable-select" (click)="editAccount(account)" matTooltip="Editar cuenta">
                         <fa-icon [icon]="['far', 'edit']"></fa-icon>
                     </div>
                     <div class="account-button disable-select" matTooltip="Archivar cuenta">

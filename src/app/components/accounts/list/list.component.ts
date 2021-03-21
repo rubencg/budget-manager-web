@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Account } from 'src/app/account';
 import { AccountGroup } from 'src/app/models';
+import { AccountDialogComponent } from '../dialogs';
 
 @Component({
   selector: 'accounts-list',
@@ -9,29 +11,57 @@ import { AccountGroup } from 'src/app/models';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  editAccount(account: Account){
+    const accountDialogRef = this.dialog.open(AccountDialogComponent, {
+      data: account,
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      autoFocus: false
+    });
+    accountDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Edit account', result);
+      } else {
+        console.log('Dont edit account');
+      }
+    });
   }
   
   accounts: Account[] = [
     {
       color: '#32a852',
-      currentBalance: Math.random()*1548,
+      sumsToMonthlyBudget: false,
+      currentBalance: +(Math.random()*1548).toFixed(2),
       image: 'money-bill',
-      description: 'Ruben Efectivo'
+      description: 'Ruben Efectivo',
+      accountType: {
+        name: 'Efectivo'
+      }
     },
     {
       color: '#32a852',
-      currentBalance: Math.random()*158,
+      sumsToMonthlyBudget: true,
+      currentBalance: +(Math.random()*158).toFixed(2),
       image: 'money-check-alt',
-      description: 'Sarahi Efectivo'
+      description: 'Sarahi Efectivo',
+      accountType: {
+        name: 'Efectivo'
+      }
     },
     {
       color: '#32a852',
-      currentBalance: Math.random()*-1548,
+      sumsToMonthlyBudget: true,
+      currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',
-      description: 'Sarahi Debito'
+      description: 'Sarahi Debito',
+      accountType: {
+        name: 'Debito'
+      }
     }
   ];
 
