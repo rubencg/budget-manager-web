@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#f5e042',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*158).toFixed(2),
       image: 'money-check-alt',
@@ -70,7 +70,7 @@ export class ListComponent implements OnInit {
       }
     },
     {
-      color: '#32a852',
+      color: '#e036e3',
       sumsToMonthlyBudget: true,
       currentBalance: +(Math.random()*-1548).toFixed(2),
       image: 'money-check-alt',

@@ -12,9 +12,14 @@
         </div>
         <mat-list-item *ngFor="let account of accountGroup.accounts">
             <div class="account-container">
-                <div>
-                    <div mat-line>{{account.description}}</div>
-                    <div mat-line [class]="account.currentBalance < 0 ? 'negative-amount' : 'positive-amount' ">{{account.currentBalance | currency}}</div>
+                <div class="account-leftcontainer">
+                    <div class="account-icon disable-select" [style.background-color]="account.color">
+                        <fa-icon [icon]="['fas', account.image]"></fa-icon>
+                    </div>
+                    <div>
+                        <div mat-line>{{account.description}}</div>
+                        <div mat-line [class]="account.currentBalance < 0 ? 'negative-amount' : 'positive-amount' ">{{account.currentBalance | currency}}</div>
+                    </div>
                 </div>
                 <div class="account-buttons-container">
                     <div class="account-button disable-select" (click)="editAccount(account)" matTooltip="Editar cuenta">
