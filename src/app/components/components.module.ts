@@ -33,10 +33,9 @@ import { ShowMoreComponent } from './transactions/dialogs/show-more/show-more.co
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ListComponent } from './accounts/list/list.component';
 import { MatListModule } from '@angular/material/list';
-import { AccountDialogComponent } from './accounts/dialogs/account-dialog/account-dialog.component';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
-import { ArchivedAccountsComponent } from './archived-accounts/archived-accounts.component';
-import { ArchivedTableComponent } from './archived-accounts/archived-table/archived-table.component';
+import { AccountDialogComponent, ArchiveAccountComponent } from './accounts/dialogs';
+import { ArchivedAccountsComponent, ArchivedTableComponent } from './archived-accounts';
 
 
 @NgModule({
@@ -64,7 +63,8 @@ import { ArchivedTableComponent } from './archived-accounts/archived-table/archi
     ListComponent,
     AccountDialogComponent,
     ArchivedAccountsComponent,
-    ArchivedTableComponent
+    ArchivedTableComponent,
+    ArchiveAccountComponent
   ],
   exports: [
     NavbarComponent,

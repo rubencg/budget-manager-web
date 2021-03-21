@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Account } from 'src/app/account';
 import { AccountGroup } from 'src/app/models';
-import { AccountDialogComponent } from '../dialogs';
+import { AccountDialogComponent, ArchiveAccountComponent } from '../dialogs';
 
 @Component({
   selector: 'accounts-list',
@@ -28,6 +28,22 @@ export class ListComponent implements OnInit {
         console.log('Edit account', result);
       } else {
         console.log('Dont edit account');
+      }
+    });
+  }
+
+  archiveAccount(account: Account){
+    const archiveAccountDialogRef = this.dialog.open(ArchiveAccountComponent, {
+      data: account,
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      autoFocus: false
+    });
+    archiveAccountDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Archive account', result);
+      } else {
+        console.log('Dont archive account');
       }
     });
   }

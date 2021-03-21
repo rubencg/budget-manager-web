@@ -20,7 +20,7 @@
                     <div class="account-button disable-select" (click)="editAccount(account)" matTooltip="Editar cuenta">
                         <fa-icon [icon]="['far', 'edit']"></fa-icon>
                     </div>
-                    <div class="account-button disable-select" matTooltip="Archivar cuenta">
+                    <div class="account-button disable-select" (click)="archiveAccount(account)" matTooltip="Archivar cuenta">
                         <fa-icon [icon]="['fas', 'archive']"></fa-icon>
                     </div>
                 </div>

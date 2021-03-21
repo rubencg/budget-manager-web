@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Seguro que quieres archivar esta cuenta?</h1>
+<div mat-dialog-content>
+    <p>
+        Al archivar esta cuenta, no se eliminara la cuenta, solo se mandara a el archivero.
+    </p>
+    <p>
+        Esta cuenta no estara disponible para crear nuevas transacciones, pero todas las transacciones pasadas de esta cuenta seguiran mostrandose se manera normal.
+    </p>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button color="ok-button" [mat-dialog-close]="true">ELIMINAR</button>
+</div>
