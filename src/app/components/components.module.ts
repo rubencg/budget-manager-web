@@ -35,6 +35,8 @@ import { ListComponent } from './accounts/list/list.component';
 import { MatListModule } from '@angular/material/list';
 import { AccountDialogComponent } from './accounts/dialogs/account-dialog/account-dialog.component';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import { ArchivedAccountsComponent } from './archived-accounts/archived-accounts.component';
+import { ArchivedTableComponent } from './archived-accounts/archived-table/archived-table.component';
 
 
 @NgModule({
@@ -60,14 +62,17 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
     AccountsComponent,
     AccountsHeaderComponent,
     ListComponent,
-    AccountDialogComponent
+    AccountDialogComponent,
+    ArchivedAccountsComponent,
+    ArchivedTableComponent
   ],
   exports: [
     NavbarComponent,
     DashboardComponent,
     AccountNavComponent,
     TransactionsComponent,
-    AccountsComponent
+    AccountsComponent,
+    ArchivedAccountsComponent
   ],
   imports: [
     CommonModule,

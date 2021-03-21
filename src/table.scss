@@ -1,0 +1,37 @@
+@import './colors.scss';
+
+.table-content {
+    margin-top: 25px;
+    background-color: $primary-color;
+    width: 100%;
+    min-height: 80%;
+  }
+  
+  .mat-table {
+    width: 100%;
+    font-family: 'Maven Pro', sans-serif;
+    background-color: $primary-color;
+  }
+  
+  .mat-paginator{
+    font-family: 'Maven Pro', sans-serif;
+    background-color: $primary-color;
+  }
+  
+  .action-container {
+    display: flex;
+  }
+  
+  .action-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .action-button:hover {
+    background-color: rgba($color: $disabled-text-color, $alpha: 0.3);
+  }
