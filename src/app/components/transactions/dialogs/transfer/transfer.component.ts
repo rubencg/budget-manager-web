@@ -104,8 +104,8 @@ export class TransferComponent implements OnInit {
       amount: this.form.get('amount').value,
       type: 'transfer',
       date: this.form.get('date').value,
-      account: this.data.amount < 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
-      transferAccount: this.data.amount > 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
+      account: this.data && this.data.amount < 0 ? this.destinationAccountCtrl.value : this.originAccountCtrl.value,
+      transferAccount: this.data && this.data.amount < 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
       notes: this.form.get('notes').value,
     }
 

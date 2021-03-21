@@ -60,8 +60,8 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        console.log('Created expense');
+      if (result) {
+        console.log('Created expense', result);
       } else {
         console.log('Nothing was created');
       }
@@ -75,8 +75,8 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        console.log('Created transfer');
+      if (result) {
+        console.log('Created transfer', result);
       } else {
         console.log('Nothing was created');
       }
