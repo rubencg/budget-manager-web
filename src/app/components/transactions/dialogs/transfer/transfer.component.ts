@@ -11,6 +11,7 @@ import { AutocompleteElement, Transaction } from 'src/app/models';
   styleUrls: ['./transfer.component.scss']
 })
 export class TransferComponent implements OnInit {
+  title: String;
 
   constructor(public dialogRef: MatDialogRef<TransferComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Transaction) {
@@ -38,8 +39,9 @@ export class TransferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Math.abs(+this.form.get('amount').value)
+    this.title = 'Nueva transferencia';
     if(this.data != undefined && this.data != null){
+      this.title = 'Editar transferencia';
       let transaction: Transaction = this.data;
       
       this.form.patchValue({

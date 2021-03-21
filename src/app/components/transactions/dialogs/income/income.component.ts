@@ -12,7 +12,8 @@ import { AutocompleteElement, Transaction } from 'src/app/models';
 })
 export class IncomeComponent implements OnInit {
   showMoreEnabled: Boolean = true;
-  
+  title: String;
+
   constructor(public dialogRef: MatDialogRef<IncomeComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Transaction) {
     this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
@@ -45,7 +46,9 @@ export class IncomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.title = 'Nuevo ingreso';
     if(this.data != undefined && this.data != null){
+      this.title = 'Editar ingreso';
       this.showMoreEnabled = false;
       let transaction: Transaction = this.data;
       

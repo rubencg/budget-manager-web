@@ -14,6 +14,8 @@ import { AutocompleteElement } from 'src/app/models';
 })
 export class AccountDialogComponent implements OnInit {
   accountIcons = AccountIcons;
+  title: String;
+
   constructor(public dialogRef: MatDialogRef<AccountDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Account) {
     this.filteredAccountTypes = this.accountTypeCtrl.valueChanges.pipe(
@@ -77,7 +79,9 @@ export class AccountDialogComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.title = 'Nueva cuenta';
     if(this.data != undefined && this.data != null){
+      this.title = 'Editar cuenta';
       let account: Account = this.data;
       let color = this.hexToRgb(account.color.substring(1, account.color.length));
       

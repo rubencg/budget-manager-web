@@ -12,6 +12,7 @@ import { AutocompleteElement, Transaction } from 'src/app/models';
 })
 export class ExpenseComponent implements OnInit {
   showMoreEnabled: Boolean = true;
+  title: String;
 
   constructor(public dialogRef: MatDialogRef<ExpenseComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Transaction) {
@@ -38,7 +39,9 @@ export class ExpenseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.title = 'Nuevo gasto';
     if(this.data != undefined && this.data != null){
+      this.title = 'Editar gasto';
       this.showMoreEnabled = false;
       let transaction: Transaction = this.data;
       
