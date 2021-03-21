@@ -12,12 +12,34 @@
 
         <ng-container matColumnDef="category">
             <th mat-header-cell *matHeaderCellDef> Categoria </th>
-            <td mat-cell *matCellDef="let transaction"> {{transaction.category}} </td>
+            <td mat-cell *matCellDef="let transaction"> 
+
+                <div *ngIf="transaction.type == 'transfer'">
+                    Transferencia
+                </div>
+                <div *ngIf="transaction.type != 'transfer'" class="icon-span">
+                    <div class="table-icon disable-select" [style.background-color]="transaction.category.color">
+                        <fa-icon [icon]="['fas', transaction.category.image]"></fa-icon>
+                    </div>
+                    <span>
+                        {{transaction.category.name}}
+                    </span>
+                </div>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="account">
             <th mat-header-cell *matHeaderCellDef> Cuenta </th>
-            <td mat-cell *matCellDef="let transaction"> {{transaction.account}} </td>
+            <td mat-cell *matCellDef="let transaction">
+                <div class="icon-span">
+                    <div class="table-icon disable-select" [style.background-color]="transaction.account.color">
+                        <fa-icon [icon]="['fas', transaction.account.image]"></fa-icon>
+                    </div>
+                    <span>
+                        {{transaction.account.description}}
+                    </span>
+                </div>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="amount">

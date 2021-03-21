@@ -13,86 +13,164 @@ const ELEMENT_DATA: Transaction[] = [
     applied: false,
     amount: 157.64,
     date: new Date(2020, 1, 3),
-    account: 'Ruben Debito',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
     notes: 'Pastillas para la alergia',
-    category: 'Farmacia',
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'income',
     applied: false,
     amount: 200.64,
     date: new Date(2021, 2, 3),
-    account: 'Ruben Debito',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
     notes: '',
-    category: 'Salario',
+    category: {
+      name: 'Salario',
+      image: 'money-check-alt',
+      color: '#34eb83'
+    },
   },
   {
     type: 'transfer',
     applied: true,
     amount: 100.59,
     date: new Date(2020, 2, 4),
-    account: 'Ruben Debito',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
     transferAccount: 'Sarahi Debito',
     notes: 'Transferencia de Sarahi Debito',
-    category: 'Transferencia',
+    category: {
+      name: 'Transferencia',
+      image: ''
+    },
   },
   {
     type: 'transfer',
     applied: true,
     amount: -100.59,
     date: new Date(2020, 2, 4),
-    account: 'Sarahi Debito',
+    account: {
+      description: 'Sarahi Debito',
+      color: '#eb34c9',
+      image: 'money-check-alt'
+    },
     transferAccount: 'Ruben Debito',
     notes: 'Transferencia a Ruben Debito',
-    category: 'Transferencia',
+    category: {
+      name: 'Transferencia',
+      image: ''
+    },
   },
   {
     type: 'expense',
     applied: true,
     amount: 257.64,
     date: new Date(2020, 1, 5),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'income',
     applied: true,
     amount: 300.64,
     date: new Date(2021, 2, 6),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'expense',
     applied: true,
     amount: 457.64,
     date: new Date(2020, 1, 7),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'income',
     applied: true,
     amount: 500.64,
     date: new Date(2021, 2, 8),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'expense',
     applied: true,
     amount: 657.64,
     date: new Date(2020, 1, 9),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
   {
     type: 'income',
     applied: true,
     amount: 700.64,
     date: new Date(2021, 2, 10),
-    account: 'Ruben Debito',
-    category: 'Farmacia',
+    account: {
+      description: 'Ruben Debito',
+      color: '#3477eb',
+      image: 'piggy-bank'
+    },
+    category: {
+      name: 'Farmacia',
+      image: 'capsules',
+      color: '#eb4034'
+    },
   },
 ];
 
