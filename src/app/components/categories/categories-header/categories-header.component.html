@@ -7,7 +7,7 @@
             <fa-icon [icon]="['fas', 'plus']"></fa-icon>
         </div>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>Nueva categoria</button>
+            <button mat-menu-item (click)="createCategoryDialog()">Nueva categoria</button>
             <button mat-menu-item>Nueva subcategoria</button>
         </mat-menu>
     </div>

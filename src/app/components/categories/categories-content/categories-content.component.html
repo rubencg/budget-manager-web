@@ -1,9 +1,9 @@
 <categories-header></categories-header>
-<mat-tab-group>
-    <mat-tab label="Gastos">
+<mat-tab-group (selectedTabChange)="changeLabel($event)">
+    <mat-tab label="Gastos" >
         <expense-categories></expense-categories>
     </mat-tab>
-    <mat-tab label="Ingresos">
+    <mat-tab label="Ingresos" >
         <income-categories></income-categories>
     </mat-tab>
 </mat-tab-group>

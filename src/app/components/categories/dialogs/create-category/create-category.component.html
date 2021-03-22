@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" class="transaction-dialog-content">
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'signature']"></fa-icon>
+            </span>
+            <mat-label>Nombre</mat-label>
+            <input type="text" formControlName="name" class="name" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [ngxMatColorPicker]="picker" formControlName="color">
+            <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button [disabled]="!form.valid" color="ok-button" (click)="save()">GUARDAR</button>
+</div>
