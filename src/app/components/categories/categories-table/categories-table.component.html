@@ -1,0 +1,40 @@
+<div class="table-content">
+    <table class="table-div" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+            <td mat-cell *matCellDef="let category">
+                <div class="icon-span">
+                    <div class="table-icon disable-select" [style.background-color]="category.color">
+                        <fa-icon [icon]="['fas', category.image]"></fa-icon>
+                    </div>
+                    <span>
+                        {{category.name}}
+                    </span>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let category">
+                <div class="action-container">
+                    <div class="action-button disable-select">
+                        <fa-icon [icon]="['far', 'edit']"></fa-icon>
+                    </div>
+                    <div class="action-button disable-select">
+                        <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                    </div>
+                    <div class="action-button disable-select">
+                        <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+</div>

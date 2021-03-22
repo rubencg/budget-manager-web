@@ -39,6 +39,7 @@ import { ArchivedAccountsComponent, ArchivedTableComponent } from './archived-ac
 import { ExpenseCategoriesComponent, CategoriesHeaderComponent, IncomeCategoriesComponent } from './categories';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CategoriesContentComponent } from './categories/categories-content/categories-content.component';
+import { CategoriesTableComponent } from './categories/categories-table/categories-table.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { CategoriesContentComponent } from './categories/categories-content/cate
     ExpenseCategoriesComponent,
     CategoriesHeaderComponent,
     IncomeCategoriesComponent,
-    CategoriesContentComponent
+    CategoriesContentComponent,
+    CategoriesTableComponent
   ],
   exports: [
     NavbarComponent,

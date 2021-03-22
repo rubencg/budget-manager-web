@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'categories-header',
@@ -6,8 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./categories-header.component.scss']
 })
 export class CategoriesHeaderComponent implements OnInit {
-  @Input() title: String;
-  @Input() categoriesType: String;
 
   constructor() { }
 
