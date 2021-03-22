@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CategoriesHeaderComponent implements OnInit {
   @Input() title: String;
+  @Input() categoriesType: String;
 
   constructor() { }
 

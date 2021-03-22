@@ -36,7 +36,9 @@ import { MatListModule } from '@angular/material/list';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { AccountDialogComponent, ArchiveAccountComponent } from './accounts/dialogs';
 import { ArchivedAccountsComponent, ArchivedTableComponent } from './archived-accounts';
-import { ExpenseCategoriesComponent, CategoriesHeaderComponent } from './categories';
+import { ExpenseCategoriesComponent, CategoriesHeaderComponent, IncomeCategoriesComponent } from './categories';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CategoriesContentComponent } from './categories/categories-content/categories-content.component';
 
 
 @NgModule({
@@ -67,7 +69,9 @@ import { ExpenseCategoriesComponent, CategoriesHeaderComponent } from './categor
     ArchivedTableComponent,
     ArchiveAccountComponent,
     ExpenseCategoriesComponent,
-    CategoriesHeaderComponent
+    CategoriesHeaderComponent,
+    IncomeCategoriesComponent,
+    CategoriesContentComponent
   ],
   exports: [
     NavbarComponent,
@@ -102,6 +106,7 @@ import { ExpenseCategoriesComponent, CategoriesHeaderComponent } from './categor
     MatTooltipModule,
     MatListModule,
     NgxMatColorPickerModule,
+    MatTabsModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   providers: [
