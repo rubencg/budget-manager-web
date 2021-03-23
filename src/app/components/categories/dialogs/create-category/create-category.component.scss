@@ -1,1 +1,14 @@
 @import "./../../../transactions/transactions.component.scss";
+@import "/src/table.scss";
+
+.icon-button {
+  cursor: pointer;
+}
+.icon-button:hover {
+  background-color: $disabled-text-color;
+}
+
+.icon-container {
+  display: flex;
+  flex-wrap: wrap;
+}

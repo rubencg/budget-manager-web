@@ -5,3 +5,4 @@ export * from './autocomplete.category';
 export * from './top-expenses';
 export * from './filter';
 export * from './account-group';
+export * from './category-icon';

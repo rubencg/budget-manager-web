@@ -7,4 +7,11 @@ export let AccountIcons: String[] = [
     'piggy-bank',
     'money-check-alt',
     'money-check',
+    'money-bill',
+    'money-bill-alt',
+    'money-bill-wave',
+    'money-bill-wave-alt',
+    'money-check',
+    'money-check-alt',
+    'wallet'
 ];
