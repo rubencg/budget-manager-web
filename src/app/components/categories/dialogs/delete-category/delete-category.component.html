@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Quieres eliminar esta categoria?</h1>
+<div mat-dialog-content>
+    <div class="delete-category-container">
+        <div class="table-icon disable-select icon-button" [ngStyle]="{'background-color': category.color }">
+            <fa-icon [icon]="['fas', category.image]"></fa-icon>
+        </div>
+        <span>{{category.name}}</span>
+    </div>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button color="ok-button" [mat-dialog-close]="true">ELIMINAR</button>
+</div>

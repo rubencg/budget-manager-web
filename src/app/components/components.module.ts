@@ -42,6 +42,7 @@ import { CategoriesContentComponent } from './categories/categories-content/cate
 import { CategoriesTableComponent } from './categories/categories-table/categories-table.component';
 import { CreateCategoryComponent } from './categories/dialogs/create-category/create-category.component';
 import { SubcategoryComponent } from './categories/dialogs/subcategory/subcategory.component';
+import { DeleteCategoryComponent } from './categories/dialogs/delete-category/delete-category.component';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { SubcategoryComponent } from './categories/dialogs/subcategory/subcatego
     CategoriesContentComponent,
     CategoriesTableComponent,
     CreateCategoryComponent,
-    SubcategoryComponent
+    SubcategoryComponent,
+    DeleteCategoryComponent
   ],
   exports: [
     NavbarComponent,

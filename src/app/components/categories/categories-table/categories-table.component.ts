@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Category, CategoryTypes } from 'src/app/category';
 import { CreateCategoryComponent } from '../dialogs';
+import { DeleteCategoryComponent } from '../dialogs/delete-category/delete-category.component';
 import { SubcategoryComponent } from '../dialogs/subcategory/subcategory.component';
 
 @Component({
@@ -72,6 +73,22 @@ export class CategoriesTableComponent implements OnInit {
       }
     });
     
+  }
+
+  deleteCategory(category: Category){
+    const dialogRef = this.dialog.open(DeleteCategoryComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      data: category
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Deleted category', result);
+      } else {
+        console.log('Nothing was deleted');
+      }
+    });
   }
 
 }
