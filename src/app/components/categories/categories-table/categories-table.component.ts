@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Category, CategoryTypes } from 'src/app/category';
 import { CreateCategoryComponent } from '../dialogs';
+import { SubcategoryComponent } from '../dialogs/subcategory/subcategory.component';
 
 @Component({
   selector: 'categories-table',
@@ -48,6 +49,26 @@ export class CategoriesTableComponent implements OnInit {
         console.log('Edited category', result);
       } else {
         console.log('Nothing was edited');
+      }
+    });
+    
+  }
+
+  addSubcategory(category: Category){
+    const dialogRef = this.dialog.open(SubcategoryComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      data: {
+        categoryType: this.categoryType,
+        category: category
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Added subcategory', result);
+      } else {
+        console.log('Nothing was added');
       }
     });
     

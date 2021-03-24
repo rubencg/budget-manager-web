@@ -41,6 +41,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CategoriesContentComponent } from './categories/categories-content/categories-content.component';
 import { CategoriesTableComponent } from './categories/categories-table/categories-table.component';
 import { CreateCategoryComponent } from './categories/dialogs/create-category/create-category.component';
+import { SubcategoryComponent } from './categories/dialogs/subcategory/subcategory.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { CreateCategoryComponent } from './categories/dialogs/create-category/cr
     IncomeCategoriesComponent,
     CategoriesContentComponent,
     CategoriesTableComponent,
-    CreateCategoryComponent
+    CreateCategoryComponent,
+    SubcategoryComponent
   ],
   exports: [
     NavbarComponent,
