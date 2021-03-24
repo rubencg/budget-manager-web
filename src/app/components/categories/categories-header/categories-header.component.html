@@ -3,12 +3,8 @@
         <h2>Categorias</h2>
     </div>
     <div class="header-buttons disable-select">
-        <div class="header-button" [matMenuTriggerFor]="menu" matTooltip="Nueva...">
+        <div class="header-button" (click)="createCategoryDialog()">
             <fa-icon [icon]="['fas', 'plus']"></fa-icon>
         </div>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="createCategoryDialog()">Nueva categoria</button>
-            <button mat-menu-item>Nueva subcategoria</button>
-        </mat-menu>
     </div>
 </div>

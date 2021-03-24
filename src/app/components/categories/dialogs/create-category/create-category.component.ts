@@ -17,6 +17,7 @@ import { CategoryIcon } from 'src/app/models';
 })
 export class CreateCategoryComponent implements OnInit {
   type: CategoryTypes;
+  title: String;
 
   constructor(
     public dialogRef: MatDialogRef<CreateCategoryComponent>,
@@ -43,14 +44,18 @@ export class CreateCategoryComponent implements OnInit {
         });
       }
 
-      this.form.patchValue({
-        name: category.name,
-        icon: category.image,
-        color: category.color,
-      });
-      this.categoryIcons
-        .filter((c) => c.icon == category.image)
-        .forEach((cat) => (cat.active = true));
+      this.title = 'Nueva Categoria';
+      if (this.data.category) {
+        this.title = 'Editar Categoria';
+        this.form.patchValue({
+          name: category.name,
+          icon: category.image,
+          color: category.color,
+        });
+        this.categoryIcons
+          .filter((c) => c.icon == category.image)
+          .forEach((cat) => (cat.active = true));
+      }
     }
   }
 
@@ -63,7 +68,6 @@ export class CreateCategoryComponent implements OnInit {
 
     this.dialogRef.close(category);
   }
-  title = 'Nueva categoria';
 
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
