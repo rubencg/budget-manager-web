@@ -1,4 +1,4 @@
-<categories-header></categories-header>
+<categories-header [categoryType]="categoryType"></categories-header>
 <mat-tab-group (selectedTabChange)="changeLabel($event)">
     <mat-tab label="Gastos" >
         <expense-categories></expense-categories>

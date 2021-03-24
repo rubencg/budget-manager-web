@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { CategoryTypes } from 'src/app/category';
 
 @Component({
   selector: 'expense-categories',
@@ -45,6 +46,7 @@ export class ExpenseCategoriesComponent implements OnInit {
       subcategories: ['Comida Rapida', 'Cheat meals'],
     },
   ];
+  categoryType: CategoryTypes = CategoryTypes.Expense;
   constructor() {}
 
   ngOnInit(): void {}

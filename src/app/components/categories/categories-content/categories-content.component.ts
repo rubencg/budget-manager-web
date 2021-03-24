@@ -8,8 +8,7 @@ import { CategoryTypes } from 'src/app/category';
 })
 export class CategoriesContentComponent implements OnInit {
   expenseCategoriesSelected = true;
-  @Output()
-  tabChanged: EventEmitter<CategoryTypes> = new EventEmitter<CategoryTypes>();
+  categoryType: CategoryTypes = CategoryTypes.Expense;
 
   constructor() {}
 
@@ -18,10 +17,8 @@ export class CategoriesContentComponent implements OnInit {
   changeLabel($event) {
     this.expenseCategoriesSelected = !this.expenseCategoriesSelected;
 
-    let categoryType: CategoryTypes = this.expenseCategoriesSelected
+    this.categoryType = this.expenseCategoriesSelected
       ? CategoryTypes.Expense
       : CategoryTypes.Income;
-
-    this.tabChanged.emit(categoryType);
   }
 }

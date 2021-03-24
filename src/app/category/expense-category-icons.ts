@@ -1,4 +1,4 @@
-export let CategoryIcons: String[] = [
+export let ExpenseCategoryIcons: String[] = [
   'tshirt',
   'gamepad',
   'address-book',
@@ -73,6 +73,7 @@ export let CategoryIcons: String[] = [
   'glass-cheers',
   'graduation-cap',
   'guitar',
+  'glass-martini-alt',
   'hamburger',
   'hammer',
   'hand-holding-usd',

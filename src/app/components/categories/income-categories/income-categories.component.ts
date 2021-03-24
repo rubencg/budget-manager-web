@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryTypes } from 'src/app/category';
 
 @Component({
   selector: 'income-categories',
@@ -26,6 +27,7 @@ export class IncomeCategoriesComponent implements OnInit {
       subcategories: ['Cine', 'Hobbies'],
     }
   ];
+  categoryType: CategoryTypes = CategoryTypes.Income;
 
   constructor() { }
 

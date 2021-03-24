@@ -1,8 +1,13 @@
 import { Color } from '@angular-material-components/color-picker';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Category, CategoryIcons } from 'src/app/category';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  Category,
+  ExpenseCategoryIcons,
+  CategoryTypes,
+  IncomeCategoryIcons,
+} from 'src/app/category';
 import { CategoryIcon } from 'src/app/models';
 
 @Component({
@@ -11,15 +16,42 @@ import { CategoryIcon } from 'src/app/models';
   styleUrls: ['./create-category.component.scss'],
 })
 export class CreateCategoryComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<CreateCategoryComponent>) {}
+  type: CategoryTypes;
+
+  constructor(
+    public dialogRef: MatDialogRef<CreateCategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
-    CategoryIcons.forEach((categoryIcon) => {
-      this.categoryIcons.push({
-        icon: categoryIcon,
-        active: false,
+    if (this.data) {
+      let category: Category = this.data.category;
+      this.type = this.data.categoryType;
+      if (this.type == CategoryTypes.Expense) {
+        ExpenseCategoryIcons.forEach((categoryIcon) => {
+          this.categoryIcons.push({
+            icon: categoryIcon,
+            active: false,
+          });
+        });
+      } else {
+        IncomeCategoryIcons.forEach((categoryIcon) => {
+          this.categoryIcons.push({
+            icon: categoryIcon,
+            active: false,
+          });
+        });
+      }
+
+      this.form.patchValue({
+        name: category.name,
+        icon: category.image,
+        color: category.color,
       });
-    });
+      this.categoryIcons
+        .filter((c) => c.icon == category.image)
+        .forEach((cat) => (cat.active = true));
+    }
   }
 
   save() {
@@ -42,7 +74,7 @@ export class CreateCategoryComponent implements OnInit {
   categoryIcons: CategoryIcon[] = [];
 
   activate(categoryIcon: CategoryIcon) {
-    this.categoryIcons.forEach(icon => {
+    this.categoryIcons.forEach((icon) => {
       icon.active = false;
     });
     categoryIcon.active = true;

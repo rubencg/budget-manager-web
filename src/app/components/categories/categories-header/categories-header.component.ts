@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CategoryTypes } from 'src/app/category';
 import { CreateCategoryComponent } from '../dialogs';
 
 @Component({
@@ -8,6 +9,7 @@ import { CreateCategoryComponent } from '../dialogs';
   styleUrls: ['./categories-header.component.scss']
 })
 export class CategoriesHeaderComponent implements OnInit {
+  @Input() categoryType: CategoryTypes;
 
   constructor(public dialog: MatDialog) { }
 
@@ -18,6 +20,9 @@ export class CategoriesHeaderComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateCategoryComponent, {
       maxWidth: '600px',
       width: 'calc(100% - 64px)',
+      data: {
+        categoryType: this.categoryType
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
