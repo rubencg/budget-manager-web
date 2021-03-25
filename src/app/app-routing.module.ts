@@ -3,13 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent, TransactionsComponent } from './components';
 import { AccountsComponent } from './components/accounts';
 import { ArchivedAccountsComponent } from './components/archived-accounts/archived-accounts.component';
-import { CategoriesContentComponent, ExpenseCategoriesComponent, IncomeCategoriesComponent } from './components/categories';
+import { CategoriesContentComponent } from './components/categories';
+import { ReportsComponent } from './components/reports/reports/reports.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'transactions', component: TransactionsComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'archived-accounts', component: ArchivedAccountsComponent },
+  { path: 'reports', component: ReportsComponent },
   { path: 'categories', component: CategoriesContentComponent },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: DashboardComponent }

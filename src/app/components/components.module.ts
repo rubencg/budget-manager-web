@@ -44,6 +44,10 @@ import { CreateCategoryComponent } from './categories/dialogs/create-category/cr
 import { SubcategoryComponent } from './categories/dialogs/subcategory/subcategory.component';
 import { DeleteCategoryComponent } from './categories/dialogs/delete-category/delete-category.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { ReportsComponent } from './reports/reports/reports.component';
+import { PieReportComponent } from './reports/pie-report/pie-report.component';
+import { LinearReportComponent } from './reports/linear-report/linear-report.component';
+import { BarReportComponent } from './reports/bar-report/bar-report.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +83,11 @@ import { MatChipsModule } from '@angular/material/chips';
     CategoriesTableComponent,
     CreateCategoryComponent,
     SubcategoryComponent,
-    DeleteCategoryComponent
+    DeleteCategoryComponent,
+    ReportsComponent,
+    PieReportComponent,
+    LinearReportComponent,
+    BarReportComponent
   ],
   exports: [
     NavbarComponent,
