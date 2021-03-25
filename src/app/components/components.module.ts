@@ -55,6 +55,7 @@ import { ExpensesByAccountComponent } from './reports/pie-report/expenses-by-acc
 import { IncomesByCategoryComponent } from './reports/pie-report/incomes-by-category/incomes-by-category.component';
 import { IncomesByAccountComponent } from './reports/pie-report/incomes-by-account/incomes-by-account.component';
 import { FixedVariableExpensesComponent } from './reports/pie-report/fixed-variable-expenses/fixed-variable-expenses.component';
+import { FixedVariableIncomesComponent } from './reports/pie-report/fixed-variable-incomes/fixed-variable-incomes.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { FixedVariableExpensesComponent } from './reports/pie-report/fixed-varia
     ExpensesByAccountComponent,
     IncomesByCategoryComponent,
     IncomesByAccountComponent,
-    FixedVariableExpensesComponent
+    FixedVariableExpensesComponent,
+    FixedVariableIncomesComponent
   ],
   exports: [
     NavbarComponent,
