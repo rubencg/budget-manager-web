@@ -25,6 +25,19 @@
             <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #picker></ngx-mat-color-picker>
         </mat-form-field>
+        <mat-form-field>
+            <mat-label>Subcategories</mat-label>
+            <mat-chip-list #subcategoryList>
+                <mat-chip *ngFor="let subcategory of subcategories" [selectable]="true" [removable]="true"
+                    (removed)="remove(subcategory)">
+                    {{subcategory}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Nueva subcategoria..." [matChipInputFor]="subcategoryList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                    (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+        </mat-form-field>
     </form>
 </div>
 <div mat-dialog-actions class="buttons-box">

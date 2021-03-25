@@ -43,7 +43,7 @@ import { CategoriesTableComponent } from './categories/categories-table/categori
 import { CreateCategoryComponent } from './categories/dialogs/create-category/create-category.component';
 import { SubcategoryComponent } from './categories/dialogs/subcategory/subcategory.component';
 import { DeleteCategoryComponent } from './categories/dialogs/delete-category/delete-category.component';
-
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -115,6 +115,7 @@ import { DeleteCategoryComponent } from './categories/dialogs/delete-category/de
     MatListModule,
     NgxMatColorPickerModule,
     MatTabsModule,
+    MatChipsModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   providers: [

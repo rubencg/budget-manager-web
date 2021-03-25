@@ -2,6 +2,9 @@ import { Color } from '@angular-material-components/color-picker';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+
 import {
   Category,
   ExpenseCategoryIcons,
@@ -47,10 +50,16 @@ export class CreateCategoryComponent implements OnInit {
       this.title = 'Nueva Categoria';
       if (this.data.category) {
         this.title = 'Editar Categoria';
+        if(category.subcategories){
+          category.subcategories.forEach(subcategory => {
+            this.subcategories.push(subcategory);
+          });
+        }
+        let color = this.hexToRgb(category.color.substring(1, category.color.length));
         this.form.patchValue({
           name: category.name,
           icon: category.image,
-          color: category.color,
+          color: new Color(color.r, color.g, color.b),
         });
         this.categoryIcons
           .filter((c) => c.icon == category.image)
@@ -59,11 +68,21 @@ export class CreateCategoryComponent implements OnInit {
     }
   }
 
+  hexToRgb(hex: String): any {
+    var aRgbHex = hex.match(/.{1,2}/g);
+    return {
+        r: parseInt(aRgbHex[0], 16),
+        g: parseInt(aRgbHex[1], 16),
+        b: parseInt(aRgbHex[2], 16)
+    };
+  }
+
   save() {
     let category: Category = {
       image: this.form.get('icon').value,
       name: this.form.get('name').value,
       color: '#' + this.form.get('color').value.hex,
+      subcategories: this.subcategories
     };
 
     this.dialogRef.close(category);
@@ -84,4 +103,33 @@ export class CreateCategoryComponent implements OnInit {
     categoryIcon.active = true;
     this.form.get('icon').patchValue(categoryIcon.icon);
   }
+
+  /* Start subcategories chips */
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  subcategories: String[] = [];
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.subcategories.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(subcategory: String): void {
+    const index = this.subcategories.indexOf(subcategory);
+
+    if (index >= 0) {
+      this.subcategories.splice(index, 1);
+    }
+  }
+
+  /* End subcategories chips */
 }

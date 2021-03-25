@@ -89,7 +89,7 @@ export class AccountDialogComponent implements OnInit {
         name: account.description,
         currentBalance: account.currentBalance,
         accountType: account.accountType.name,
-        color: new Color(color.r, color.g, color.b), // ToDo: Change these values to get from key
+        color: new Color(color.r, color.g, color.b),
         isSummable: account.sumsToMonthlyBudget,
         icon: account.image,
       })
