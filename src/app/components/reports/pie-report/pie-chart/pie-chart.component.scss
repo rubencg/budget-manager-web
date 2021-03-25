@@ -1,0 +1,36 @@
+@import "../../../../../colors.scss";
+@import "../../../../../table.scss";
+
+.pie-chart-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.pie-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pie-table {
+  width: 60%;
+  min-width: 200px;
+}
+
+.pie-table-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  margin-right: 5px;
+}

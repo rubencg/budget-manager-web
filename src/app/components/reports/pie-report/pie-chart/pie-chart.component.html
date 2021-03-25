@@ -1,0 +1,50 @@
+<div class="pie-chart-container">
+    <div class="pie-chart">
+        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+            [colors]="barChartColors" [options]="options">
+        </canvas>
+    </div>
+    <div class="pie-table">
+        <div class="table-content">
+            <table class="table-div" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="icon-span">
+                            <div class="table-icon disable-select" [style.background-color]="element.color">
+                                <fa-icon [icon]="['fas', element.icon]"></fa-icon>
+                            </div>
+                            <span>
+                                {{element.description}}
+                            </span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.amount | currency }}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="percentage">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Porcentaje </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.percentage}} %
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+        </div>
+    </div>
+</div>

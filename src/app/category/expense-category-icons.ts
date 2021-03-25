@@ -86,6 +86,8 @@ export let ExpenseCategoryIcons: String[] = [
   'hotdog',
   'hourglass-half',
   'house-user',
+  'home',
+  'laptop-house',
   'ice-cream',
   'jedi',
   'key',

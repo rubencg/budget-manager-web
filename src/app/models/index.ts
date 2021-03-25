@@ -7,3 +7,4 @@ export * from './filter';
 export * from './account-group';
 export * from './category-icon';
 export * from './date-types';
+export * from './pie-element';
