@@ -1,9 +1,13 @@
 <mat-tab-group>
     <mat-tab label="Gastos por categoria">
-        <expenses-by-category></expenses-by-category>
+        <ng-template matTabContent>
+            <expenses-by-category></expenses-by-category>
+        </ng-template>
     </mat-tab>
     <mat-tab label="Gastos por cuenta">
-        Contenido
+        <ng-template matTabContent>
+            <expenses-by-account></expenses-by-account>
+        </ng-template>
     </mat-tab>
     <mat-tab label="Ingresos por categoria">
         Contenido
