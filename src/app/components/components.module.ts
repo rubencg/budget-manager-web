@@ -52,6 +52,7 @@ import { ReportHeaderComponent } from './reports/report-header/report-header.com
 import { PieChartComponent } from './reports/pie-report/pie-chart/pie-chart.component';
 import { ExpensesByCategoryComponent } from './reports/pie-report/expenses-by-category/expenses-by-category.component';
 import { ExpensesByAccountComponent } from './reports/pie-report/expenses-by-account/expenses-by-account.component';
+import { IncomesByCategoryComponent } from './reports/pie-report/incomes-by-category/incomes-by-category.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { ExpensesByAccountComponent } from './reports/pie-report/expenses-by-acc
     ReportHeaderComponent,
     PieChartComponent,
     ExpensesByCategoryComponent,
-    ExpensesByAccountComponent
+    ExpensesByAccountComponent,
+    IncomesByCategoryComponent
   ],
   exports: [
     NavbarComponent,
