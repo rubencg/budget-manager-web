@@ -1,16 +1,12 @@
-<div>
-    Header
-</div>
-<div>
-    <mat-tab-group>
-        <mat-tab label="Barra">
-            <pie-report></pie-report>
-        </mat-tab>
-        <mat-tab label="Linear">
-            <linear-report></linear-report>
-        </mat-tab>
-        <mat-tab label="Barra">
-            <bar-report></bar-report>
-        </mat-tab>
-    </mat-tab-group>
-</div>
+<report-header [dateType]="dateType"></report-header>
+<mat-tab-group>
+    <mat-tab label="Barra">
+        <pie-report></pie-report>
+    </mat-tab>
+    <mat-tab label="Linear">
+        <linear-report></linear-report>
+    </mat-tab>
+    <mat-tab label="Barra">
+        <bar-report></bar-report>
+    </mat-tab>
+</mat-tab-group>

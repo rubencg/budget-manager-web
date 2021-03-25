@@ -48,6 +48,7 @@ import { ReportsComponent } from './reports/reports/reports.component';
 import { PieReportComponent } from './reports/pie-report/pie-report.component';
 import { LinearReportComponent } from './reports/linear-report/linear-report.component';
 import { BarReportComponent } from './reports/bar-report/bar-report.component';
+import { ReportHeaderComponent } from './reports/report-header/report-header.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { BarReportComponent } from './reports/bar-report/bar-report.component';
     ReportsComponent,
     PieReportComponent,
     LinearReportComponent,
-    BarReportComponent
+    BarReportComponent,
+    ReportHeaderComponent
   ],
   exports: [
     NavbarComponent,
