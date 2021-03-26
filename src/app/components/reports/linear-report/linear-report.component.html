@@ -1,6 +1,8 @@
 <mat-tab-group>
     <mat-tab label="Gastos por mes">
-        Contenido
+        <ng-template matTabContent>
+            <expenses-by-month [currentDate]="currentDate"></expenses-by-month>
+        </ng-template>
     </mat-tab>
     <mat-tab label="Gastos por semana">
         Contenido

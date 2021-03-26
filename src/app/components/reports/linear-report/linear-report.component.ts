@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'linear-report',
@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./linear-report.component.scss']
 })
 export class LinearReportComponent implements OnInit {
+  @Input() currentDate: Date;
 
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }

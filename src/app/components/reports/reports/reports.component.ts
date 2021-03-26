@@ -8,6 +8,7 @@ import { DateTypes } from 'src/app/models';
 })
 export class ReportsComponent implements OnInit {
   dateType: DateTypes = DateTypes.Month;
+  currentDate: Date = new Date();
 
   constructor() { }
 
@@ -17,6 +18,10 @@ export class ReportsComponent implements OnInit {
   // ToDo: Call this if the inner report changes the type
   onDateTypeChanged(dateType: DateTypes){
     this.dateType = dateType;
+  }
+
+  onDateChanged(date: Date){
+    this.currentDate = date;
   }
 
 }

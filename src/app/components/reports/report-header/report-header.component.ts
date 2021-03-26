@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateTypes } from 'src/app/models';
 
 @Component({
@@ -10,6 +10,7 @@ export class ReportHeaderComponent implements OnInit {
   today: Date = new Date();
   dateToDisplay: Date;
   @Input() dateType: DateTypes;
+  @Output() onDateChanged: EventEmitter<Date> = new EventEmitter();
 
   constructor() {}
 
@@ -60,5 +61,6 @@ export class ReportHeaderComponent implements OnInit {
       this.dateToDisplay.getMonth(),
       1
     );
+    this.onDateChanged.emit(this.dateToDisplay);
   }
 }
