@@ -4,10 +4,9 @@
             <expenses-by-month [currentDate]="currentDate"></expenses-by-month>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Gastos por semana">
-        Contenido
-    </mat-tab>
     <mat-tab label="Gastos por año">
-        Contenido
+        <ng-template matTabContent>
+            <expenses-by-year [currentDate]="currentDate"></expenses-by-year>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

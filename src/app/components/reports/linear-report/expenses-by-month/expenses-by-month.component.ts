@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { LineElement } from 'src/app/models';
+import { LinearChartTypes } from '../linear-chart-types';
 import { LinearChartComponent } from '../linear-chart/linear-chart.component';
 import { LinearReportComponent } from '../linear-report.component';
 
@@ -10,6 +11,7 @@ import { LinearReportComponent } from '../linear-report.component';
 })
 export class ExpensesByMonthComponent implements OnInit {
   @Input() currentDate: Date;
+  linearChartType: LinearChartTypes = LinearChartTypes.Month;
   data: LineElement[] = [];
   color: string = 'rgba(235, 100, 52, 0.4)'; // Red
   @ViewChild(LinearChartComponent) linearChart: LinearChartComponent;
