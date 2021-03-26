@@ -1,18 +1,19 @@
 <report-header [dateType]="dateType" (onDateChanged)="onDateChanged($event)"></report-header>
 <mat-tab-group>
-    <mat-tab label="Linear">
-        <ng-template matTabContent>
-            <linear-report [currentDate]="currentDate"></linear-report>
-        </ng-template>
-    </mat-tab>
     <mat-tab label="Circular">
         <ng-template matTabContent>
             <pie-report></pie-report>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Barra">
+    <mat-tab label="Linear">
+        <ng-template matTabContent>
+            <linear-report [currentDate]="currentDate"></linear-report>
+        </ng-template>
+    </mat-tab>
+    <!-- ToDo On Phase 2 -->
+    <!-- <mat-tab label="Barra">
         <ng-template matTabContent>
             <bar-report></bar-report>
         </ng-template>
-    </mat-tab>
+    </mat-tab> -->
 </mat-tab-group>

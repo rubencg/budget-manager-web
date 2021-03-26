@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { LineElement } from 'src/app/models';
 import { LinearChartTypes } from '../linear-chart-types';
