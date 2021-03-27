@@ -59,6 +59,8 @@ import { FixedVariableIncomesComponent } from './reports/pie-report/fixed-variab
 import { ExpensesByMonthComponent } from './reports/linear-report/expenses-by-month/expenses-by-month.component';
 import { LinearChartComponent } from './reports/linear-report/linear-chart/linear-chart.component';
 import { ExpensesByYearComponent } from './reports/linear-report/expenses-by-year/expenses-by-year.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ChangeInfoComponent } from './profile/change-info/change-info.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,9 @@ import { ExpensesByYearComponent } from './reports/linear-report/expenses-by-yea
     FixedVariableIncomesComponent,
     ExpensesByMonthComponent,
     LinearChartComponent,
-    ExpensesByYearComponent
+    ExpensesByYearComponent,
+    ProfileComponent,
+    ChangeInfoComponent
   ],
   exports: [
     NavbarComponent,
@@ -117,7 +121,8 @@ import { ExpensesByYearComponent } from './reports/linear-report/expenses-by-yea
     AccountNavComponent,
     TransactionsComponent,
     AccountsComponent,
-    ArchivedAccountsComponent
+    ArchivedAccountsComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
