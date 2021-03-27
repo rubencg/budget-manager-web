@@ -29,6 +29,12 @@
     </nav>
   </div>
   <div class="col-md-1 profile">
-    <img alt="avatar image" class="rounded-circle avatar-profile" src="https://avatars.githubusercontent.com/u/16688898?s=460&u=3255fff93493ac43dd5bd8a0369f931a1f58cf83&v=4">
+    <img alt="avatar image" class="rounded-circle avatar-profile"
+      [matMenuTriggerFor]="profileMenu"
+      src="https://avatars.githubusercontent.com/u/16688898?s=460&u=3255fff93493ac43dd5bd8a0369f931a1f58cf83&v=4">
   </div>
 </div>
+<mat-menu #profileMenu="matMenu">
+  <button mat-menu-item >Perfil</button>
+  <button mat-menu-item >Cerrar sesion</button>
+</mat-menu>
