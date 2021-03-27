@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { Account } from 'src/app/account';
 import { AccountGroup } from 'src/app/models';
+import { AccountState, AccountStateModel } from 'src/app/state';
 import { AccountDialogComponent, ArchiveAccountComponent } from '../dialogs';
 
 @Component({
@@ -10,10 +13,13 @@ import { AccountDialogComponent, ArchiveAccountComponent } from '../dialogs';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+  
 
+  @Select(AccountState.selectAccountGroups) accountGroups$: Observable<AccountStateModel>;
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.accountGroups$.subscribe((s) => console.log(s));
   }
 
   editAccount(account: Account){
@@ -85,17 +91,23 @@ export class ListComponent implements OnInit {
     {
       accounts: this.accounts,
       balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      name: 'Efectivo'
+      accountType: {
+        name: 'Efectivo'
+      }
     },
     {
       accounts: this.accounts,
       balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      name: 'Debito'
+      accountType: {
+        name: 'Debito'
+      }
     },
     {
       accounts: this.accounts,
       balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      name: 'Ahorros Ruben'
+      accountType: {
+        name: 'Ahorros Ruben'
+      }
     },
   ];
   

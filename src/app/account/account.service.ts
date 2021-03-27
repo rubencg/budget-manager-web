@@ -9,6 +9,6 @@ export class AccountService {
   constructor(private db: AngularFireDatabase) { }
 
   getAll(){
-    return this.db.list('6RkLgHmOPddFhASQgZSrbS1bMCa2/'+this.entityName).valueChanges();
+    return this.db.list('axEUkilpFOrtiMnLEaTSHBHmeGEx/'+this.entityName).valueChanges();
   }
 }

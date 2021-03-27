@@ -1,9 +1,9 @@
 <div class="groups">
-    <mat-list class="account-group" *ngFor="let accountGroup of accountGroups">
+    <mat-list class="account-group" *ngFor="let accountGroup of accountGroups$ | async">
         <div mat-subheader>
             <div class="group-header">
                 <div>
-                    {{accountGroup.name}}
+                    {{accountGroup.accountType.name}}
                 </div>
                 <div class="group-total">
                     {{ accountGroup.balance | currency }}

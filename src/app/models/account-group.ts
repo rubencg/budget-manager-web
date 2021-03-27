@@ -1,7 +1,7 @@
-import { Account } from "../account";
+import { Account, AccountType } from "../account";
 
 export interface AccountGroup{
-    name: String;
-    balance: number;
+    accountType: AccountType;
+    balance?: number;
     accounts: Account[];
 }
