@@ -61,6 +61,7 @@ import { LinearChartComponent } from './reports/linear-report/linear-chart/linea
 import { ExpensesByYearComponent } from './reports/linear-report/expenses-by-year/expenses-by-year.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ChangeInfoComponent } from './profile/change-info/change-info.component';
+import { MainAccountsComponent } from './profile/main-accounts/main-accounts.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { ChangeInfoComponent } from './profile/change-info/change-info.component
     LinearChartComponent,
     ExpensesByYearComponent,
     ProfileComponent,
-    ChangeInfoComponent
+    ChangeInfoComponent,
+    MainAccountsComponent
   ],
   exports: [
     NavbarComponent,

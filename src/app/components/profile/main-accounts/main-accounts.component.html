@@ -1,0 +1,43 @@
+<div class="main-container">
+    <p>
+        Selecciona 3 cuentas las cuales apareceran en la parte izquierda de todas las paginas:
+    </p>
+    <form [formGroup]="form" class="form">
+        <mat-form-field>
+            <mat-label>Cuenta 1</mat-label>
+            <input matInput [matAutocomplete]="accountOne" formControlName="accountOne">
+            <mat-autocomplete #accountOne="matAutocomplete">
+                <mat-option class="autocomplete-option" 
+                    *ngFor="let account of filteredAccountsOne | async"
+                    [value]="account.name">
+                    <span>{{account.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Cuenta 2</mat-label>
+            <input matInput [matAutocomplete]="accountTwo" formControlName="accountTwo">
+            <mat-autocomplete #accountTwo="matAutocomplete">
+                <mat-option class="autocomplete-option" 
+                    *ngFor="let account of filteredAccountsTwo | async"
+                    [value]="account.name">
+                    <span>{{account.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Cuenta 3</mat-label>
+            <input matInput [matAutocomplete]="accountThree" formControlName="accountThree">
+            <mat-autocomplete #accountThree="matAutocomplete">
+                <mat-option class="autocomplete-option" 
+                    *ngFor="let account of filteredAccountsThree | async"
+                    [value]="account.name">
+                    <span>{{account.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <div>
+        <button mat-raised-button color="ok-button">GUARDAR</button>
+    </div>
+</div>
