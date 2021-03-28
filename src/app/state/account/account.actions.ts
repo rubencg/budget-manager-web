@@ -16,16 +16,21 @@ export namespace AccountActions{
     static readonly type = '[Accounts Page] SaveAccount';
     constructor(public payload: Account) {}
   }
-  /* End Account actions */
   
-  /* Archive actions */
   export class ArchiveAccount {
     static readonly type = '[Accounts Page] ArchiveAccount';
     constructor(public payload: Account) {}
   }
+  /* End Account actions */
   
+  /* Archive actions */
   export class UnarchiveAccount {
     static readonly type = '[Accounts Page] UnarchiveAccount';
+    constructor(public payload: Account) {}
+  }
+
+  export class DeleteArchivedAccount {
+    static readonly type = '[Archived Accounts Page] DeleteArchiveAccount';
     constructor(public payload: Account) {}
   }
 

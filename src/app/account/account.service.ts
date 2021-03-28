@@ -93,7 +93,14 @@ export class AccountService {
   }
 
   createNewArchivedAccount(account: Account) {
-    this.db.list(this.archivedAccountsUrl).push(account);
+    this.db.list(this.archivedAccountsUrl).push({
+      name: account.name,
+      accountType: account.accountType,
+      color: account.color,
+      currentBalance: account.currentBalance,
+      image: account.image,
+      sumsToMonthlyBudget: account.sumsToMonthlyBudget,
+    });
   }
 
   deleteArchivedAccount(account: Account): Promise<void> {

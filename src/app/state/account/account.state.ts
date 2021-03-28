@@ -82,6 +82,13 @@ export class AccountState {
       this.accountService.deleteArchivedAccount(account);
   }
 
+  @Action(AccountActions.DeleteArchivedAccount)
+  deleteArchiveAccount(context: StateContext<AccountStateModel>,
+    action: AccountActions.DeleteArchivedAccount){
+      const account: Account = action.payload;
+      this.accountService.deleteArchivedAccount(account);
+  }
+
   @Action(AccountActions.Get)
   getAllAccounts(context: StateContext<AccountStateModel>){
     this.accountService

@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Account, ArchivedAccountDataSource } from 'src/app/account';
-import { AccountState, AccountStateModel } from 'src/app/state';
+import { AccountActions, AccountState, AccountStateModel } from 'src/app/state';
 
 @Component({
   selector: 'archived-table',
@@ -24,7 +24,7 @@ export class ArchivedTableComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor() {
+  constructor(public store: Store) {
     this.archivedAccounts$.subscribe(
       (state) => {
         console.log(state);
@@ -32,9 +32,12 @@ export class ArchivedTableComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Account>(state);
       }
     )
-    
   }
 
   ngOnInit(): void {}
+
+  deleteArchivedAccount(account: Account){
+    this.store.dispatch(new AccountActions.DeleteArchivedAccount(account));
+  }
 
 }
