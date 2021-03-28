@@ -18,6 +18,8 @@ export class AppComponent {
     Chart.defaults.global.defaultFontFamily = 'Maven Pro';
 
     this.store.dispatch(AccountActions.Get);
+    this.store.dispatch(AccountActions.GetTypes);
+    this.store.dispatch(AccountActions.GetArchivedAccounts);
     
   }
 

@@ -39,7 +39,7 @@ export class IncomeState {
               notes: apiIncome.notes,
               toAccount: {
                 image: apiIncome.img,
-                description: apiIncome.name,
+                name: apiIncome.name,
               },
               category: {
                 image: apiIncome.category.img,

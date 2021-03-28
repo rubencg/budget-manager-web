@@ -1,7 +1,8 @@
 import { AccountType } from "./";
 
 export interface Account{
-    description?: String,
+    name?: String,
+    key?: string,
     image?: String,
     color?: String,
     currentBalance?: number,

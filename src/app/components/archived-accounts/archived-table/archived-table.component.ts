@@ -1,115 +1,40 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Account } from 'src/app/account';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Account, ArchivedAccountDataSource } from 'src/app/account';
+import { AccountState, AccountStateModel } from 'src/app/state';
 
 @Component({
   selector: 'archived-table',
   templateUrl: './archived-table.component.html',
-  styleUrls: ['./archived-table.component.scss']
+  styleUrls: ['./archived-table.component.scss'],
 })
 export class ArchivedTableComponent implements OnInit {
-  accounts: Account[] = [
-    {
-      color: '#32a852',
-      sumsToMonthlyBudget: false,
-      currentBalance: +(Math.random()*1548).toFixed(2),
-      image: 'money-bill',
-      description: 'Ruben Efectivo',
-      accountType: {
-        name: 'Efectivo'
-      }
-    },
-    {
-      color: '#eb34c9',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*158).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Efectivo',
-      accountType: {
-        name: 'Efectivo'
-      }
-    },
-    {
-      color: '#32a852',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      color: '#32a852',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      color: '#dedb16',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      color: '#dedb16',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      color: '#dedb16',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      color: '#dedb16',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    }
-  ];
-  displayedColumns: string[] = [
-    'name',
-    'type',
-    'balance',
-    'actions',
-  ];
+  displayedColumns: string[] = ['name', 'type', 'balance', 'actions'];
+  @Select(AccountState.selectArchivedAccounts) archivedAccounts$: Observable<Account[]>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource = new MatTableDataSource<Account>(this.accounts);
+  dataSource = new MatTableDataSource<Account>([]);
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
+    this.archivedAccounts$.subscribe(
+      (state) => {
+        console.log(state);
+        
+        this.dataSource = new MatTableDataSource<Account>(state);
+      }
+    )
+    
   }
+
+  ngOnInit(): void {}
 
 }

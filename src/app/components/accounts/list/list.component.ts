@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Account } from 'src/app/account';
 import { AccountGroup } from 'src/app/models';
-import { AccountState, AccountStateModel } from 'src/app/state';
+import { AccountActions, AccountState, AccountStateModel } from 'src/app/state';
 import { AccountDialogComponent, ArchiveAccountComponent } from '../dialogs';
 
 @Component({
@@ -16,10 +16,9 @@ export class ListComponent implements OnInit {
   
 
   @Select(AccountState.selectAccountGroups) accountGroups$: Observable<AccountStateModel>;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public store: Store) { }
 
   ngOnInit(): void {
-    this.accountGroups$.subscribe((s) => console.log(s));
   }
 
   editAccount(account: Account){
@@ -29,11 +28,10 @@ export class ListComponent implements OnInit {
       width: 'calc(100% - 64px)',
       autoFocus: false
     });
-    accountDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Edit account', result);
-      } else {
-        console.log('Dont edit account');
+    accountDialogRef.afterClosed().subscribe((editedAccount: Account) => {
+      if (editedAccount) {
+        editedAccount.key = account.key;
+        this.store.dispatch(new AccountActions.SaveAccount(editedAccount));
       }
     });
   }
@@ -47,68 +45,9 @@ export class ListComponent implements OnInit {
     });
     archiveAccountDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Archive account', result);
-      } else {
-        console.log('Dont archive account');
+        this.store.dispatch(new AccountActions.ArchiveAccount(account));
       }
     });
   }
-  
-  accounts: Account[] = [
-    {
-      color: '#32a852',
-      sumsToMonthlyBudget: false,
-      currentBalance: +(Math.random()*1548).toFixed(2),
-      image: 'money-bill',
-      description: 'Ruben Efectivo',
-      accountType: {
-        name: 'Efectivo'
-      }
-    },
-    {
-      color: '#f5e042',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*158).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Efectivo',
-      accountType: {
-        name: 'Efectivo'
-      }
-    },
-    {
-      color: '#e036e3',
-      sumsToMonthlyBudget: true,
-      currentBalance: +(Math.random()*-1548).toFixed(2),
-      image: 'money-check-alt',
-      description: 'Sarahi Debito',
-      accountType: {
-        name: 'Debito'
-      }
-    }
-  ];
-
-  accountGroups: AccountGroup[] = [
-    {
-      accounts: this.accounts,
-      balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      accountType: {
-        name: 'Efectivo'
-      }
-    },
-    {
-      accounts: this.accounts,
-      balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      accountType: {
-        name: 'Debito'
-      }
-    },
-    {
-      accounts: this.accounts,
-      balance: this.accounts.reduce((prev, curr) => prev + curr.currentBalance, 0),
-      accountType: {
-        name: 'Ahorros Ruben'
-      }
-    },
-  ];
   
 }

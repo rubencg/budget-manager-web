@@ -17,7 +17,7 @@
                         <fa-icon [icon]="['fas', account.image]"></fa-icon>
                     </div>
                     <div>
-                        <div mat-line>{{account.description}}</div>
+                        <div mat-line>{{account.name}}</div>
                         <div mat-line [class]="account.currentBalance < 0 ? 'negative-amount' : 'positive-amount' ">{{account.currentBalance | currency}}</div>
                     </div>
                 </div>

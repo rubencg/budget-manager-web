@@ -37,11 +37,11 @@ export class TransferState {
               date: new Date(+apiTransfer.date),
               fromAccount: {
                 image: apiTransfer.fromAccount.img,
-                description: apiTransfer.fromAccount.name,
+                name: apiTransfer.fromAccount.name,
               },
               toAccount: {
                 image: apiTransfer.toAccount.img,
-                description: apiTransfer.toAccount.name,
+                name: apiTransfer.toAccount.name,
               },
             });
           });

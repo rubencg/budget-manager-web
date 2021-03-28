@@ -38,7 +38,7 @@ export class ExpenseState {
               notes: apiExpense.notes,
               fromAccount: {
                 image: apiExpense.img,
-                description: apiExpense.name,
+                name: apiExpense.name,
               },
               category: {
                 image: apiExpense.category.img,

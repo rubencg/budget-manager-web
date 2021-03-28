@@ -14,7 +14,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 157.64,
     date: new Date(2020, 1, 3),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -31,7 +31,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 200.64,
     date: new Date(2021, 2, 3),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -48,7 +48,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 100.59,
     date: new Date(2020, 2, 4),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -65,7 +65,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: -100.59,
     date: new Date(2020, 2, 4),
     account: {
-      description: 'Sarahi Debito',
+      name: 'Sarahi Debito',
       color: '#eb34c9',
       image: 'money-check-alt'
     },
@@ -82,7 +82,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 257.64,
     date: new Date(2020, 1, 5),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -98,7 +98,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 300.64,
     date: new Date(2021, 2, 6),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -114,7 +114,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 457.64,
     date: new Date(2020, 1, 7),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -130,7 +130,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 500.64,
     date: new Date(2021, 2, 8),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -146,7 +146,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 657.64,
     date: new Date(2020, 1, 9),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },
@@ -162,7 +162,7 @@ const ELEMENT_DATA: Transaction[] = [
     amount: 700.64,
     date: new Date(2021, 2, 10),
     account: {
-      description: 'Ruben Debito',
+      name: 'Ruben Debito',
       color: '#3477eb',
       image: 'piggy-bank'
     },

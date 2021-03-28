@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { AccountService, Account } from 'src/app/account';
+import { AccountService, Account, AccountType } from 'src/app/account';
 import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { AccountActions } from './account.actions';
 import { AccountGroup } from 'src/app/models';
@@ -9,11 +9,15 @@ import { from } from 'rxjs';
 export class AccountStateModel {
   public accounts: Account[];
   public accountGroups: AccountGroup[];
+  public accountTypes: AccountType[];
+  public archivedAccounts: Account[];
 }
 
 const defaults = {
   accounts: [],
-  accountGroups: []
+  archivedAccounts: [],
+  accountGroups: [],
+  accountTypes: []
 };
 
 @State<AccountStateModel>({
@@ -27,39 +31,104 @@ export class AccountState {
 
   }
 
+  /* Selectors */
+  
   @Selector()
   static selectAccounts(state: AccountStateModel) {
     return state.accounts;
   }
-
+  
   @Selector()
   static selectAccountGroups(state: AccountStateModel) {
     return state.accountGroups;
+  }
+  
+  @Selector()
+  static selectAccountTypes(state: AccountStateModel) {
+    return state.accountTypes;
+  }
+  
+  @Selector()
+  static selectArchivedAccounts(state: AccountStateModel) {
+    return state.archivedAccounts;
+  }
+  /* End Selectors */
+
+  @Action(AccountActions.SaveAccount)
+  saveAccount(context: StateContext<AccountStateModel>,
+    action: AccountActions.SaveAccount){
+      const account: Account = action.payload;
+      // Update 
+      if(account.key){
+        this.accountService.updateAccount(account);
+      } else { // Insert
+        this.accountService.createNewAccount(account);
+      }
+  }
+
+  @Action(AccountActions.ArchiveAccount)
+  archiveAccount(context: StateContext<AccountStateModel>,
+    action: AccountActions.ArchiveAccount){
+      const account: Account = action.payload;
+      this.accountService.deleteAccount(account);
+      this.accountService.createNewArchivedAccount(account);
+  }
+
+  @Action(AccountActions.UnarchiveAccount)
+  unArchiveAccount(context: StateContext<AccountStateModel>,
+    action: AccountActions.UnarchiveAccount){
+      const account: Account = action.payload;
+      this.accountService.createNewAccount(account);
+      this.accountService.deleteArchivedAccount(account);
   }
 
   @Action(AccountActions.Get)
   getAllAccounts(context: StateContext<AccountStateModel>){
     this.accountService
       .getAll()
-      .pipe(
-        map(apiAccounts => {
-          let data: Account[] = [];
-
-          apiAccounts.forEach((apiAccount: any) => {
-            data.push({
-              description: apiAccount.name,
-              image: apiAccount.image,
-              color: apiAccount.color,
-              currentBalance: apiAccount.currentBalance,
-              sumsToMonthlyBudget: apiAccount.isSummable,
-              accountType: apiAccount.accountType
-            });
-          });
-
-          return data;
-        })
-      )
       .subscribe((accs: Account[]) => context.dispatch(new AccountActions.GetSuccess(accs)));
+  }
+
+  @Action(AccountActions.GetArchivedAccounts)
+  getAllArchivedAccountTypes(context: StateContext<AccountStateModel>){
+    this.accountService
+      .getAllArchivedAccounts()
+      .subscribe((archivedAccounts: Account[]) => context.dispatch(new AccountActions.GetArchivedAccountsSuccess(archivedAccounts)));
+  }
+  
+  @Action(AccountActions.GetTypes)
+  getAllAccountTypes(context: StateContext<AccountStateModel>){
+    this.accountService
+      .getAllTypes()
+      .subscribe((types: AccountType[]) => context.dispatch(new AccountActions.GetTypesSuccess(types)));
+  }
+
+  @Action(AccountActions.GetTypesSuccess)
+  accountTypesLoaded(
+    ctx: StateContext<AccountStateModel>,
+    action: AccountActions.GetTypesSuccess
+  ) {
+    const state = ctx.getState();
+
+    // set account groups
+    ctx.setState({
+      ...state,
+      accountTypes: action.payload
+    });
+  }
+
+  @Action(AccountActions.GetArchivedAccountsSuccess)
+  archivedAccountsLoaded(
+    ctx: StateContext<AccountStateModel>,
+    action: AccountActions.GetArchivedAccountsSuccess
+  ) {
+    const state = ctx.getState();
+
+    // set account groups
+    ctx.setState({
+      ...state,
+      archivedAccounts: action.payload
+    });
   }
 
   @Action(AccountActions.GetSuccess)
