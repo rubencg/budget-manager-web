@@ -49,7 +49,14 @@ export class AccountService {
   }
 
   createNewAccount(account: Account) {
-    this.db.list(this.accountsUrl).push(account);
+    this.db.list(this.accountsUrl).push({
+      name: account.name,
+      accountType: account.accountType,
+      color: account.color,
+      currentBalance: account.currentBalance,
+      image: account.image,
+      sumsToMonthlyBudget: account.sumsToMonthlyBudget,
+    });
   }
 
   deleteAccount(account: Account): Promise<void> {

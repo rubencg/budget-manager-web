@@ -27,8 +27,6 @@ export class ArchivedTableComponent implements OnInit {
   constructor(public store: Store) {
     this.archivedAccounts$.subscribe(
       (state) => {
-        console.log(state);
-        
         this.dataSource = new MatTableDataSource<Account>(state);
       }
     )
@@ -38,6 +36,10 @@ export class ArchivedTableComponent implements OnInit {
 
   deleteArchivedAccount(account: Account){
     this.store.dispatch(new AccountActions.DeleteArchivedAccount(account));
+  }
+
+  restoreArchivedAccount(account: Account){
+    this.store.dispatch(new AccountActions.UnarchiveAccount(account));
   }
 
 }
