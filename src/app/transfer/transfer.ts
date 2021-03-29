@@ -4,5 +4,6 @@ export interface Transfer{
     amount: number,
     date: Date,
     fromAccount: Account,
-    toAccount: Account
+    toAccount: Account,
+    key?: string
 }

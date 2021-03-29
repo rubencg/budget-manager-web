@@ -10,4 +10,9 @@ export namespace TransferActions{
     static readonly type = '[Firebase] TransfersLoaded';
     constructor(public payload: Transfer[]) {}
   }
+  
+  export class SaveTransfer {
+    static readonly type = '[Transfer] SaveTransfer';
+    constructor(public payload: Transfer) {}
+  }
 }

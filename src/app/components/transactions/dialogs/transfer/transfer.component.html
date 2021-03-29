@@ -20,8 +20,9 @@
             </span>
             <mat-label>Cuenta Origen</mat-label>
             <input matInput [matAutocomplete]="autoOriginAccount" formControlName="originAccount">
-            <mat-autocomplete #autoOriginAccount="matAutocomplete">
-                <mat-option class="autocomplete-option" *ngFor="let account of filteredOriginAccounts | async" [value]="account.name">
+            <mat-autocomplete #autoOriginAccount="matAutocomplete" [displayWith]="displayFn">
+                <mat-option class="autocomplete-option" *ngFor="let account of filteredOriginAccounts | async"
+                    [value]="account">
                     <div class="element-circle" [ngStyle]="{'background-color':account.color}">
                         <fa-icon [icon]="['fas', account.image]"></fa-icon>
                     </div>
@@ -35,8 +36,9 @@
             </span>
             <mat-label>Cuenta Destino</mat-label>
             <input matInput [matAutocomplete]="autoDestinationAccount" formControlName="destinationAccount">
-            <mat-autocomplete #autoDestinationAccount="matAutocomplete">
-                <mat-option class="autocomplete-option" *ngFor="let account of filteredDestinationAccounts | async" [value]="account.name">
+            <mat-autocomplete #autoDestinationAccount="matAutocomplete" [displayWith]="displayFn">
+                <mat-option class="autocomplete-option" *ngFor="let account of filteredDestinationAccounts | async"
+                    [value]="account">
                     <div class="element-circle" [ngStyle]="{'background-color':account.color}">
                         <fa-icon [icon]="['fas', account.image]"></fa-icon>
                     </div>
@@ -55,5 +57,6 @@
 </div>
 <div mat-dialog-actions class="buttons-box">
     <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
-    <button mat-raised-button [disabled]="!form.dirty || form.invalid" color="ok-button" (click)="save()">GUARDAR</button>
+    <button mat-raised-button [disabled]="!form.dirty || form.invalid" color="ok-button"
+        (click)="save()">GUARDAR</button>
 </div>

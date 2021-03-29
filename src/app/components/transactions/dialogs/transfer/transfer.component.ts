@@ -1,113 +1,114 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement, Transaction } from 'src/app/models';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { Account } from 'src/app/account';
+import { Transaction } from 'src/app/models';
+import { AccountState, TransferActions } from 'src/app/state';
+import { Transfer } from 'src/app/transfer';
 
 @Component({
   selector: 'app-transfer',
   templateUrl: './transfer.component.html',
-  styleUrls: ['./transfer.component.scss']
+  styleUrls: ['./transfer.component.scss'],
 })
 export class TransferComponent implements OnInit {
   title: String;
+  @Select(AccountState.selectAccounts) accounts$: Observable<Account[]>;
+  filteredOriginAccounts: Observable<Account[]>;
+  filteredDestinationAccounts: Observable<Account[]>;
 
-  constructor(public dialogRef: MatDialogRef<TransferComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: Transaction) {
+  constructor(
+    public dialogRef: MatDialogRef<TransferComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Transaction,
+    public store: Store
+  ) {
     this.filteredOriginAccounts = this.originAccountCtrl.valueChanges.pipe(
       startWith(''),
-      map((account) =>
-        account ? this._filterElements(account, this.accounts) : this.accounts.slice()
-      )
+      map((value) => (typeof value === 'string' ? value : value.name)),
+      switchMap((val) => this._filterElements(val))
     );
 
     this.filteredDestinationAccounts = this.destinationAccountCtrl.valueChanges.pipe(
       startWith(''),
-      map((account) =>
-        account ? this._filterElements(account, this.accounts) : this.accounts.slice()
-      )
+      map((value) => (typeof value === 'string' ? value : value.name)),
+      switchMap((val) => this._filterElements(val))
     );
   }
 
-  private _filterElements(value: string, allElements: AutocompleteElement[]): AutocompleteElement[] {
-    const filterValue = value.toLowerCase();
-
-    return allElements.filter(
-      (element) => element.name.toLowerCase().indexOf(filterValue) === 0
+  private _filterElements(value: string): Observable<Account[]> {
+    return this.accounts$.pipe(
+      map((response) => {
+        return value
+          ? response.filter((account) =>
+              account.name.toLowerCase().includes(value.toLowerCase())
+            )
+          : response;
+      })
     );
+  }
+
+  displayFn(account: Account) {
+    return account ? account.name : '';
   }
 
   ngOnInit(): void {
     this.title = 'Nueva transferencia';
-    if(this.data != undefined && this.data != null){
+    if (this.data != undefined && this.data != null) {
       this.title = 'Editar transferencia';
       let transaction: Transaction = this.data;
-      
+
       this.form.patchValue({
         amount: Math.abs(transaction.amount),
         date: transaction.date,
         notes: transaction.notes,
-        originAccount: transaction.amount < 0 ? transaction.account : transaction.transferAccount,
-        destinationAccount: transaction.amount > 0 ? transaction.account : transaction.transferAccount,
-      })
+        originAccount:
+          transaction.amount < 0
+            ? transaction.account
+            : transaction.transferAccount,
+        destinationAccount:
+          transaction.amount > 0
+            ? transaction.account
+            : transaction.transferAccount,
+      });
     }
-    
   }
-  
-  filteredOriginAccounts: Observable<AutocompleteElement[]>;
-  filteredDestinationAccounts: Observable<AutocompleteElement[]>;
-  accounts: AutocompleteElement[] = [
-    {
-      image: 'money-bill',
-      color: '#32a852',
-      name: 'Ruben Efectivo',
-    },
-    {
-      image: 'money-check-alt',
-      color: '#328ba8',
-      name: 'Ruben Credito',
-    },
-    {
-      image: 'money-check-alt',
-      color: '#a8323a',
-      name: 'Ruben Debito',
-    },
-    {
-      image: 'money-bill',
-      color: '#50a832',
-      name: 'Sarahi Debito',
-    },
-  ];
 
   // Form Controls
-  originAccountCtrl = new FormControl('',[
-    Validators.required
-  ]);
-  destinationAccountCtrl = new FormControl('',[
-    Validators.required
-  ]);
+  originAccountCtrl = new FormControl('', [Validators.required]);
+  destinationAccountCtrl = new FormControl('', [Validators.required]);
   form: FormGroup = new FormGroup({
-    date: new FormControl(new Date(),[
-      Validators.required
-    ]),
+    date: new FormControl(new Date(), [Validators.required]),
     originAccount: this.originAccountCtrl,
     destinationAccount: this.destinationAccountCtrl,
-    amount: new FormControl('', [
-      Validators.required
-    ]),
-    notes: new FormControl('')
+    amount: new FormControl('', [Validators.required]),
+    notes: new FormControl(''),
   });
 
-  save(){
+  save() {
     let transaction: Transaction = {
       amount: this.form.get('amount').value,
       type: 'transfer',
       date: this.form.get('date').value,
-      account: this.data && this.data.amount < 0 ? this.destinationAccountCtrl.value : this.originAccountCtrl.value,
-      transferAccount: this.data && this.data.amount < 0 ? this.originAccountCtrl.value : this.destinationAccountCtrl.value,
+      account: this.originAccountCtrl.value,
+      transferAccount: this.destinationAccountCtrl.value,
       notes: this.form.get('notes').value,
-    }
+    };
+
+    let transfer: Transfer = {
+      amount: transaction.amount,
+      date: transaction.date,
+      fromAccount: transaction.account,
+      toAccount: transaction.transferAccount
+    };
+
+    this.store.dispatch(new TransferActions.SaveTransfer(transfer));
 
     this.dialogRef.close(transaction);
   }

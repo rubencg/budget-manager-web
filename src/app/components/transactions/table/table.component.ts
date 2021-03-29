@@ -52,25 +52,12 @@ const ELEMENT_DATA: Transaction[] = [
       color: '#3477eb',
       image: 'piggy-bank'
     },
-    transferAccount: 'Sarahi Debito',
-    notes: 'Transferencia de Sarahi Debito',
-    category: {
-      name: 'Transferencia',
-      image: ''
-    },
-  },
-  {
-    type: 'transfer',
-    applied: true,
-    amount: -100.59,
-    date: new Date(2020, 2, 4),
-    account: {
+    transferAccount: {
       name: 'Sarahi Debito',
-      color: '#eb34c9',
-      image: 'money-check-alt'
+      color: '#3477eb',
+      image: 'piggy-bank'
     },
-    transferAccount: 'Ruben Debito',
-    notes: 'Transferencia a Ruben Debito',
+    notes: 'Transferencia a Sarahi Debito',
     category: {
       name: 'Transferencia',
       image: ''

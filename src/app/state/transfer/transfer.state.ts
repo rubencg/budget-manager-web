@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { map } from 'rxjs/operators';
+import { Account } from 'src/app/account';
 import { Transfer, TransferService } from '../../transfer';
+import { AccountActions } from '../account';
 import { TransferActions } from './transfer.actions';
 
 export interface TransferStateModel {
@@ -64,5 +66,37 @@ export class TransferState {
       ...state,
       transfers: action.payload,
     });
+  }
+  
+  @Action(TransferActions.SaveTransfer)
+  saveTransfer(
+    ctx: StateContext<TransferStateModel>,
+    action: TransferActions.SaveTransfer
+  ) {
+    let transfer: Transfer = action.payload;
+    this.transferService.createNewTransfer(transfer);
+
+    let fromAccount: Account = {
+      accountType: transfer.fromAccount.accountType,
+      color: transfer.fromAccount.color,
+      currentBalance: transfer.fromAccount.currentBalance - transfer.amount,
+      name: transfer.fromAccount.name,
+      image: transfer.fromAccount.image,
+      key: transfer.fromAccount.key,
+      sumsToMonthlyBudget: transfer.fromAccount.sumsToMonthlyBudget
+    };
+    ctx.dispatch(new AccountActions.SaveAccount(fromAccount));
+    
+    let toAccount: Account = {
+      accountType: transfer.toAccount.accountType,
+      color: transfer.toAccount.color,
+      currentBalance: transfer.toAccount.currentBalance + transfer.amount,
+      name: transfer.toAccount.name,
+      image: transfer.toAccount.image,
+      key: transfer.toAccount.key,
+      sumsToMonthlyBudget: transfer.toAccount.sumsToMonthlyBudget
+    };
+    ctx.dispatch(new AccountActions.SaveAccount(toAccount));
+
   }
 }

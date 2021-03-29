@@ -8,7 +8,7 @@ export interface Transaction {
   date: Date;
   category?: Category;
   account?: Account;
-  transferAccount?: String;
+  transferAccount?: Account;
   notes?: String;
   applied?: Boolean;
 }
