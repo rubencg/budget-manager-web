@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as Chart from 'chart.js';
-import { AccountActions } from './state';
+import { AccountActions, CategoryActions } from './state';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +20,7 @@ export class AppComponent {
     this.store.dispatch(AccountActions.Get);
     this.store.dispatch(AccountActions.GetTypes);
     this.store.dispatch(AccountActions.GetArchivedAccounts);
+    this.store.dispatch(CategoryActions.GetExpenseCategories);
     
   }
 

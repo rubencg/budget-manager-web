@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { Category, CategoryTypes } from 'src/app/category';
 import { CreateCategoryComponent } from '../dialogs';
 import { DeleteCategoryComponent } from '../dialogs/delete-category/delete-category.component';
@@ -20,9 +21,9 @@ export class CategoriesTableComponent implements OnInit {
     'name',
     'actions',
   ];
-  @Input() data: Category[] = [];
+  @Input() data: Observable<Category[]>;
   @Input() categoryType: CategoryTypes;
-  dataSource = new MatTableDataSource<Category>(this.data);
+  dataSource = new MatTableDataSource<Category>();
   
   constructor(public dialog: MatDialog) { }
   
@@ -30,7 +31,11 @@ export class CategoriesTableComponent implements OnInit {
   }
   
   ngAfterViewInit() {
-    this.dataSource = new MatTableDataSource<Category>(this.data);
+    this.data.subscribe(
+      (state) => {
+        this.dataSource = new MatTableDataSource<Category>(state);
+      }
+    )
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }

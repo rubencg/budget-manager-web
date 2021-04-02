@@ -67,7 +67,6 @@ export let ExpenseCategoryIcons: String[] = [
   'first-aid',
   'football-ball',
   'futbol',
-  'gamepad',
   'gas-pump',
   'gift',
   'glass-cheers',

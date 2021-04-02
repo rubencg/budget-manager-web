@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoryTypes } from 'src/app/category';
+import { Store } from '@ngxs/store';
+import { Category, CategoryTypes } from 'src/app/category';
+import { CategoryActions } from 'src/app/state';
 import { CreateCategoryComponent } from '../dialogs';
 
 @Component({
@@ -11,7 +13,7 @@ import { CreateCategoryComponent } from '../dialogs';
 export class CategoriesHeaderComponent implements OnInit {
   @Input() categoryType: CategoryTypes;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public store: Store) { }
 
   ngOnInit(): void {
   }
@@ -25,11 +27,11 @@ export class CategoriesHeaderComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Created category', result);
-      } else {
-        console.log('Nothing was created');
+    dialogRef.afterClosed().subscribe((category: Category) => {
+      if (category) {
+        if(this.categoryType == CategoryTypes.Expense){
+          this.store.dispatch(new CategoryActions.SaveExpenseCategory(category));
+        }
       }
     });
   }

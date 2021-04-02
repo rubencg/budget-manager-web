@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { map } from 'rxjs/operators';
 import {
   Category,
   ExpenseCategoryService,
@@ -37,43 +36,14 @@ export class CategoryState {
     return state.expenseCategories;
   }
 
+  /* Income Categories */
   @Action(CategoryActions.GetIncomeCategories)
   getAllIncomeCategories(context: StateContext<CategoryStateModel>) {
     this.incomeCategoryService
       .getAll()
-      .pipe(
-        map(this.getCategories)
-      )
-      .subscribe((incomes: Category[]) =>
-        context.dispatch(new CategoryActions.GetIncomeCategorySuccess(incomes))
-      );
-  }
-
-  getCategories = (apiCategories) => {
-    let data: Category[] = [];
-
-    apiCategories.forEach((apiCategory: any) => {
-      data.push({
-        image: apiCategory.image,
-        name: apiCategory.name,
-        color: apiCategory.color,
-        subcategories: apiCategory.subcategories
-      });
-    });
-
-    return data;
-  };
-
-  @Action(CategoryActions.GetExpenseCategories)
-  getAllExpenseCategories(context: StateContext<CategoryStateModel>) {
-    this.expenseCategoryService
-      .getAll()
-      .pipe(
-        map(this.getCategories)
-      )
-      .subscribe((expenseCategories: Category[]) =>
+      .subscribe((categories: Category[]) =>
         context.dispatch(
-          new CategoryActions.GetExpenseCategorySuccess(expenseCategories)
+          new CategoryActions.GetIncomeCategorySuccess(categories)
         )
       );
   }
@@ -89,6 +59,19 @@ export class CategoryState {
       incomeCategories: action.payload,
     });
   }
+  /* Ends Income Categories */
+
+  /* Expense Categories */
+  @Action(CategoryActions.GetExpenseCategories)
+  getAllExpenseCategories(context: StateContext<CategoryStateModel>) {
+    this.expenseCategoryService
+      .getAll()
+      .subscribe((categories: Category[]) =>
+        context.dispatch(
+          new CategoryActions.GetExpenseCategorySuccess(categories)
+        )
+      );
+  }
 
   @Action(CategoryActions.GetExpenseCategorySuccess)
   expenseCategoriesLoaded(
@@ -101,4 +84,17 @@ export class CategoryState {
       expenseCategories: action.payload,
     });
   }
+
+  @Action(CategoryActions.SaveExpenseCategory)
+  saveExpenseCategory(context: StateContext<CategoryStateModel>,
+    action: CategoryActions.SaveExpenseCategory){
+      const category: Category = action.payload;
+      // Update 
+      if(category.key){
+        this.expenseCategoryService.update(category);
+      } else { // Insert
+        this.expenseCategoryService.create(category);
+      }
+  }
+  /* Ends Expense Categories */
 }
