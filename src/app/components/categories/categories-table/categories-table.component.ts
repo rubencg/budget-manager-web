@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Category, CategoryTypes } from 'src/app/category';
+import { CategoryActions } from 'src/app/state';
 import { CreateCategoryComponent } from '../dialogs';
 import { DeleteCategoryComponent } from '../dialogs/delete-category/delete-category.component';
 import { SubcategoryComponent } from '../dialogs/subcategory/subcategory.component';
@@ -25,7 +27,7 @@ export class CategoriesTableComponent implements OnInit {
   @Input() categoryType: CategoryTypes;
   dataSource = new MatTableDataSource<Category>();
   
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public store: Store) { }
   
   ngOnInit(): void {
   }
@@ -50,11 +52,19 @@ export class CategoriesTableComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Edited category', result);
-      } else {
-        console.log('Nothing was edited');
+    dialogRef.afterClosed().subscribe((editedCategory: Category) => {
+      if (editedCategory) {
+        if(this.categoryType == CategoryTypes.Expense){
+          this.store.dispatch(new CategoryActions.SaveExpenseCategory({
+            image: editedCategory.image,
+            name: editedCategory.name,
+            subcategories: editedCategory.subcategories,
+            color: editedCategory.color,
+            key: category.key,
+          }));
+        }else{
+          // ToDo: Save income expense
+        }
       }
     });
     

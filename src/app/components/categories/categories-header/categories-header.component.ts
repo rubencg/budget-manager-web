@@ -31,6 +31,8 @@ export class CategoriesHeaderComponent implements OnInit {
       if (category) {
         if(this.categoryType == CategoryTypes.Expense){
           this.store.dispatch(new CategoryActions.SaveExpenseCategory(category));
+        }else{
+          // ToDo: Save income expense
         }
       }
     });
