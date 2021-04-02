@@ -96,5 +96,11 @@ export class CategoryState {
         this.expenseCategoryService.create(category);
       }
   }
+
+  @Action(CategoryActions.DeleteExpenseCategory)
+  deleteExpenseCategory(context: StateContext<CategoryStateModel>,
+    action: CategoryActions.DeleteExpenseCategory){
+      this.expenseCategoryService.delete(action.payload);
+  }
   /* Ends Expense Categories */
 }

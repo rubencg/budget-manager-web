@@ -28,5 +28,10 @@ export namespace CategoryActions{
     static readonly type = '[Expense Categories Page] SaveExpenseCategory';
     constructor(public payload: Category) {}
   }
+
+  export class DeleteExpenseCategory {
+    static readonly type = '[Expense Categories Page] DeleteExpenseCategory';
+    constructor(public payload: Category) {}
+  }
   /* Ends Expense Categories */
 }

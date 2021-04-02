@@ -99,9 +99,11 @@ export class CategoriesTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Deleted category', result);
-      } else {
-        console.log('Nothing was deleted');
+          if(this.categoryType == CategoryTypes.Expense){
+            this.store.dispatch(new CategoryActions.DeleteExpenseCategory(category));
+          }else{
+            // ToDo: Delete income expense
+          }
       }
     });
   }
