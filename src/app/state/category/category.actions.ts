@@ -11,6 +11,16 @@ export namespace CategoryActions{
     static readonly type = '[Firebase] IncomeCategoriesLoaded';
     constructor(public payload: Category[]) {}
   }
+
+  export class SaveIncomeCategory {
+    static readonly type = '[Income Categories Page] SaveIncomeCategory';
+    constructor(public payload: Category) {}
+  }
+
+  export class DeleteIncomeCategory {
+    static readonly type = '[Income Categories Page] DeleteIncomeCategory';
+    constructor(public payload: Category) {}
+  }
   /* Ends Income Categories */
   
   /* Ends Expense Categories */

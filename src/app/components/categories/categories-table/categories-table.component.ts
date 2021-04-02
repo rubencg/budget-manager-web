@@ -65,7 +65,7 @@ export class CategoriesTableComponent implements OnInit {
         if(this.categoryType == CategoryTypes.Expense){
           this.store.dispatch(new CategoryActions.SaveExpenseCategory(saveEditedCategory));
         }else{
-          // ToDo: Save income expense
+          this.store.dispatch(new CategoryActions.SaveIncomeCategory(saveEditedCategory));
         }
       }
     });
@@ -98,7 +98,7 @@ export class CategoriesTableComponent implements OnInit {
         if(this.categoryType == CategoryTypes.Expense){
           this.store.dispatch(new CategoryActions.SaveExpenseCategory(editedCategory));
         }else{
-          // ToDo: Save income expense
+          this.store.dispatch(new CategoryActions.SaveIncomeCategory(editedCategory));
         }
       }
     });
@@ -117,7 +117,7 @@ export class CategoriesTableComponent implements OnInit {
           if(this.categoryType == CategoryTypes.Expense){
             this.store.dispatch(new CategoryActions.DeleteExpenseCategory(category));
           }else{
-            // ToDo: Delete income expense
+            this.store.dispatch(new CategoryActions.DeleteIncomeCategory(category));
           }
       }
     });

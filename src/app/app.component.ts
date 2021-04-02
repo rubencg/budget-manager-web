@@ -21,6 +21,7 @@ export class AppComponent {
     this.store.dispatch(AccountActions.GetTypes);
     this.store.dispatch(AccountActions.GetArchivedAccounts);
     this.store.dispatch(CategoryActions.GetExpenseCategories);
+    this.store.dispatch(CategoryActions.GetIncomeCategories);
     
   }
 

@@ -59,6 +59,24 @@ export class CategoryState {
       incomeCategories: action.payload,
     });
   }
+
+  @Action(CategoryActions.SaveIncomeCategory)
+  saveIncomeCategory(context: StateContext<CategoryStateModel>,
+    action: CategoryActions.SaveIncomeCategory){
+      const category: Category = action.payload;
+      // Update 
+      if(category.key){
+        this.incomeCategoryService.update(category);
+      } else { // Insert
+        this.incomeCategoryService.create(category);
+      }
+  }
+
+  @Action(CategoryActions.DeleteIncomeCategory)
+  deleteIncomeCategory(context: StateContext<CategoryStateModel>,
+    action: CategoryActions.DeleteIncomeCategory){
+      this.incomeCategoryService.delete(action.payload);
+  }
   /* Ends Income Categories */
 
   /* Expense Categories */

@@ -32,7 +32,7 @@ export class CategoriesHeaderComponent implements OnInit {
         if(this.categoryType == CategoryTypes.Expense){
           this.store.dispatch(new CategoryActions.SaveExpenseCategory(category));
         }else{
-          // ToDo: Save income expense
+          this.store.dispatch(new CategoryActions.SaveIncomeCategory(category));
         }
       }
     });
