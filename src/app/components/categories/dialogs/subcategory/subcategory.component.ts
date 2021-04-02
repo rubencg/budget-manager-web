@@ -23,12 +23,9 @@ export class SubcategoryComponent implements OnInit {
   }
 
   save() {
-    this.category.subcategories.push(this.form.get('name').value);
-
-    this.dialogRef.close({
-      category: this.category,
-      categoryType: this.categoryType
-    });
+    this.dialogRef.close(
+      this.form.get('name').value
+    );
   }
 
   form: FormGroup = new FormGroup({

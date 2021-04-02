@@ -54,14 +54,16 @@ export class CategoriesTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((editedCategory: Category) => {
       if (editedCategory) {
+        let saveEditedCategory = {
+          image: editedCategory.image,
+          name: editedCategory.name,
+          subcategories: editedCategory.subcategories,
+          color: editedCategory.color,
+          key: category.key,
+        };
+
         if(this.categoryType == CategoryTypes.Expense){
-          this.store.dispatch(new CategoryActions.SaveExpenseCategory({
-            image: editedCategory.image,
-            name: editedCategory.name,
-            subcategories: editedCategory.subcategories,
-            color: editedCategory.color,
-            key: category.key,
-          }));
+          this.store.dispatch(new CategoryActions.SaveExpenseCategory(saveEditedCategory));
         }else{
           // ToDo: Save income expense
         }
@@ -82,9 +84,22 @@ export class CategoriesTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Added subcategory', result);
-      } else {
-        console.log('Nothing was added');
+        let subCategories = Object.assign([], category.subcategories);
+        subCategories.push(result);
+
+        let editedCategory: Category = {
+          image: category.image,
+          name: category.name,
+          subcategories: subCategories,
+          color: category.color,
+          key: category.key,
+        };
+        
+        if(this.categoryType == CategoryTypes.Expense){
+          this.store.dispatch(new CategoryActions.SaveExpenseCategory(editedCategory));
+        }else{
+          // ToDo: Save income expense
+        }
       }
     });
     
