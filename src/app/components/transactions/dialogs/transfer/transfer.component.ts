@@ -105,7 +105,8 @@ export class TransferComponent implements OnInit {
       amount: transaction.amount,
       date: transaction.date,
       fromAccount: transaction.account,
-      toAccount: transaction.transferAccount
+      toAccount: transaction.transferAccount,
+      notes: this.form.get('notes').value
     };
 
     this.store.dispatch(new TransferActions.SaveTransfer(transfer));

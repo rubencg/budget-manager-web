@@ -5,5 +5,6 @@ export interface Transfer{
     date: Date,
     fromAccount: Account,
     toAccount: Account,
+    notes?: string,
     key?: string
 }

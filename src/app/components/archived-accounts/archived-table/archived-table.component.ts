@@ -20,14 +20,15 @@ export class ArchivedTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Account>([]);
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    
   }
 
   constructor(public store: Store) {
     this.archivedAccounts$.subscribe(
       (state) => {
         this.dataSource = new MatTableDataSource<Account>(state);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       }
     )
   }

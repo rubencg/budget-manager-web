@@ -36,10 +36,10 @@ export class CategoriesTableComponent implements OnInit {
     this.data.subscribe(
       (state) => {
         this.dataSource = new MatTableDataSource<Category>(state);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       }
     )
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   editCategory(category: Category){
