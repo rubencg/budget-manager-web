@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
 import { ApplyTransactionComponent, ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
 import { Select, Store } from '@ngxs/store';
-import { TransferState } from 'src/app/state';
+import { IncomeState, TransferState } from 'src/app/state';
 import { Observable } from 'rxjs';
 
 const ELEMENT_DATA: Transaction[] = [
@@ -184,15 +184,18 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   @Select(TransferState.selectTransactionsForMonth(new Date()))
   transfers$: Observable<Transaction[]>;
+  @Select(IncomeState.selectTransactionsForMonth(new Date()))
+  incomes$: Observable<Transaction[]>;
+
   constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit(): void {
-    this.transfers$.subscribe((t: Transaction[]) => {
-      console.log('filteredTransactions',t);
-      
-      this.dataSource = new MatTableDataSource<Transaction>(t);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+    this.transfers$.subscribe((transfers: Transaction[]) => {
+      this.incomes$.subscribe((incomes: Transaction[]) => {
+        this.dataSource = new MatTableDataSource<Transaction>(transfers.concat(incomes));
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      })
     });
   }
 

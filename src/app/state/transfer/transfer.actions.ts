@@ -13,7 +13,7 @@ export namespace TransferActions{
   }
   
   export class GetTransactionsSuccess {
-    static readonly type = '[Firebase] TransactionsLoaded';
+    static readonly type = '[Firebase] TransferTransactionsLoaded';
     constructor(public payload: Transaction[]) {}
   }
   

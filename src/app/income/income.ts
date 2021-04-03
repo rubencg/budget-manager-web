@@ -5,6 +5,7 @@ export interface Income{
     amount: number,
     date?: Date,
     isApplied?: Boolean,
+    key?: string,
     notes?: String,
     toAccount?: Account,
     category?: Category,

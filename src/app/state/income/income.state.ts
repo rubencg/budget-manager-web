@@ -1,58 +1,72 @@
 import { Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { State, Action, Selector, StateContext, createSelector } from '@ngxs/store';
 import { map } from 'rxjs/operators';
 import { Income, IncomeService } from 'src/app/income';
+import { Transaction, TransactionTypes } from 'src/app/models';
 import { IncomeActions } from './income.actions';
 
 export interface IncomeStateModel {
   incomes: Income[];
+  transactions: Transaction[];
 }
 
 @State<IncomeStateModel>({
   name: 'incomeState',
   defaults: {
     incomes: [],
+    transactions: [],
   },
 })
 @Injectable()
 export class IncomeState {
   constructor(private incomeService: IncomeService) {}
 
-  @Selector()
-  static selectIncomes(state: IncomeStateModel) {
-    return state.incomes;
+  static selectTransactionsForMonth(date: Date) {
+    return createSelector([IncomeState], (state: IncomeStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear()
+      )
+    );
   }
 
   @Action(IncomeActions.Get)
   getAllIncomes(context: StateContext<IncomeStateModel>) {
     this.incomeService
       .getAll()
-      .pipe(
-        map((apiIncomes) => {
-          let data: Income[] = [];
-
-          apiIncomes.forEach((apiIncome: any) => {
-            data.push({
-              amount: apiIncome.amount,
-              date: new Date(+apiIncome.date),
-              isApplied: apiIncome.isApplied,
-              notes: apiIncome.notes,
-              toAccount: {
-                image: apiIncome.img,
-                name: apiIncome.name,
-              },
-              category: {
-                image: apiIncome.category.img,
-                name: apiIncome.category.name,
-              },
+      .subscribe((inputIncomes: Income[]) =>
+        {
+          let incomes: Income[] = [];
+          inputIncomes.forEach((t) => {
+            incomes.push({
+              amount: t.amount,
+              date: new Date(t.date),
+              toAccount: t.toAccount,
+              category: t.category,
+              subCategory: t.subCategory,
+              isApplied: t.isApplied,
+              key: t.key,
+              notes: t.notes,
             });
           });
-
-          return data;
-        })
-      )
-      .subscribe((incomes: Income[]) =>
-        context.dispatch(new IncomeActions.GetSuccess(incomes))
+          context.dispatch(new IncomeActions.GetSuccess(incomes));
+          
+          let transactions: Transaction[] = [];
+          incomes.forEach((t) => {
+            transactions.push({
+              category: t.category,
+              applied: t.isApplied,
+              amount: t.amount,
+              date: new Date(t.date),
+              account: t.toAccount,
+              key: t.key,
+              notes: t.notes,
+              type: TransactionTypes.Income,
+            });
+          });
+          context.dispatch(new IncomeActions.GetTransactionsSuccess(transactions));
+        }
       );
   }
 
@@ -65,6 +79,18 @@ export class IncomeState {
     ctx.setState({
       ...state,
       incomes: action.payload,
+    });
+  }
+
+  @Action(IncomeActions.GetTransactionsSuccess)
+  TransactionsLoaded(
+    ctx: StateContext<IncomeStateModel>,
+    action: IncomeActions.GetTransactionsSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      transactions: action.payload,
     });
   }
 }
