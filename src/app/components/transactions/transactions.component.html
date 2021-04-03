@@ -1,2 +1,2 @@
-<transactions-header></transactions-header>
-<transactions-table></transactions-table>
+<transactions-header [date]="date" (onMonthIncreased)="monthIncreased()" (onMonthDecreased)="monthDecreased()"></transactions-header>
+<transactions-table [date]="date" #transactionsTable></transactions-table>

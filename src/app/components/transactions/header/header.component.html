@@ -1,6 +1,6 @@
 <div class="header">
     <div>
-        <h2>Febrero 2021</h2>
+        <h2>{{date | date : 'MMMM yyyy' : undefined :'es-ES'}}</h2>
     </div>
     <div class="header-buttons disable-select">
         <div [ngClass]="['header-button', searchOpen ? 'active' : '']">
@@ -18,10 +18,10 @@
         <div class="header-button" (click)="createFilterDialog()" matTooltip="Filtrar transacciones">
             <fa-icon [icon]="['fas', 'filter']"></fa-icon>
         </div>
-        <div class="header-button" matTooltip="Mes anterior">
+        <div class="header-button" matTooltip="Mes anterior" (click)="decreaseMonth()">
             <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
         </div>
-        <div class="header-button" matTooltip="Nes siguiente">
+        <div class="header-button" matTooltip="Nes siguiente" (click)="increaseMonth()">
             <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
         </div>
     </div>

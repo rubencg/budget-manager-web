@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
@@ -9,9 +9,16 @@ import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent 
 })
 export class HeaderComponent implements OnInit {
   /* Animations */
+  @Input() date: Date;
+  @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();
+  @Output() onMonthDecreased: EventEmitter<any> = new EventEmitter();
   @ViewChild('searchInput') searchInput;
   searchOpen = false;
   searchText: String;
+  constructor(public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+  }
 
   displaySearch($event) {
     let input = this.searchInput.nativeElement;
@@ -31,11 +38,13 @@ export class HeaderComponent implements OnInit {
     var style = window.getComputedStyle(el);
     return style.display === 'none';
   }
-  /* End of Animations */
 
-  constructor(public dialog: MatDialog) { }
+  decreaseMonth(){
+    this.onMonthDecreased.emit(null);
+  }
   
-  ngOnInit(): void {
+  increaseMonth(){
+    this.onMonthIncreased.emit(null);
   }
 
   createIncomeDialog(){
