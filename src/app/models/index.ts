@@ -9,3 +9,4 @@ export * from './category-icon';
 export * from './date-types';
 export * from './pie-element';
 export * from './line-element';
+export * from './transaction-types';

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement, Transaction } from 'src/app/models';
+import { AutocompleteElement, Transaction, TransactionTypes } from 'src/app/models';
 
 @Component({
   selector: 'app-apply.transaction',
@@ -17,7 +17,7 @@ export class ApplyTransactionComponent implements OnInit {
     public dialogRef: MatDialogRef<ApplyTransactionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Transaction
   ) {
-    this.isIncome = this.data.type == 'income';
+    this.isIncome = this.data.type == TransactionTypes.Income;
 
     this.filteredAccounts = this.accountCtrl.valueChanges.pipe(
       startWith(''),

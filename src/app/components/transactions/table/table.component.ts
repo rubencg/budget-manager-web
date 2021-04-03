@@ -1,15 +1,18 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Transaction } from 'src/app/models';
+import { Transaction, TransactionTypes } from 'src/app/models';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
 import { ApplyTransactionComponent, ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import { Select, Store } from '@ngxs/store';
+import { TransferState } from 'src/app/state';
+import { Observable } from 'rxjs';
 
 const ELEMENT_DATA: Transaction[] = [
   {
-    type: 'expense',
+    type: TransactionTypes.Expense,
     applied: false,
     amount: 157.64,
     date: new Date(2020, 1, 3),
@@ -26,7 +29,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'income',
+    type: TransactionTypes.Income,
     applied: false,
     amount: 200.64,
     date: new Date(2021, 2, 3),
@@ -43,7 +46,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'transfer',
+    type: TransactionTypes.Transfer,
     applied: true,
     amount: 100.59,
     date: new Date(2020, 2, 4),
@@ -64,7 +67,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'expense',
+    type: TransactionTypes.Expense,
     applied: true,
     amount: 257.64,
     date: new Date(2020, 1, 5),
@@ -80,7 +83,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'income',
+    type: TransactionTypes.Income,
     applied: true,
     amount: 300.64,
     date: new Date(2021, 2, 6),
@@ -96,7 +99,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'expense',
+    type: TransactionTypes.Expense,
     applied: true,
     amount: 457.64,
     date: new Date(2020, 1, 7),
@@ -112,7 +115,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'income',
+    type: TransactionTypes.Income,
     applied: true,
     amount: 500.64,
     date: new Date(2021, 2, 8),
@@ -128,7 +131,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'expense',
+    type: TransactionTypes.Expense,
     applied: true,
     amount: 657.64,
     date: new Date(2020, 1, 9),
@@ -144,7 +147,7 @@ const ELEMENT_DATA: Transaction[] = [
     },
   },
   {
-    type: 'income',
+    type: TransactionTypes.Income,
     applied: true,
     amount: 700.64,
     date: new Date(2021, 2, 10),
@@ -177,15 +180,23 @@ export class TableComponent implements AfterViewInit, OnInit {
     'notes',
     'actions',
   ];
-  dataSource = new MatTableDataSource<Transaction>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Transaction>();
 
-  constructor(public dialog: MatDialog) {}
+  @Select(TransferState.selectTransactionsForMonth(new Date()))
+  transfers$: Observable<Transaction[]>;
+  constructor(public dialog: MatDialog, public store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.transfers$.subscribe((t: Transaction[]) => {
+      console.log('filteredTransactions',t);
+      
+      this.dataSource = new MatTableDataSource<Transaction>(t);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+  }
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   deleteDialog(transaction: Transaction) {
@@ -205,7 +216,7 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   editTransaction(transaction: Transaction) {
     switch (transaction.type) {
-      case 'expense':
+      case TransactionTypes.Expense:
         const expenseDialogRef = this.dialog.open(ExpenseComponent, {
           data: transaction,
           maxWidth: '600px',
@@ -220,7 +231,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           }
         });
         break;
-      case 'transfer':
+      case TransactionTypes.Transfer:
         const transferDialogRef = this.dialog.open(TransferComponent, {
           data: transaction,
           maxWidth: '600px',
@@ -235,7 +246,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           }
         });
         break;
-      case 'income':
+      case TransactionTypes.Income:
         const incomeDialogRef = this.dialog.open(IncomeComponent, {
           data: transaction,
           maxWidth: '600px',
@@ -255,11 +266,11 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   getAmountClassByType(transaction: Transaction) {
     switch (transaction.type) {
-      case 'expense':
+      case TransactionTypes.Expense:
         return 'expense-amount';
-      case 'transfer':
+      case TransactionTypes.Transfer:
         return 'transfer-amount';
-      case 'income':
+      case TransactionTypes.Income:
         return 'income-amount';
       default:
         return '';

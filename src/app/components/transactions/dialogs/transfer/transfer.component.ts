@@ -9,7 +9,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { Account } from 'src/app/account';
-import { Transaction } from 'src/app/models';
+import { Transaction, TransactionTypes } from 'src/app/models';
 import { AccountState, TransferActions } from 'src/app/state';
 import { Transfer } from 'src/app/transfer';
 
@@ -94,7 +94,7 @@ export class TransferComponent implements OnInit {
   save() {
     let transaction: Transaction = {
       amount: this.form.get('amount').value,
-      type: 'transfer',
+      type: TransactionTypes.Transfer,
       date: this.form.get('date').value,
       account: this.originAccountCtrl.value,
       transferAccount: this.destinationAccountCtrl.value,

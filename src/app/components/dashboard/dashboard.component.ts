@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MonthlyBudget, TopExpense, Transaction } from 'src/app/models';
+import { MonthlyBudget, TopExpense, Transaction, TransactionTypes } from 'src/app/models';
 
 @Component({
   selector: 'dashboard',
@@ -21,19 +21,19 @@ export class DashboardComponent implements OnInit {
   ];
   transactions: Transaction[] = [
     {
-      type: 'expense',
+      type: TransactionTypes.Expense,
       title: 'Uber',
       amount: 50.45,
       date: new Date(2020, 0, 5),
     },
     {
-      type: 'transfer',
+      type: TransactionTypes.Transfer,
       title: 'Ruben Credito a Ruben Debito',
       amount: 1345,
       date: new Date(2020, 0, 4),
     },
     {
-      type: 'income',
+      type: TransactionTypes.Income,
       title: 'Salario',
       amount: 1000,
       date: new Date(2020, 0, 2),

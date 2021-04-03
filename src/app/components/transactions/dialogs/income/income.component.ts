@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement, Transaction } from 'src/app/models';
+import { AutocompleteElement, Transaction, TransactionTypes } from 'src/app/models';
 
 @Component({
   selector: 'app-income',
@@ -115,7 +115,7 @@ export class IncomeComponent implements OnInit {
   save(){
     let transaction: Transaction = {
       amount: this.form.get('amount').value,
-      type: 'income',
+      type: TransactionTypes.Income,
       date: this.form.get('date').value,
       account: this.form.get('account').value,
       category: this.form.get('category').value,
