@@ -15,9 +15,10 @@
             <button mat-menu-item (click)="createExpenseDialog()">Agregar gasto</button>
             <button mat-menu-item (click)="createTransferDialog()">Agregar transferencia</button>
         </mat-menu>
-        <div class="header-button" (click)="createFilterDialog()" matTooltip="Filtrar transacciones">
+        <!-- Removed for now, will introduce in a later time -->
+        <!-- <div class="header-button" (click)="createFilterDialog()" matTooltip="Filtrar transacciones">
             <fa-icon [icon]="['fas', 'filter']"></fa-icon>
-        </div>
+        </div> -->
         <div class="header-button" matTooltip="Mes anterior" (click)="decreaseMonth()">
             <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
         </div>
