@@ -66,11 +66,25 @@ export class TableComponent implements AfterViewInit, OnInit {
           this.dataSource = new MatTableDataSource<Transaction>(
             transfers.concat(incomes).concat(expenses).sort(compareTransactions)
           );
+          this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
+            const category: string = data.category ? data.category.name.toString() : '';
+            const amount: string = data.amount ? data.amount.toString() : '';
+            const account: string = data.account ? data.account.name.toString() : '';
+            const transferAccount: string = data.transferAccount ? data.transferAccount.name.toString() : '';
+            const notes: string = data.notes ? data.notes.toString() : '';
+
+            const transactionData = category.concat(amount).concat(account).concat(transferAccount).concat(notes);
+            return !filter || transactionData.toLowerCase().indexOf(filter) != -1;
+          };
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
         });
       });
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   ngAfterViewInit() {}

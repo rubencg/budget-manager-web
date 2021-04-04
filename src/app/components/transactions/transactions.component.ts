@@ -25,4 +25,8 @@ export class TransactionsComponent implements OnInit {
     this.transactionsTable.loadTable(this.date);
   }
 
+  onTextChanged(value: string){
+    this.transactionsTable.applyFilter(value);
+  }
+
 }

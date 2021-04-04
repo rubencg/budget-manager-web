@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   @Input() date: Date;
   @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();
   @Output() onMonthDecreased: EventEmitter<any> = new EventEmitter();
+  @Output() onTextChanged: EventEmitter<string> = new EventEmitter();
   @ViewChild('searchInput') searchInput;
   searchOpen = false;
   searchText: String;
@@ -45,6 +46,11 @@ export class HeaderComponent implements OnInit {
   
   increaseMonth(){
     this.onMonthIncreased.emit(null);
+  }
+
+  onFilterTextChanged($event){
+    const filterValue = ($event.target as HTMLInputElement).value;
+    this.onTextChanged.emit(filterValue);
   }
 
   createIncomeDialog(){
