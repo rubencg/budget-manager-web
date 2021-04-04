@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
+import { Income } from 'src/app/income';
+import { Transaction } from 'src/app/models';
+import { IncomeActions } from 'src/app/state';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
@@ -16,7 +20,7 @@ export class HeaderComponent implements OnInit {
   @ViewChild('searchInput') searchInput;
   searchOpen = false;
   searchText: String;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public store: Store) { }
 
   ngOnInit(): void {
   }
@@ -59,11 +63,9 @@ export class HeaderComponent implements OnInit {
       width: 'calc(100% - 64px)'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        console.log('Created income', result);
-      }else{
-        console.log('Nothing was created');
+    dialogRef.afterClosed().subscribe((incomeTransaction: Transaction) => {
+      if(incomeTransaction){
+        this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
       }
     });
   }

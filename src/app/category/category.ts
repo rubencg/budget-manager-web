@@ -3,5 +3,5 @@ export interface Category{
     image: String,
     color?: String,
     key?: string,
-    subcategories?: String[]
+    subcategories?: string[]
 }

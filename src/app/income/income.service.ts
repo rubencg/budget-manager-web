@@ -28,7 +28,20 @@ export class IncomeService {
   }
 
   create(income: Income) {
-    this.db.list(this.incomesUrl).push(income);
+    this.db.list(this.incomesUrl).push({
+      amount: income.amount,
+      category: {
+        image: income.category.image,
+        name: income.category.name,
+        color: income.category.color,
+        subcategories: income.category.subcategories
+      },
+      date: income.date.toISOString(),
+      isApplied: income.isApplied,
+      notes: income.notes,
+      subCategory: income.subCategory,
+      toAccount: income.toAccount,
+    });
   }
 
   delete(income: Income): Promise<void> {

@@ -5,7 +5,8 @@ import { TransactionTypes } from "./transaction-types";
 export interface Transaction {
   type: TransactionTypes;
   title?: String;
-  key?: String;
+  key?: string;
+  subcategory?: string;
   amount: number;
   date: Date;
   category?: Category;

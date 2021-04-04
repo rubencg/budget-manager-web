@@ -106,7 +106,7 @@ export class CreateCategoryComponent implements OnInit {
 
   /* Start subcategories chips */
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  subcategories: String[] = [];
+  subcategories: string[] = [];
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -123,7 +123,7 @@ export class CreateCategoryComponent implements OnInit {
     }
   }
 
-  remove(subcategory: String): void {
+  remove(subcategory: string): void {
     const index = this.subcategories.indexOf(subcategory);
 
     if (index >= 0) {

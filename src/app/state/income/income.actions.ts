@@ -16,4 +16,9 @@ export namespace IncomeActions{
     static readonly type = '[Firebase] IncomesLoaded';
     constructor(public payload: Income[]) {}
   }
+
+  export class SaveIncomeTransaction {
+    static readonly type = '[TransactionsPage] IncomeCreated';
+    constructor(public payload: Transaction) {}
+  }
 }

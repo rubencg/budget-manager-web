@@ -23,9 +23,9 @@
             </span>
             <mat-label>Categoria</mat-label>
             <input matInput [matAutocomplete]="autoCategory" formControlName="category">
-            <mat-autocomplete #autoCategory="matAutocomplete">
+            <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayFn" (optionSelected)="categorySelected($event)">
                 <mat-option class="autocomplete-option" *ngFor="let category of filteredCategories | async"
-                    [value]="category.name">
+                    [value]="category">
                     <div class="element-circle" [ngStyle]="{'background-color':category.color}">
                         <fa-icon [icon]="['fas', category.image]"></fa-icon>
                     </div>
@@ -39,13 +39,26 @@
             </span>
             <mat-label>Cuenta</mat-label>
             <input matInput [matAutocomplete]="autoAccount" formControlName="account">
-            <mat-autocomplete #autoAccount="matAutocomplete">
+            <mat-autocomplete #autoAccount="matAutocomplete" [displayWith]="displayAccountFn">
                 <mat-option class="autocomplete-option" *ngFor="let account of filteredAccounts | async"
-                    [value]="account.name">
+                    [value]="account">
                     <div class="element-circle" [ngStyle]="{'background-color':account.color}">
                         <fa-icon [icon]="['fas', account.image]"></fa-icon>
                     </div>
                     <span>{{account.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
+            <mat-label>Subcategoria</mat-label>
+            <input matInput [matAutocomplete]="autoSubcategory" formControlName="subcategory">
+            <mat-autocomplete #autoSubcategory="matAutocomplete">
+                <mat-option class="autocomplete-option" *ngFor="let subcategory of filteredSubcategories | async"
+                    [value]="subcategory">
+                    <span>{{subcategory}}</span>
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
