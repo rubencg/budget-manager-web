@@ -71,7 +71,7 @@ export class TransferState {
   }
 
   @Action(TransferActions.GetSuccess)
-  TransfersLoaded(
+  transfersLoaded(
     ctx: StateContext<TransferStateModel>,
     action: TransferActions.GetSuccess
   ) {
@@ -83,7 +83,7 @@ export class TransferState {
   }
 
   @Action(TransferActions.GetTransactionsSuccess)
-  TransactionsLoaded(
+  transactionsLoaded(
     ctx: StateContext<TransferStateModel>,
     action: TransferActions.GetTransactionsSuccess
   ) {

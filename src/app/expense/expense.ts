@@ -4,7 +4,9 @@ import { Account } from '../account'
 export interface Expense{
     amount: number,
     date: Date,
-    notes: String,
+    isApplied?: Boolean,
+    notes?: String,
+    key?: string,
     fromAccount: Account,
     category: Category,
     subCategory?: String

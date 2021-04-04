@@ -1,13 +1,24 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteComponent } from '../dialogs/delete/delete.component';
-import { ApplyTransactionComponent, ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import {
+  ApplyTransactionComponent,
+  ExpenseComponent,
+  IncomeComponent,
+  TransferComponent,
+} from '../dialogs';
 import { Select, Store } from '@ngxs/store';
-import { IncomeState, TransferState } from 'src/app/state';
+import { ExpenseState, IncomeState, TransferState } from 'src/app/state';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -31,6 +42,7 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   transfers$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
+  expenses$: Observable<Transaction[]>;
 
   constructor(public dialog: MatDialog, public store: Store) {}
 
@@ -38,20 +50,30 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.loadTable(this.date);
   }
 
-  public loadTable(date: Date){
-    this.transfers$ = this.store.select(TransferState.selectTransactionsForMonth(date));
-    this.incomes$ = this.store.select(IncomeState.selectTransactionsForMonth(date));
+  public loadTable(date: Date) {
+    this.transfers$ = this.store.select(
+      TransferState.selectTransactionsForMonth(date)
+    );
+    this.incomes$ = this.store.select(
+      IncomeState.selectTransactionsForMonth(date)
+    );
+    this.expenses$ = this.store.select(
+      ExpenseState.selectTransactionsForMonth(date)
+    );
     this.transfers$.subscribe((transfers: Transaction[]) => {
       this.incomes$.subscribe((incomes: Transaction[]) => {
-        this.dataSource = new MatTableDataSource<Transaction>(transfers.concat(incomes).sort(compareTransactions));
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      })
+        this.expenses$.subscribe((expenses: Transaction[]) => {
+          this.dataSource = new MatTableDataSource<Transaction>(
+            transfers.concat(incomes).concat(expenses).sort(compareTransactions)
+          );
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        });
+      });
     });
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   deleteDialog(transaction: Transaction) {
     const dialogRef = this.dialog.open(DeleteComponent, {
@@ -75,7 +97,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           data: transaction,
           maxWidth: '600px',
           width: 'calc(100% - 64px)',
-          autoFocus: false
+          autoFocus: false,
         });
         expenseDialogRef.afterClosed().subscribe((result) => {
           if (result) {
@@ -90,7 +112,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           data: transaction,
           maxWidth: '600px',
           width: 'calc(100% - 64px)',
-          autoFocus: false
+          autoFocus: false,
         });
         transferDialogRef.afterClosed().subscribe((result) => {
           if (result) {
@@ -105,7 +127,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           data: transaction,
           maxWidth: '600px',
           width: 'calc(100% - 64px)',
-          autoFocus: false
+          autoFocus: false,
         });
         incomeDialogRef.afterClosed().subscribe((result) => {
           if (result) {
@@ -131,13 +153,16 @@ export class TableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  applyTransaction(transaction: Transaction){
-    const applyTransactionDialogRef = this.dialog.open(ApplyTransactionComponent, {
-      data: transaction,
-      maxWidth: '600px',
-      width: 'calc(100% - 64px)',
-      autoFocus: false
-    });
+  applyTransaction(transaction: Transaction) {
+    const applyTransactionDialogRef = this.dialog.open(
+      ApplyTransactionComponent,
+      {
+        data: transaction,
+        maxWidth: '600px',
+        width: 'calc(100% - 64px)',
+        autoFocus: false,
+      }
+    );
     applyTransactionDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Apply transaction', result);
@@ -148,11 +173,11 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 }
 
-function compareTransactions( a: Transaction, b: Transaction ) {
-  if ( a.date > b.date ){
+function compareTransactions(a: Transaction, b: Transaction) {
+  if (a.date > b.date) {
     return -1;
   }
-  if ( a.date < b.date ){
+  if (a.date < b.date) {
     return 1;
   }
   return 0;

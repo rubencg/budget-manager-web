@@ -83,7 +83,7 @@ export class IncomeState {
   }
 
   @Action(IncomeActions.GetTransactionsSuccess)
-  TransactionsLoaded(
+  transactionsLoaded(
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.GetTransactionsSuccess
   ) {
