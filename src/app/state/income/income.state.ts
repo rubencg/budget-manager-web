@@ -109,6 +109,19 @@ export class IncomeState {
     }));
   }
   
+  @Action(IncomeActions.ApplyIncomeTransaction)
+  applyIncome(
+    ctx: StateContext<IncomeStateModel>,
+    action: IncomeActions.ApplyIncomeTransaction
+  ) {
+    ctx.dispatch(new IncomeActions.SaveIncomeTransaction(action.payload));
+
+    ctx.dispatch(new AccountActions.AdjustAccountBalance({
+      accountKey: action.payload.account.key,
+      adjustment: action.payload.amount
+    }));
+  }
+  
   @Action(IncomeActions.SaveIncomeTransaction)
   saveIncomeTransaction(
     ctx: StateContext<IncomeStateModel>,
@@ -131,12 +144,12 @@ export class IncomeState {
     };
 
     if(action.payload.key){
-      if(income.isApplied){
-        let oldIncome: Income = ctx.getState().incomes.find(i => i.key == action.payload.key);
+      const stateIncome: Income = ctx.getState().incomes.find(i => i.key == action.payload.key);
 
+      if(stateIncome.isApplied){
         // Adjustment in same account
-        if(oldIncome.toAccount.key == income.toAccount.key){
-          let adjustment: number = income.amount - oldIncome.amount;
+        if(stateIncome.toAccount.key == income.toAccount.key){
+          let adjustment: number = income.amount - stateIncome.amount;
 
           this.store.dispatch(new AccountActions.AdjustAccountBalance({
             adjustment: adjustment,
@@ -144,8 +157,8 @@ export class IncomeState {
           }));
         } else { // Adjustment to different account
           this.store.dispatch(new AccountActions.AdjustAccountBalance({
-            adjustment: oldIncome.amount * -1,
-            accountKey: oldIncome.toAccount.key
+            adjustment: stateIncome.amount * -1,
+            accountKey: stateIncome.toAccount.key
           }));
           this.store.dispatch(new AccountActions.AdjustAccountBalance({
             adjustment: income.amount,
@@ -153,6 +166,7 @@ export class IncomeState {
           }));
         }
       }
+      
       this.incomeService.update(income);
     }else{
       this.incomeService.create(income);

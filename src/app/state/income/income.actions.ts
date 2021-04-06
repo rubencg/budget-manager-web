@@ -22,6 +22,11 @@ export namespace IncomeActions{
     constructor(public payload: Transaction) {}
   }
 
+  export class ApplyIncomeTransaction {
+    static readonly type = '[TransactionsPage] IncomeApplied';
+    constructor(public payload: Transaction) {}
+  }
+
   export class DeleteIncome {
     static readonly type = '[TransactionsPage] DeleteIncome';
     constructor(public payload: Transaction) {}

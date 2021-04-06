@@ -23,9 +23,9 @@
             </span>
             <mat-label>Cuenta</mat-label>
             <input matInput [matAutocomplete]="autoAccount" formControlName="account">
-            <mat-autocomplete #autoAccount="matAutocomplete">
+            <mat-autocomplete #autoAccount="matAutocomplete" [displayWith]="displayAccountFn">
                 <mat-option class="autocomplete-option" *ngFor="let account of filteredAccounts | async"
-                    [value]="account.name">
+                    [value]="account">
                     <div class="element-circle" [ngStyle]="{'background-color':account.color}">
                         <fa-icon [icon]="['fas', account.image]"></fa-icon>
                     </div>

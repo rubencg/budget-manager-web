@@ -185,11 +185,18 @@ export class TableComponent implements AfterViewInit, OnInit {
         autoFocus: false,
       }
     );
-    applyTransactionDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Apply transaction', result);
-      } else {
-        console.log('Transaction not applied');
+    applyTransactionDialogRef.afterClosed().subscribe((transaction: Transaction) => {
+      if (transaction) {
+        switch (transaction.type) {
+          case TransactionTypes.Expense:
+            // ToDo: Expense
+            break;
+          case TransactionTypes.Income:
+            this.store.dispatch(new IncomeActions.ApplyIncomeTransaction(transaction));
+            return 'income-amount';
+          default:
+            return '';
+        }
       }
     });
   }

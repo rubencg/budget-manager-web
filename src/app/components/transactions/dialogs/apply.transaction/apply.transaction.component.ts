@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { AutocompleteElement, Transaction, TransactionTypes } from 'src/app/models';
+import { AccountState } from 'src/app/state';
 
 @Component({
   selector: 'app-apply.transaction',
@@ -21,22 +23,23 @@ export class ApplyTransactionComponent implements OnInit {
 
     this.filteredAccounts = this.accountCtrl.valueChanges.pipe(
       startWith(''),
-      map((account) =>
-        account
-          ? this._filterElements(account, this.accounts)
-          : this.accounts.slice()
-      )
+      map((value) => (typeof value === 'string' ? value : value.name)),
+      switchMap((val) => this._filterAccountElements(val))
     );
   }
 
-  private _filterElements(
-    value: string,
-    allElements: AutocompleteElement[]
-  ): AutocompleteElement[] {
-    const filterValue = value.toLowerCase();
+  @Select(AccountState.selectAccounts) accounts$: Observable<Account[]>;
+  filteredAccounts: Observable<Account[]>;
 
-    return allElements.filter(
-      (element) => element.name.toLowerCase().indexOf(filterValue) === 0
+  private _filterAccountElements(value: string): Observable<Account[]> {
+    return this.accounts$.pipe(
+      map((response) => {
+        return value
+          ? response.filter((account) =>
+              account.name.toLowerCase().includes(value.toLowerCase())
+            )
+          : response;
+      })
     );
   }
 
@@ -52,19 +55,9 @@ export class ApplyTransactionComponent implements OnInit {
     }
   }
 
-  filteredAccounts: Observable<AutocompleteElement[]>;
-  accounts: AutocompleteElement[] = [
-    {
-      image: 'money-bill',
-      color: '#32a852',
-      name: 'Ruben Efectivo',
-    },
-    {
-      image: 'money-check-alt',
-      color: '#328ba8',
-      name: 'Ruben Credito',
-    },
-  ];
+  displayAccountFn(account: Account) {
+    return account ? account.name : '';
+  }
 
   accountCtrl = new FormControl('', [Validators.required]);
   form: FormGroup = new FormGroup({
@@ -78,7 +71,12 @@ export class ApplyTransactionComponent implements OnInit {
       amount: this.form.get('amount').value,
       type: this.data.type,
       date: this.form.get('date').value,
-      account: this.form.get('account').value
+      account: this.form.get('account').value,
+      key: this.data.key,
+      category: this.data.category,
+      subcategory: this.data.subcategory,
+      notes: this.data.notes,
+      applied: true
     }
 
     this.dialogRef.close(transaction);
