@@ -1,3 +1,4 @@
+import { AdjustBalancePayload } from '.';
 import { Account, AccountType } from '../../account';
 
 export namespace AccountActions{
@@ -17,6 +18,11 @@ export namespace AccountActions{
     constructor(public payload: Account) {}
   }
   
+  export class AdjustAccountBalance {
+    static readonly type = '[Accounts Page] SaveAccount';
+    constructor(public payload: AdjustBalancePayload) {}
+  }
+
   export class ArchiveAccount {
     static readonly type = '[Accounts Page] ArchiveAccount';
     constructor(public payload: Account) {}

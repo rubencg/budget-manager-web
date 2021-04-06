@@ -5,6 +5,7 @@ import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { AccountActions } from './account.actions';
 import { AccountGroup } from 'src/app/models';
 import { from } from 'rxjs';
+import { AdjustBalancePayload } from './models/adjust-balance.payload';
 
 export class AccountStateModel {
   public accounts: Account[];
@@ -72,6 +73,17 @@ export class AccountState {
       const account: Account = action.payload;
       this.accountService.deleteAccount(account);
       this.accountService.createNewArchivedAccount(account);
+  }
+  
+  @Action(AccountActions.AdjustAccountBalance)
+  adjustAccountBalance(context: StateContext<AccountStateModel>,
+    action: AccountActions.AdjustAccountBalance){
+      const adjustment: AdjustBalancePayload = action.payload;
+      const stateAccount: Account = context.getState().accounts.find(i => i.key == adjustment.accountKey);
+      let account: Account =  { ... stateAccount};
+      account.currentBalance += adjustment.adjustment;
+
+      this.accountService.updateAccount(account);
   }
 
   @Action(AccountActions.UnarchiveAccount)

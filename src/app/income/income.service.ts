@@ -27,6 +27,18 @@ export class IncomeService {
       );
   }
 
+  update(income: Income): Promise<void> {
+    return this.db.list(this.incomesUrl).update(income.key, {
+      amount: income.amount,
+      category: income.category,
+      isApplied: income.isApplied,
+      notes: income.notes,
+      subCategory: income.subCategory,
+      toAccount: income.toAccount,
+      date: income.date.toISOString(),
+    });
+  }
+
   create(income: Income) {
     this.db.list(this.incomesUrl).push({
       amount: income.amount,

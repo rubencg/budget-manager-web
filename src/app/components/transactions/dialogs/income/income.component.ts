@@ -80,6 +80,8 @@ export class IncomeComponent implements OnInit {
     if(this.data != undefined && this.data != null){
       this.title = 'Editar ingreso';
       this.showMoreEnabled = false;
+      this.form.get('applied').disable();
+
       let transaction: Transaction = this.data;
       console.log(transaction.category);
       console.log(transaction.subcategory);
@@ -151,6 +153,7 @@ export class IncomeComponent implements OnInit {
       subcategory: this.form.get('subcategory').value,
       notes: this.form.get('notes').value,
       applied: this.form.get('applied').value,
+      key: this.data ? this.data.key : undefined
     }
 
     this.dialogRef.close(transaction);

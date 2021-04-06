@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, createSelector, Store } from '@ngxs/store';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Account } from 'src/app/account';
 import { Income, IncomeService } from 'src/app/income';
 import { Transaction, TransactionTypes } from 'src/app/models';
-import { AccountActions } from '../account';
+import { AccountActions, AccountStateModel } from '../account';
 import { IncomeActions } from './income.actions';
 
 export interface IncomeStateModel {
@@ -115,16 +115,44 @@ export class IncomeState {
       notes: action.payload.notes,
       subCategory: action.payload.subcategory,
       toAccount: action.payload.account,
+      key: action.payload.key
     };
 
-    this.incomeService.create(income);
+    if(action.payload.key){
+      if(income.isApplied){
+        let oldIncome: Income = ctx.getState().incomes.find(i => i.key == action.payload.key);
 
-    if(income.isApplied){
-      let account: Account =  { ... income.toAccount};
-      account.currentBalance += income.amount;
-  
-      this.store.dispatch(new AccountActions.SaveAccount(account));
+        // Adjustment in same account
+        if(oldIncome.toAccount.key == income.toAccount.key){
+          let adjustment: number = income.amount - oldIncome.amount;
+
+          this.store.dispatch(new AccountActions.AdjustAccountBalance({
+            adjustment: adjustment,
+            accountKey: income.toAccount.key
+          }));
+        } else { // Adjustment to different account
+          this.store.dispatch(new AccountActions.AdjustAccountBalance({
+            adjustment: oldIncome.amount * -1,
+            accountKey: oldIncome.toAccount.key
+          }));
+          this.store.dispatch(new AccountActions.AdjustAccountBalance({
+            adjustment: income.amount,
+            accountKey: income.toAccount.key
+          }));
+        }
+      }
+      this.incomeService.update(income);
+    }else{
+      this.incomeService.create(income);
+      if(income.isApplied){
+        let account: Account =  { ... income.toAccount};
+        account.currentBalance += income.amount;
+    
+        this.store.dispatch(new AccountActions.SaveAccount(account));
+      }
     }
+
+    
 
   }
 }
