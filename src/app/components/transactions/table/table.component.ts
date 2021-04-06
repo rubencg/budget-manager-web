@@ -97,9 +97,17 @@ export class TableComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        console.log('Deleting transaction', transaction);
-      } else {
-        console.log('Nothing was deleted');
+        switch (transaction.type) {
+          case TransactionTypes.Expense:
+            // ToDo: Delete Expense
+            break;
+          case TransactionTypes.Transfer:
+            // ToDo: Delete Transfer
+            break;
+          case TransactionTypes.Income:
+            this.store.dispatch(new IncomeActions.DeleteIncome(transaction))
+            break;
+        }
       }
     });
   }

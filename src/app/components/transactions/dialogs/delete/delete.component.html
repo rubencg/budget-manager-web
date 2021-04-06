@@ -4,7 +4,10 @@
         <span>Fecha: {{data.date | date : 'd MMMM, yyyy' : undefined : 'es-ES'}}</span>
     </div>
     <div>
-        <span>Categoria: {{data.category}}</span>
+        <span>Tipo: {{getTypeName(data.type)}}</span>
+    </div>
+    <div>
+        <span>Categoria: {{data.category.name}}</span>
     </div>
     <div>
         <span>Cantidad: {{data.amount}}</span>

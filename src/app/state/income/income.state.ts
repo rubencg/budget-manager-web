@@ -96,6 +96,18 @@ export class IncomeState {
       transactions: action.payload,
     });
   }
+
+  @Action(IncomeActions.DeleteIncome)
+  deleteIncome(
+    ctx: StateContext<IncomeStateModel>,
+    action: IncomeActions.DeleteIncome
+  ) {
+    this.incomeService.delete(action.payload.key);
+    ctx.dispatch(new AccountActions.AdjustAccountBalance({
+      accountKey: action.payload.account.key,
+      adjustment: action.payload.amount * -1
+    }));
+  }
   
   @Action(IncomeActions.SaveIncomeTransaction)
   saveIncomeTransaction(

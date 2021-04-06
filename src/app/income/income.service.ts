@@ -56,7 +56,7 @@ export class IncomeService {
     });
   }
 
-  delete(income: Income): Promise<void> {
-    return this.db.list(this.incomesUrl).remove(income.key);
+  delete(key: string): Promise<void> {
+    return this.db.list(this.incomesUrl).remove(key);
   }
 }
