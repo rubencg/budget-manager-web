@@ -108,12 +108,12 @@ export class IncomeState {
         image: action.payload.category.image,
         name: action.payload.category.name,
         color: action.payload.category.color,
-        subcategories: action.payload.category.subcategories
+        subcategories: action.payload.category.subcategories ? action.payload.category.subcategories : []
       },
       date: action.payload.date,
       isApplied: action.payload.applied,
       notes: action.payload.notes,
-      subCategory: action.payload.subcategory,
+      subCategory: action.payload.subcategory ? action.payload.subcategory : null,
       toAccount: action.payload.account,
       key: action.payload.key
     };
@@ -145,10 +145,10 @@ export class IncomeState {
     }else{
       this.incomeService.create(income);
       if(income.isApplied){
-        let account: Account =  { ... income.toAccount};
-        account.currentBalance += income.amount;
-    
-        this.store.dispatch(new AccountActions.SaveAccount(account));
+        this.store.dispatch(new AccountActions.AdjustAccountBalance({
+          adjustment: income.amount,
+          accountKey: income.toAccount.key
+        }));
       }
     }
 

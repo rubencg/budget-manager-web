@@ -19,7 +19,7 @@ export namespace AccountActions{
   }
   
   export class AdjustAccountBalance {
-    static readonly type = '[Accounts Page] SaveAccount';
+    static readonly type = '[Transactions Page] AdjustAccountBalance';
     constructor(public payload: AdjustBalancePayload) {}
   }
 
