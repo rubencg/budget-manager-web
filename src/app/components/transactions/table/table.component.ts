@@ -187,7 +187,7 @@ export class TableComponent implements AfterViewInit, OnInit {
       if (transaction) {
         switch (transaction.type) {
           case TransactionTypes.Expense:
-            // ToDo: Expense
+            this.store.dispatch(new ExpenseActions.ApplyExpenseTransaction(transaction));
             break;
           case TransactionTypes.Income:
             this.store.dispatch(new IncomeActions.ApplyIncomeTransaction(transaction));

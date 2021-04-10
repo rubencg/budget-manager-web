@@ -99,6 +99,19 @@ export class ExpenseState {
     });
   }
 
+  @Action(ExpenseActions.ApplyExpenseTransaction)
+  applyIncome(
+    ctx: StateContext<ExpenseStateModel>,
+    action: ExpenseActions.ApplyExpenseTransaction
+  ) {
+    ctx.dispatch(new ExpenseActions.SaveExpenseTransaction(action.payload));
+
+    ctx.dispatch(new AccountActions.AdjustAccountBalance({
+      accountKey: action.payload.account.key,
+      adjustment: action.payload.amount * -1
+    }));
+  }
+
   @Action(ExpenseActions.SaveExpenseTransaction)
   saveExpenseTransaction(
     ctx: StateContext<ExpenseStateModel>,

@@ -21,4 +21,9 @@ export namespace ExpenseActions{
     static readonly type = '[TransactionsPage] CreateExpense';
     constructor(public payload: Transaction) {}
   }
+
+  export class ApplyExpenseTransaction {
+    static readonly type = '[TransactionsPage] ApplyExpense';
+    constructor(public payload: Transaction) {}
+  }
 }
