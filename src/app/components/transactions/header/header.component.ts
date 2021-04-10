@@ -4,6 +4,7 @@ import { Store } from '@ngxs/store';
 import { Income } from 'src/app/income';
 import { Transaction } from 'src/app/models';
 import { ExpenseActions, IncomeActions } from 'src/app/state';
+import { MonthlyIncomeActions } from 'src/app/state/income/monthly.income.actions';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
@@ -65,7 +66,14 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((incomeTransaction: Transaction) => {
       if(incomeTransaction){
-        this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
+        if(incomeTransaction.isMonthly){
+          this.store.dispatch(new MonthlyIncomeActions.SaveMonthlyIncomeTransaction(incomeTransaction));
+          if(incomeTransaction.applied){
+            this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
+          }
+        }else{
+          this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
+        }
       }
     });
   }

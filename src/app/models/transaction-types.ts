@@ -1,5 +1,7 @@
 export enum TransactionTypes{
     Income,
     Expense,
-    Transfer
+    Transfer,
+    MonthlyIncome,
+    MonthlyExpense,
 };

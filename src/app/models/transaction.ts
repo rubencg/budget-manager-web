@@ -14,4 +14,5 @@ export interface Transaction {
   transferAccount?: Account;
   notes?: String;
   applied?: Boolean;
+  isMonthly?: Boolean;
 }

@@ -43,6 +43,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   transfers$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
+  monthlyIncomes$: Observable<Transaction[]>;
 
   constructor(public dialog: MatDialog, public store: Store) {}
 
@@ -60,24 +61,29 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.expenses$ = this.store.select(
       ExpenseState.selectTransactionsForMonth(date)
     );
+    this.monthlyIncomes$ = this.store.select(
+      IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
+    );
     this.transfers$.subscribe((transfers: Transaction[]) => {
       this.incomes$.subscribe((incomes: Transaction[]) => {
         this.expenses$.subscribe((expenses: Transaction[]) => {
-          this.dataSource = new MatTableDataSource<Transaction>(
-            transfers.concat(incomes).concat(expenses).sort(compareTransactions)
-          );
-          this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
-            const category: string = data.category ? data.category.name.toString() : '';
-            const amount: string = data.amount ? data.amount.toString() : '';
-            const account: string = data.account ? data.account.name.toString() : '';
-            const transferAccount: string = data.transferAccount ? data.transferAccount.name.toString() : '';
-            const notes: string = data.notes ? data.notes.toString() : '';
-
-            const transactionData = category.concat(amount).concat(account).concat(transferAccount).concat(notes);
-            return !filter || transactionData.toLowerCase().indexOf(filter) != -1;
-          };
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
+            this.dataSource = new MatTableDataSource<Transaction>(
+              transfers.concat(incomes).concat(monthlyIncomes).concat(expenses).sort(compareTransactions)
+            );
+            this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
+              const category: string = data.category ? data.category.name.toString() : '';
+              const amount: string = data.amount ? data.amount.toString() : '';
+              const account: string = data.account ? data.account.name.toString() : '';
+              const transferAccount: string = data.transferAccount ? data.transferAccount.name.toString() : '';
+              const notes: string = data.notes ? data.notes.toString() : '';
+  
+              const transactionData = category.concat(amount).concat(account).concat(transferAccount).concat(notes);
+              return !filter || transactionData.toLowerCase().indexOf(filter) != -1;
+            };
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+          });
         });
       });
     });
@@ -163,10 +169,12 @@ export class TableComponent implements AfterViewInit, OnInit {
   getAmountClassByType(transaction: Transaction) {
     switch (transaction.type) {
       case TransactionTypes.Expense:
+      case TransactionTypes.MonthlyExpense:
         return 'expense-amount';
       case TransactionTypes.Transfer:
         return 'transfer-amount';
       case TransactionTypes.Income:
+      case TransactionTypes.MonthlyIncome:
         return 'income-amount';
       default:
         return '';

@@ -151,7 +151,8 @@ export class IncomeComponent implements OnInit {
       subcategory: this.form.get('subcategory').value,
       notes: this.form.get('notes').value,
       applied: this.form.get('applied').value,
-      key: this.data ? this.data.key : undefined
+      key: this.data ? this.data.key : undefined,
+      isMonthly: this.form.get('monthlyRecurrent').value,
     }
 
     this.dialogRef.close(transaction);
