@@ -18,7 +18,7 @@ import {
   TransferComponent,
 } from '../dialogs';
 import { Select, Store } from '@ngxs/store';
-import { ExpenseState, IncomeActions, IncomeState, TransferState } from 'src/app/state';
+import { ExpenseActions, ExpenseState, IncomeActions, IncomeState, TransferState } from 'src/app/state';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -123,9 +123,7 @@ export class TableComponent implements AfterViewInit, OnInit {
         });
         expenseDialogRef.afterClosed().subscribe((result) => {
           if (result) {
-            console.log('Edit expense', result);
-          } else {
-            console.log('Dont edit expense');
+            this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(result))
           }
         });
         break;

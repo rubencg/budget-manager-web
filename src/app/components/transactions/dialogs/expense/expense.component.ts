@@ -79,6 +79,7 @@ export class ExpenseComponent implements OnInit {
     if(this.data != undefined && this.data != null){
       this.title = 'Editar gasto';
       this.showMoreEnabled = false;
+      this.form.get('applied').disable();
       let transaction: Transaction = this.data;
 
       this.setSubcategories(transaction.category);
@@ -87,7 +88,7 @@ export class ExpenseComponent implements OnInit {
         amount: transaction.amount,
         date: transaction.date,
         notes: transaction.notes,
-        category: transaction.category, // ToDo: Change these values to get from key
+        category: transaction.category,
         account: transaction.account,
         applied: transaction.applied,
         subcategory: transaction.subcategory,
