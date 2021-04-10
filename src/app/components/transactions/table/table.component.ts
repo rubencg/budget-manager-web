@@ -99,7 +99,7 @@ export class TableComponent implements AfterViewInit, OnInit {
       if (result === true) {
         switch (transaction.type) {
           case TransactionTypes.Expense:
-            // ToDo: Delete Expense
+            this.store.dispatch(new ExpenseActions.DeleteExpense(transaction))
             break;
           case TransactionTypes.Transfer:
             // ToDo: Delete Transfer

@@ -103,10 +103,13 @@ export class IncomeState {
     action: IncomeActions.DeleteIncome
   ) {
     this.incomeService.delete(action.payload.key);
-    ctx.dispatch(new AccountActions.AdjustAccountBalance({
-      accountKey: action.payload.account.key,
-      adjustment: action.payload.amount * -1
-    }));
+
+    if(action.payload.applied){
+      ctx.dispatch(new AccountActions.AdjustAccountBalance({
+        accountKey: action.payload.account.key,
+        adjustment: action.payload.amount * -1
+      }));
+    }
   }
   
   @Action(IncomeActions.ApplyIncomeTransaction)

@@ -112,6 +112,20 @@ export class ExpenseState {
     }));
   }
 
+  @Action(ExpenseActions.DeleteExpense)
+  deleteIncome(
+    ctx: StateContext<ExpenseStateModel>,
+    action: ExpenseActions.DeleteExpense
+  ) {
+    this.expenseService.delete(action.payload.key);
+    if(action.payload.applied){
+      ctx.dispatch(new AccountActions.AdjustAccountBalance({
+        accountKey: action.payload.account.key,
+        adjustment: action.payload.amount
+      }));
+    }
+  }
+
   @Action(ExpenseActions.SaveExpenseTransaction)
   saveExpenseTransaction(
     ctx: StateContext<ExpenseStateModel>,

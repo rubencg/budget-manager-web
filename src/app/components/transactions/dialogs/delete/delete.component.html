@@ -7,10 +7,13 @@
         <span>Tipo: {{getTypeName(data.type)}}</span>
     </div>
     <div>
+        <span>Cuenta: {{data.account.name}}</span>
+    </div>
+    <div>
         <span>Categoria: {{data.category.name}}</span>
     </div>
     <div>
-        <span>Cantidad: {{data.amount}}</span>
+        <span>Cantidad: {{data.amount | currency}}</span>
     </div>
 </div>
 <div mat-dialog-actions class="buttons-box">
