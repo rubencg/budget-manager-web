@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Income } from 'src/app/income';
 import { Transaction } from 'src/app/models';
-import { IncomeActions } from 'src/app/state';
+import { ExpenseActions, IncomeActions } from 'src/app/state';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
@@ -76,11 +76,9 @@ export class HeaderComponent implements OnInit {
       width: 'calc(100% - 64px)',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Created expense', result);
-      } else {
-        console.log('Nothing was created');
+    dialogRef.afterClosed().subscribe((expenseTransaction: Transaction) => {
+      if (expenseTransaction) {
+        this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
       }
     });
   }

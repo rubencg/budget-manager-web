@@ -16,4 +16,9 @@ export namespace ExpenseActions{
     static readonly type = '[Firebase] ExpensesLoaded';
     constructor(public payload: Expense[]) {}
   }
+  
+  export class SaveExpenseTransaction {
+    static readonly type = '[TransactionsPage] CreateExpense';
+    constructor(public payload: Transaction) {}
+  }
 }

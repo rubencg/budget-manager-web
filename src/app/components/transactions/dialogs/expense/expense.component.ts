@@ -1,9 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { AutocompleteElement, Transaction, TransactionTypes } from 'src/app/models';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { Category } from 'src/app/category';
+import { Transaction, TransactionTypes } from 'src/app/models';
+import { AccountState, CategoryState } from 'src/app/state';
 
 @Component({
   selector: 'app-expense',
@@ -16,27 +20,59 @@ export class ExpenseComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ExpenseComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: Transaction) {
-    this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
-      startWith(''),
-      map((category) =>
-        category ? this._filterElements(category, this.categories) : this.categories.slice()
-      )
-    );
-    this.filteredAccounts = this.accountCtrl.valueChanges.pipe(
-      startWith(''),
-      map((account) =>
-        account ? this._filterElements(account, this.accounts) : this.accounts.slice()
-      )
-    );
-  }
-
-  private _filterElements(value: string, allElements: AutocompleteElement[]): AutocompleteElement[] {
-    const filterValue = value.toLowerCase();
-
-    return allElements.filter(
-      (element) => element.name.toLowerCase().indexOf(filterValue) === 0
-    );
-  }
+      this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
+        startWith(''),
+        map((value) => (typeof value === 'string' ? value : value.name)),
+        switchMap((val) => this._filterCategoryElements(val))
+      );
+      this.filteredAccounts = this.accountCtrl.valueChanges.pipe(
+        startWith(''),
+        map((value) => (typeof value === 'string' ? value : value.name)),
+        switchMap((val) => this._filterAccountElements(val))
+      );
+      this.filteredSubcategories = this.subcategoryCtrl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterSubcategoryElements(value))
+      );
+    }
+  
+    private _filterSubcategoryElements(value: string): string[] {
+      const filterValue = value.toLowerCase();
+  
+      return this.subcategories.filter(option => option.toLowerCase().includes(filterValue));
+    }
+  
+    private _filterCategoryElements(value: string): Observable<Category[]> {
+      return this.categories$.pipe(
+        map((response) => {
+          return value
+            ? response.filter((account) =>
+                account.name.toLowerCase().includes(value.toLowerCase())
+              )
+            : response;
+        })
+      );
+    }
+  
+    private _filterAccountElements(value: string): Observable<Account[]> {
+      return this.accounts$.pipe(
+        map((response) => {
+          return value
+            ? response.filter((account) =>
+                account.name.toLowerCase().includes(value.toLowerCase())
+              )
+            : response;
+        })
+      );
+    }
+  
+    displayFn(element) {
+      return element ? element.name : '';
+    }
+  
+    displayAccountFn(account: Account) {
+      return account ? account.name : '';
+    }
 
   ngOnInit(): void {
     this.title = 'Nuevo gasto';
@@ -44,6 +80,8 @@ export class ExpenseComponent implements OnInit {
       this.title = 'Editar gasto';
       this.showMoreEnabled = false;
       let transaction: Transaction = this.data;
+
+      this.setSubcategories(transaction.category);
       
       this.form.patchValue({
         amount: transaction.amount,
@@ -52,47 +90,35 @@ export class ExpenseComponent implements OnInit {
         category: transaction.category, // ToDo: Change these values to get from key
         account: transaction.account,
         applied: transaction.applied,
+        subcategory: transaction.subcategory,
       })
     }
   }
 
-  filteredCategories: Observable<AutocompleteElement[]>;
-  categories: AutocompleteElement[] = [
-    {
-      image: 'hamburger',
-      color: '#32a852',
-      name: 'Comida',
-    },
-    {
-      image: 'tshirt',
-      color: '#328ba8',
-      name: 'Ropa',
-    },
-    {
-      image: 'book',
-      color: '#c4412f',
-      name: 'Educacion',
-    },
-    {
-      image: 'bible',
-      color: '#e8d227',
-      name: 'Iglesia',
-    },
-  ];
+  categorySelected(event: MatAutocompleteSelectedEvent){
+    const category: Category = event.option.value;
+    this.subcategoryCtrl.patchValue('');
+    this.setSubcategories(category);
+  }
   
-  filteredAccounts: Observable<AutocompleteElement[]>;
-  accounts: AutocompleteElement[] = [
-    {
-      image: 'money-bill',
-      color: '#32a852',
-      name: 'Ruben Efectivo',
-    },
-    {
-      image: 'money-check-alt',
-      color: '#328ba8',
-      name: 'Ruben Credito',
-    },
-  ];
+  setSubcategories(category: Category){
+    if(category.subcategories){
+      this.subcategories =  category.subcategories;
+      this.subcategoryCtrl.enable();
+    }else{
+      this.subcategories = [];
+      this.subcategoryCtrl.disable();
+    }
+  }
+
+  filteredSubcategories: Observable<string[]>;
+  subcategories: string[] = [];
+
+  filteredCategories: Observable<Category[]>;
+  @Select(CategoryState.selectExpenseCategories) categories$: Observable<Category[]>;
+
+  @Select(AccountState.selectAccounts) accounts$: Observable<Account[]>;
+  filteredAccounts: Observable<Account[]>;
 
   // Form Controls
   categoryCtrl = new FormControl('',[
@@ -101,11 +127,13 @@ export class ExpenseComponent implements OnInit {
   accountCtrl = new FormControl('',[
     Validators.required
   ]);
+  subcategoryCtrl = new FormControl('');
   form: FormGroup = new FormGroup({
     date: new FormControl(new Date(),[
       Validators.required
     ]),
     category: this.categoryCtrl,
+    subcategory: this.subcategoryCtrl,
     account: this.accountCtrl,
     applied: new FormControl(true),
     amount: new FormControl('', [
@@ -125,8 +153,10 @@ export class ExpenseComponent implements OnInit {
       date: this.form.get('date').value,
       account: this.form.get('account').value,
       category: this.form.get('category').value,
+      subcategory: this.form.get('subcategory').value,
       notes: this.form.get('notes').value,
       applied: this.form.get('applied').value,
+      key: this.data ? this.data.key : undefined
     }
 
     this.dialogRef.close(transaction);

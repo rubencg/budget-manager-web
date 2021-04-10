@@ -83,8 +83,6 @@ export class IncomeComponent implements OnInit {
       this.form.get('applied').disable();
 
       let transaction: Transaction = this.data;
-      console.log(transaction.category);
-      console.log(transaction.subcategory);
       
       this.setSubcategories(transaction.category);
       

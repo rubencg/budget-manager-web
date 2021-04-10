@@ -28,12 +28,37 @@ export class ExpenseService {
       );
   }
 
-  create(expense: Expense) {
-    this.db.list(this.expensesUrl).push(expense);
+  update(expense: Expense): Promise<void> {
+    return this.db.list(this.expensesUrl).update(expense.key, {
+      amount: expense.amount,
+      category: expense.category,
+      isApplied: expense.isApplied,
+      notes: expense.notes,
+      subCategory: expense.subCategory,
+      fromAccount: expense.fromAccount,
+      date: expense.date.toISOString(),
+    });
   }
 
-  delete(expense: Expense): Promise<void> {
-    return this.db.list(this.expensesUrl).remove(expense.key);
+  create(expense: Expense) {
+    this.db.list(this.expensesUrl).push({
+      amount: expense.amount,
+      category: {
+        image: expense.category.image,
+        name: expense.category.name,
+        color: expense.category.color,
+        subcategories: expense.category.subcategories
+      },
+      date: expense.date.toISOString(),
+      isApplied: expense.isApplied,
+      notes: expense.notes,
+      subCategory: expense.subCategory,
+      fromAccount: expense.fromAccount,
+    });
+  }
+
+  delete(key: string): Promise<void> {
+    return this.db.list(this.expensesUrl).remove(key);
   }
   
 }

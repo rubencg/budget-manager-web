@@ -177,8 +177,5 @@ export class IncomeState {
         }));
       }
     }
-
-    
-
   }
 }
