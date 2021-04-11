@@ -18,8 +18,15 @@ import {
   TransferComponent,
 } from '../dialogs';
 import { Select, Store } from '@ngxs/store';
-import { ExpenseActions, ExpenseState, IncomeActions, IncomeState, TransferState } from 'src/app/state';
+import {
+  ExpenseActions,
+  ExpenseState,
+  IncomeActions,
+  IncomeState,
+  TransferState,
+} from 'src/app/state';
 import { Observable } from 'rxjs';
+import { MonthlyIncomeActions } from 'src/app/state/income/monthly.income.actions';
 
 @Component({
   selector: 'transactions-table',
@@ -69,17 +76,36 @@ export class TableComponent implements AfterViewInit, OnInit {
         this.expenses$.subscribe((expenses: Transaction[]) => {
           this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
             this.dataSource = new MatTableDataSource<Transaction>(
-              transfers.concat(incomes).concat(monthlyIncomes).concat(expenses).sort(compareTransactions)
+              transfers
+                .concat(incomes)
+                .concat(monthlyIncomes)
+                .concat(expenses)
+                .sort(compareTransactions)
             );
-            this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
-              const category: string = data.category ? data.category.name.toString() : '';
+            this.dataSource.filterPredicate = (
+              data: Transaction,
+              filter: string
+            ) => {
+              const category: string = data.category
+                ? data.category.name.toString()
+                : '';
               const amount: string = data.amount ? data.amount.toString() : '';
-              const account: string = data.account ? data.account.name.toString() : '';
-              const transferAccount: string = data.transferAccount ? data.transferAccount.name.toString() : '';
+              const account: string = data.account
+                ? data.account.name.toString()
+                : '';
+              const transferAccount: string = data.transferAccount
+                ? data.transferAccount.name.toString()
+                : '';
               const notes: string = data.notes ? data.notes.toString() : '';
-  
-              const transactionData = category.concat(amount).concat(account).concat(transferAccount).concat(notes);
-              return !filter || transactionData.toLowerCase().indexOf(filter) != -1;
+
+              const transactionData = category
+                .concat(amount)
+                .concat(account)
+                .concat(transferAccount)
+                .concat(notes);
+              return (
+                !filter || transactionData.toLowerCase().indexOf(filter) != -1
+              );
             };
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
@@ -96,6 +122,8 @@ export class TableComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {}
 
   deleteDialog(transaction: Transaction) {
+    console.log(transaction);
+    
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: transaction,
       autoFocus: false,
@@ -105,13 +133,18 @@ export class TableComponent implements AfterViewInit, OnInit {
       if (result === true) {
         switch (transaction.type) {
           case TransactionTypes.Expense:
-            this.store.dispatch(new ExpenseActions.DeleteExpense(transaction))
+            this.store.dispatch(new ExpenseActions.DeleteExpense(transaction));
             break;
           case TransactionTypes.Transfer:
             // ToDo: Delete Transfer
             break;
           case TransactionTypes.Income:
-            this.store.dispatch(new IncomeActions.DeleteIncome(transaction))
+            this.store.dispatch(new IncomeActions.DeleteIncome(transaction));
+            break;
+          case TransactionTypes.MonthlyIncome:
+            this.store.dispatch(
+              new MonthlyIncomeActions.DeleteMonthlyIncome(transaction)
+            );
             break;
         }
       }
@@ -129,7 +162,9 @@ export class TableComponent implements AfterViewInit, OnInit {
         });
         expenseDialogRef.afterClosed().subscribe((result) => {
           if (result) {
-            this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(result))
+            this.store.dispatch(
+              new ExpenseActions.SaveExpenseTransaction(result)
+            );
           }
         });
         break;
@@ -157,7 +192,9 @@ export class TableComponent implements AfterViewInit, OnInit {
         });
         incomeDialogRef.afterClosed().subscribe((result) => {
           if (result) {
-            this.store.dispatch(new IncomeActions.SaveIncomeTransaction(result))
+            this.store.dispatch(
+              new IncomeActions.SaveIncomeTransaction(result)
+            );
           } else {
             console.log('Dont edit income');
           }
@@ -191,20 +228,32 @@ export class TableComponent implements AfterViewInit, OnInit {
         autoFocus: false,
       }
     );
-    applyTransactionDialogRef.afterClosed().subscribe((transaction: Transaction) => {
-      if (transaction) {
-        switch (transaction.type) {
-          case TransactionTypes.Expense:
-            this.store.dispatch(new ExpenseActions.ApplyExpenseTransaction(transaction));
-            break;
-          case TransactionTypes.Income:
-            this.store.dispatch(new IncomeActions.ApplyIncomeTransaction(transaction));
-            return 'income-amount';
-          default:
-            return '';
+    applyTransactionDialogRef
+      .afterClosed()
+      .subscribe((transaction: Transaction) => {
+        if (transaction) {
+          switch (transaction.type) {
+            case TransactionTypes.Expense:
+              this.store.dispatch(
+                new ExpenseActions.ApplyExpenseTransaction(transaction)
+              );
+              break;
+            case TransactionTypes.MonthlyIncome:
+              transaction.monthlyKey = transaction.key;
+              this.store.dispatch(
+                new IncomeActions.ApplyIncomeTransaction(transaction)
+              );
+              break;
+            case TransactionTypes.Income:
+              this.store.dispatch(
+                new IncomeActions.ApplyIncomeTransaction(transaction)
+              );
+              break;
+            default:
+              return '';
+          }
         }
-      }
-    });
+      });
   }
 }
 

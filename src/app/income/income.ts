@@ -9,5 +9,6 @@ export interface Income{
     notes?: String,
     toAccount?: Account,
     category?: Category,
-    subCategory?: string
+    subCategory?: string,
+    monthlyKey?: string
 }

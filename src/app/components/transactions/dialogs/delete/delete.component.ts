@@ -23,6 +23,10 @@ export class DeleteComponent implements OnInit {
         return 'Gasto';
       case TransactionTypes.Transfer:
         return 'Transferencia';
+      case TransactionTypes.MonthlyIncome:
+        return 'Ingreso Mensual';
+      case TransactionTypes.MonthlyExpense:
+        return 'Gasto Mensual';
     }
   }
 }

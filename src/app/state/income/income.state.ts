@@ -16,6 +16,7 @@ import { Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { IncomeActions } from './income.actions';
 import { MonthlyIncomeActions } from './monthly.income.actions';
+import { patch, removeItem, append } from '@ngxs/store/operators';
 
 export interface IncomeStateModel {
   incomes: Income[];
@@ -54,16 +55,26 @@ export class IncomeState {
       let monthlyIncomeTransactions: Transaction[] = [];
 
       state.monthlyIncomes.forEach((monthlyIncome: MonthlyIncome) => {
-        monthlyIncomeTransactions.push({
-          amount: monthlyIncome.amount,
-          date: new Date(date.getFullYear(), date.getMonth(), monthlyIncome.day),
-          account: monthlyIncome.toAccount,
-          category: monthlyIncome.category,
-          subcategory: monthlyIncome.subCategory,
-          key: monthlyIncome.key,
-          notes: monthlyIncome.notes,
-          type: TransactionTypes.MonthlyIncome
-        });
+        const filteredIncome = state.incomes.find(
+          (i) => i.monthlyKey == monthlyIncome.key
+        );
+
+        if (!filteredIncome) {
+          monthlyIncomeTransactions.push({
+            amount: monthlyIncome.amount,
+            date: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              monthlyIncome.day
+            ),
+            account: monthlyIncome.toAccount,
+            category: monthlyIncome.category,
+            subcategory: monthlyIncome.subCategory,
+            key: monthlyIncome.key,
+            notes: monthlyIncome.notes,
+            type: TransactionTypes.MonthlyIncome,
+          });
+        }
       });
       return monthlyIncomeTransactions;
     });
@@ -81,6 +92,7 @@ export class IncomeState {
           category: t.category,
           subCategory: t.subCategory,
           isApplied: t.isApplied,
+          monthlyKey: t.monthlyKey,
           key: t.key,
           notes: t.notes,
         });
@@ -88,21 +100,26 @@ export class IncomeState {
       context.dispatch(new IncomeActions.GetSuccess(incomes));
 
       let transactions: Transaction[] = [];
-      incomes.forEach((t) => {
-        transactions.push({
-          category: t.category,
-          applied: t.isApplied,
-          amount: t.amount,
-          date: new Date(t.date),
-          account: t.toAccount,
-          subcategory: t.subCategory,
-          key: t.key,
-          notes: t.notes,
-          type: TransactionTypes.Income,
-        });
+      incomes.forEach((i: Income) => {
+        transactions.push(this.getTransactionFromIncome(i));
       });
       context.dispatch(new IncomeActions.GetTransactionsSuccess(transactions));
     });
+  }
+
+  private getTransactionFromIncome(income: Income): Transaction {
+    return {
+      category: income.category,
+      applied: income.isApplied,
+      amount: income.amount,
+      date: new Date(income.date),
+      account: income.toAccount,
+      subcategory: income.subCategory,
+      monthlyKey: income.monthlyKey,
+      key: income.key,
+      notes: income.notes,
+      type: TransactionTypes.Income,
+    }
   }
 
   /* Monthly Income Categories */
@@ -111,9 +128,7 @@ export class IncomeState {
     this.monthlyIncomeService
       .getAll()
       .subscribe((monthlyIncomes: MonthlyIncome[]) =>
-        context.dispatch(
-          new MonthlyIncomeActions.GetSuccess(monthlyIncomes)
-        )
+        context.dispatch(new MonthlyIncomeActions.GetSuccess(monthlyIncomes))
       );
   }
 
@@ -159,6 +174,13 @@ export class IncomeState {
     action: IncomeActions.DeleteIncome
   ) {
     this.incomeService.delete(action.payload.key);
+
+    ctx.setState(
+      patch({
+        transactions: removeItem<Transaction>(t => t.key == action.payload.key),
+        incomes: removeItem<Income>(t => t.key == action.payload.key),
+      })
+    );
 
     if (action.payload.applied) {
       ctx.dispatch(
@@ -215,10 +237,11 @@ export class IncomeState {
         ? action.payload.subcategory
         : null,
       toAccount: action.payload.account,
-      key: action.payload.key,
+      key: action.payload.monthlyKey ? null : action.payload.key,
+      monthlyKey: action.payload.monthlyKey ? action.payload.monthlyKey : null,
     };
 
-    if (action.payload.key) {
+    if (action.payload.key && action.payload.type == TransactionTypes.Income) {
       const stateIncome: Income = ctx
         .getState()
         .incomes.find((i) => i.key == action.payload.key);
@@ -253,7 +276,20 @@ export class IncomeState {
 
       this.incomeService.update(income);
     } else {
-      this.incomeService.create(income);
+      this.incomeService.create(income).then(r => {
+        let t: Transaction = this.getTransactionFromIncome(income);
+        t.key = r.key;
+        
+        if (action.payload.type == TransactionTypes.MonthlyIncome){
+          ctx.setState(
+            patch({
+              transactions: append([t])
+            })
+          );
+        }
+      });
+
+
       if (income.isApplied) {
         this.store.dispatch(
           new AccountActions.AdjustAccountBalance({

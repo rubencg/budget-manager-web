@@ -19,7 +19,8 @@ export class ApplyTransactionComponent implements OnInit {
     public dialogRef: MatDialogRef<ApplyTransactionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Transaction
   ) {
-    this.isIncome = this.data.type == TransactionTypes.Income;
+    this.isIncome = this.data.type == TransactionTypes.Income || 
+      this.data.type == TransactionTypes.MonthlyIncome;
 
     this.filteredAccounts = this.accountCtrl.valueChanges.pipe(
       startWith(''),

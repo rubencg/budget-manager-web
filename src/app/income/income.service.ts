@@ -40,7 +40,7 @@ export class IncomeService {
   }
 
   create(income: Income) {
-    this.db.list(this.incomesUrl).push({
+    return this.db.list(this.incomesUrl).push({
       amount: income.amount,
       category: {
         image: income.category.image,
@@ -53,6 +53,7 @@ export class IncomeService {
       notes: income.notes,
       subCategory: income.subCategory,
       toAccount: income.toAccount,
+      monthlyKey: income.monthlyKey
     });
   }
 

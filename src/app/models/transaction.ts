@@ -15,4 +15,5 @@ export interface Transaction {
   notes?: String;
   applied?: Boolean;
   isMonthly?: Boolean;
+  monthlyKey?: string;
 }
