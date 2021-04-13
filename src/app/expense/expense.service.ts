@@ -41,7 +41,7 @@ export class ExpenseService {
   }
 
   create(expense: Expense) {
-    this.db.list(this.expensesUrl).push({
+    return this.db.list(this.expensesUrl).push({
       amount: expense.amount,
       category: {
         image: expense.category.image,
@@ -54,6 +54,7 @@ export class ExpenseService {
       notes: expense.notes,
       subCategory: expense.subCategory,
       fromAccount: expense.fromAccount,
+      monthlyKey: expense.monthlyKey
     });
   }
 

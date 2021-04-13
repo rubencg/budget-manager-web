@@ -6,6 +6,7 @@ import {
   createSelector,
   Store,
 } from '@ngxs/store';
+import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { Expense, ExpenseService, MonthlyExpense, MonthlyExpenseService } from 'src/app/expense';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
@@ -85,6 +86,7 @@ export class ExpenseState {
           isApplied: t.isApplied,
           key: t.key,
           notes: t.notes,
+          monthlyKey: t.monthlyKey
         });
       });
       context.dispatch(new ExpenseActions.GetSuccess(expenses));
@@ -208,11 +210,21 @@ export class ExpenseState {
   }
 
   @Action(ExpenseActions.DeleteExpense)
-  deleteIncome(
+  deleteExpense(
     ctx: StateContext<ExpenseStateModel>,
     action: ExpenseActions.DeleteExpense
   ) {
     this.expenseService.delete(action.payload.key);
+
+    ctx.setState(
+      patch({
+        transactions: removeItem<Transaction>(
+          (t) => t.key == action.payload.key
+        ),
+        expenses: removeItem<Expense>((t) => t.key == action.payload.key),
+      })
+    );
+    
     if(action.payload.applied){
       ctx.dispatch(new AccountActions.AdjustAccountBalance({
         accountKey: action.payload.account.key,
@@ -226,23 +238,9 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: ExpenseActions.SaveExpenseTransaction
   ) {
-    let expense: Expense = {
-      amount: action.payload.amount,
-      category: {
-        image: action.payload.category.image,
-        name: action.payload.category.name,
-        color: action.payload.category.color,
-        subcategories: action.payload.category.subcategories ? action.payload.category.subcategories : []
-      },
-      date: action.payload.date,
-      isApplied: action.payload.applied,
-      notes: action.payload.notes,
-      subCategory: action.payload.subcategory ? action.payload.subcategory : null,
-      fromAccount: action.payload.account,
-      key: action.payload.key
-    };
+    let expense: Expense = this.getExpenseFromTransaction(action.payload);
 
-    if(action.payload.key){
+    if(action.payload.key && action.payload.type == TransactionTypes.Expense){
       const stateExpense: Expense = ctx.getState().expenses.find(i => i.key == action.payload.key);
 
       if(stateExpense.isApplied){
@@ -265,10 +263,28 @@ export class ExpenseState {
           }));
         }
       }
+
+      ctx.setState(
+        patch({
+          transactions: updateItem<Transaction>(t => t.key == action.payload.key, action.payload),
+        })
+      );
       
       this.expenseService.update(expense);
     }else{
-      this.expenseService.create(expense);
+      this.expenseService.create(expense).then((r) => {
+        let t: Transaction = this.getTransactionFromExpense(expense);
+        t.key = r.key;
+
+        if (action.payload.type == TransactionTypes.MonthlyExpense) {
+          ctx.setState(
+            patch({
+              transactions: append([t]),
+            })
+          );
+        }
+      });
+
       if(expense.isApplied){
         this.store.dispatch(new AccountActions.AdjustAccountBalance({
           adjustment: expense.amount * -1,

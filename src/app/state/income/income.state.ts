@@ -16,7 +16,7 @@ import { RecurringTypes, Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { IncomeActions } from './income.actions';
 import { MonthlyIncomeActions } from './monthly.income.actions';
-import { patch, removeItem, append } from '@ngxs/store/operators';
+import { patch, removeItem, append, updateItem } from '@ngxs/store/operators';
 import { RecurringIncomeActions } from './recurring.income.actions';
 
 export interface IncomeStateModel {
@@ -287,6 +287,12 @@ export class IncomeState {
       }
 
       this.incomeService.update(income);
+
+      ctx.setState(
+        patch({
+          transactions: updateItem<Transaction>(t => t.key == action.payload.key, action.payload),
+        })
+      );
     } else {
       this.incomeService.create(income).then((r) => {
         let t: Transaction = this.getTransactionFromIncome(income);

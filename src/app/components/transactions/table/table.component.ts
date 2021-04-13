@@ -131,7 +131,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {}
 
   deleteDialog(transaction: Transaction) {
-    console.log(transaction);
 
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: transaction,
@@ -251,6 +250,12 @@ export class TableComponent implements AfterViewInit, OnInit {
               transaction.monthlyKey = transaction.key;
               this.store.dispatch(
                 new IncomeActions.ApplyIncomeTransaction(transaction)
+              );
+              break;
+            case TransactionTypes.MonthlyExpense:
+              transaction.monthlyKey = transaction.key;
+              this.store.dispatch(
+                new ExpenseActions.ApplyExpenseTransaction(transaction)
               );
               break;
             case TransactionTypes.Income:
