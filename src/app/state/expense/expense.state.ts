@@ -8,10 +8,11 @@ import {
 } from '@ngxs/store';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { Expense, ExpenseService, MonthlyExpense, MonthlyExpenseService } from 'src/app/expense';
-import { Transaction, TransactionTypes } from 'src/app/models';
+import { RecurringTypes, Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
 import { MonthlyExpenseActions } from './monthly.expense.actions';
+import { RecurringExpenseActions } from './recurring.expense.actions';
 
 export interface ExpenseStateModel {
   expenses: Expense[];
@@ -322,6 +323,45 @@ export class ExpenseState {
       this.monthlyExpenseService.update(monthlyExpense);
     } else {
       this.monthlyExpenseService.create(monthlyExpense);
+    }
+  }
+
+  @Action(RecurringExpenseActions.SaveRecurringExpenseTransaction)
+  saveRecurringExpenseTransaction(
+    ctx: StateContext<ExpenseStateModel>,
+    action: RecurringExpenseActions.SaveRecurringExpenseTransaction
+  ) {
+    let transaction: Transaction = action.payload;
+    let transactions: Transaction[] = [];
+
+    for (let index = 0; index < transaction.recurringTimes; index++) {
+      if (transaction.applied && index == 0) {
+        transactions.push(transaction);
+      } else {
+        let newTransaction: Transaction = { ...transaction };
+        newTransaction.applied = false;
+        newTransaction.date = this.getDateByRecurringType(transaction, index);
+        transactions.push(newTransaction);
+      }
+    }
+
+    transactions.forEach((t: Transaction) => {
+      this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(t));
+    });
+  }
+
+  private getDateByRecurringType(transaction: Transaction, index: number): Date{
+    switch (transaction.recurringType) {
+      case RecurringTypes.Days:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + index);
+      case RecurringTypes.Weeks:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + (index * 7));
+      case RecurringTypes.Months:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth() + index, transaction.date.getDate());
+      case RecurringTypes.Years:
+        return new Date(transaction.date.getFullYear() + index, transaction.date.getMonth(), transaction.date.getDate());
+      default:
+        return new Date();
     }
   }
 }

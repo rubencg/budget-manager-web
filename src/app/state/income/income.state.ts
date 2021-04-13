@@ -355,7 +355,7 @@ export class IncomeState {
     action: RecurringIncomeActions.SaveRecurringIncomeTransaction
   ) {
     let transaction: Transaction = action.payload;
-    let transactions: Income[] = [];
+    let transactions: Transaction[] = [];
 
     for (let index = 0; index < transaction.recurringTimes; index++) {
       if (transaction.applied && index == 0) {

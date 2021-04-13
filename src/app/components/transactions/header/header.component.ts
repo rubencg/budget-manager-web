@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Transaction } from 'src/app/models';
-import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions } from 'src/app/state';
+import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions, RecurringExpenseActions } from 'src/app/state';
 import { MonthlyExpenseActions } from 'src/app/state/expense/monthly.expense.actions';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
@@ -94,8 +94,7 @@ export class HeaderComponent implements OnInit {
             this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
           }
         }else if(expenseTransaction.isRecurring){
-          // ToDo: Save Recurring expense
-          // this.store.dispatch(new RecurringIncomeActions.SaveRecurringIncomeTransaction(incomeTransaction));          
+          this.store.dispatch(new RecurringExpenseActions.SaveRecurringExpenseTransaction(expenseTransaction));          
         }else{
           this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
         }
