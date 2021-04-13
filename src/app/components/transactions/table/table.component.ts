@@ -51,6 +51,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   incomes$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   monthlyIncomes$: Observable<Transaction[]>;
+  monthlyExpenses$: Observable<Transaction[]>;
 
   constructor(public dialog: MatDialog, public store: Store) {}
 
@@ -71,44 +72,52 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.monthlyIncomes$ = this.store.select(
       IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
     );
+    this.monthlyExpenses$ = this.store.select(
+      ExpenseState.selectMonthlyExpenseTransactionsForMonth(date)
+    );
     this.transfers$.subscribe((transfers: Transaction[]) => {
       this.incomes$.subscribe((incomes: Transaction[]) => {
         this.expenses$.subscribe((expenses: Transaction[]) => {
-          this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
-            this.dataSource = new MatTableDataSource<Transaction>(
-              transfers
-                .concat(incomes)
-                .concat(monthlyIncomes)
-                .concat(expenses)
-                .sort(compareTransactions)
-            );
-            this.dataSource.filterPredicate = (
-              data: Transaction,
-              filter: string
-            ) => {
-              const category: string = data.category
-                ? data.category.name.toString()
-                : '';
-              const amount: string = data.amount ? data.amount.toString() : '';
-              const account: string = data.account
-                ? data.account.name.toString()
-                : '';
-              const transferAccount: string = data.transferAccount
-                ? data.transferAccount.name.toString()
-                : '';
-              const notes: string = data.notes ? data.notes.toString() : '';
-
-              const transactionData = category
-                .concat(amount)
-                .concat(account)
-                .concat(transferAccount)
-                .concat(notes);
-              return (
-                !filter || transactionData.toLowerCase().indexOf(filter) != -1
+          this.monthlyExpenses$.subscribe((monthlyExpenses: Transaction[]) => {
+            this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
+              this.dataSource = new MatTableDataSource<Transaction>(
+                transfers
+                  .concat(incomes)
+                  .concat(monthlyExpenses)
+                  .concat(monthlyIncomes)
+                  .concat(expenses)
+                  .sort(compareTransactions)
               );
-            };
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
+              this.dataSource.filterPredicate = (
+                data: Transaction,
+                filter: string
+              ) => {
+                const category: string = data.category
+                  ? data.category.name.toString()
+                  : '';
+                const amount: string = data.amount
+                  ? data.amount.toString()
+                  : '';
+                const account: string = data.account
+                  ? data.account.name.toString()
+                  : '';
+                const transferAccount: string = data.transferAccount
+                  ? data.transferAccount.name.toString()
+                  : '';
+                const notes: string = data.notes ? data.notes.toString() : '';
+
+                const transactionData = category
+                  .concat(amount)
+                  .concat(account)
+                  .concat(transferAccount)
+                  .concat(notes);
+                return (
+                  !filter || transactionData.toLowerCase().indexOf(filter) != -1
+                );
+              };
+              this.dataSource.sort = this.sort;
+              this.dataSource.paginator = this.paginator;
+            });
           });
         });
       });
@@ -123,7 +132,7 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   deleteDialog(transaction: Transaction) {
     console.log(transaction);
-    
+
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: transaction,
       autoFocus: false,

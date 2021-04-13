@@ -9,5 +9,6 @@ export interface Expense{
     key?: string,
     fromAccount: Account,
     category: Category,
-    subCategory?: string
+    subCategory?: string,
+    monthlyKey?: string
 }

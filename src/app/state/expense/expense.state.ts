@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import {
   State,
   Action,
-  Selector,
   StateContext,
   createSelector,
   Store,
 } from '@ngxs/store';
-import { map } from 'rxjs/operators';
-import { Expense, ExpenseService } from 'src/app/expense';
+import { Expense, ExpenseService, MonthlyExpense, MonthlyExpenseService } from 'src/app/expense';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
+import { MonthlyExpenseActions } from './monthly.expense.actions';
 
 export interface ExpenseStateModel {
   expenses: Expense[];
+  monthlyExpenses: MonthlyExpense[];
   transactions: Transaction[];
 }
 
@@ -22,12 +22,14 @@ export interface ExpenseStateModel {
   name: 'expenseState',
   defaults: {
     expenses: [],
+    monthlyExpenses: [],
     transactions: [],
   },
 })
 @Injectable()
 export class ExpenseState {
-  constructor(private expenseService: ExpenseService, private store: Store) {}
+  constructor(private expenseService: ExpenseService, private store: Store,
+    private monthlyExpenseService: MonthlyExpenseService) {}
 
   static selectTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
@@ -37,6 +39,36 @@ export class ExpenseState {
           t.date.getFullYear() == date.getFullYear()
       )
     );
+  }
+
+  static selectMonthlyExpenseTransactionsForMonth(date: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) => {
+      let monthlyExpenseTransactions: Transaction[] = [];
+
+      state.monthlyExpenses.forEach((monthlyExpense: MonthlyExpense) => {
+        const filteredExpense = state.expenses.find(
+          (i) => i.monthlyKey == monthlyExpense.key
+        );
+
+        if (!filteredExpense) {
+          monthlyExpenseTransactions.push({
+            amount: monthlyExpense.amount,
+            date: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              monthlyExpense.day
+            ),
+            account: monthlyExpense.fromAccount,
+            category: monthlyExpense.category,
+            subcategory: monthlyExpense.subCategory,
+            key: monthlyExpense.key,
+            notes: monthlyExpense.notes,
+            type: TransactionTypes.MonthlyExpense,
+          });
+        }
+      });
+      return monthlyExpenseTransactions;
+    });
   }
 
   @Action(ExpenseActions.Get)
@@ -58,21 +90,64 @@ export class ExpenseState {
       context.dispatch(new ExpenseActions.GetSuccess(expenses));
 
       let transactions: Transaction[] = [];
-      expenses.forEach((t) => {
-        transactions.push({
-          category: t.category,
-          applied: t.isApplied,
-          amount: t.amount,
-          date: new Date(t.date),
-          account: t.fromAccount,
-          subcategory: t.subCategory,
-          key: t.key,
-          notes: t.notes,
-          type: TransactionTypes.Expense,
-        });
+      expenses.forEach((e) => {
+        transactions.push(this.getTransactionFromExpense(e));
       });
       context.dispatch(new ExpenseActions.GetTransactionsSuccess(transactions));
     });
+  }
+
+  private getTransactionFromExpense(expense: Expense): Transaction {
+    return {
+      category: expense.category,
+      applied: expense.isApplied,
+      amount: expense.amount,
+      date: new Date(expense.date),
+      account: expense.fromAccount,
+      subcategory: expense.subCategory,
+      monthlyKey: expense.monthlyKey,
+      key: expense.key,
+      notes: expense.notes,
+      type: TransactionTypes.Expense,
+    };
+  }
+
+  private getExpenseFromTransaction(transaction: Transaction): Expense {
+    return this.getExpenseFromTransactionAndDate(transaction, transaction.date);
+  }
+
+  private getExpenseFromTransactionAndDate(
+    transaction: Transaction,
+    date: Date
+  ): Expense {
+    return {
+      amount: transaction.amount,
+      category: {
+        image: transaction.category.image,
+        name: transaction.category.name,
+        color: transaction.category.color,
+        subcategories: transaction.category.subcategories
+          ? transaction.category.subcategories
+          : [],
+      },
+      date: date,
+      isApplied: transaction.applied,
+      notes: transaction.notes,
+      subCategory: transaction.subcategory ? transaction.subcategory : null,
+      fromAccount: transaction.account,
+      key: transaction.monthlyKey ? null : transaction.key,
+      monthlyKey: transaction.monthlyKey ? transaction.monthlyKey : null,
+    };
+  }
+
+  /* Monthly Expense Categories */
+  @Action(MonthlyExpenseActions.Get)
+  getAllMonthlyExpense(context: StateContext<ExpenseStateModel>) {
+    this.monthlyExpenseService
+      .getAll()
+      .subscribe((monthlyExpenses: MonthlyExpense[]) =>
+        context.dispatch(new MonthlyExpenseActions.GetSuccess(monthlyExpenses))
+      );
   }
 
   @Action(ExpenseActions.GetSuccess)
@@ -84,6 +159,18 @@ export class ExpenseState {
     ctx.setState({
       ...state,
       expenses: action.payload,
+    });
+  }
+
+  @Action(MonthlyExpenseActions.GetSuccess)
+  monthlyExpensesLoaded(
+    ctx: StateContext<ExpenseStateModel>,
+    action: MonthlyExpenseActions.GetSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      monthlyExpenses: action.payload,
     });
   }
 
@@ -99,8 +186,16 @@ export class ExpenseState {
     });
   }
 
+  @Action(MonthlyExpenseActions.DeleteMonthlyExpense)
+  deleteMonthlyExpense(
+    ctx: StateContext<ExpenseStateModel>,
+    action: MonthlyExpenseActions.DeleteMonthlyExpense
+  ) {
+    this.monthlyExpenseService.delete(action.payload.key);
+  }
+
   @Action(ExpenseActions.ApplyExpenseTransaction)
-  applyIncome(
+  applyExpense(
     ctx: StateContext<ExpenseStateModel>,
     action: ExpenseActions.ApplyExpenseTransaction
   ) {
@@ -180,6 +275,37 @@ export class ExpenseState {
           accountKey: expense.fromAccount.key
         }));
       }
+    }
+  }
+
+  @Action(MonthlyExpenseActions.SaveMonthlyExpenseTransaction)
+  saveMonthlyExpenseTransaction(
+    ctx: StateContext<ExpenseStateModel>,
+    action: MonthlyExpenseActions.SaveMonthlyExpenseTransaction
+  ) {
+    let monthlyExpense: MonthlyExpense = {
+      amount: action.payload.amount,
+      category: {
+        image: action.payload.category.image,
+        name: action.payload.category.name,
+        color: action.payload.category.color,
+        subcategories: action.payload.category.subcategories
+          ? action.payload.category.subcategories
+          : [],
+      },
+      day: action.payload.date.getDate(),
+      notes: action.payload.notes,
+      subCategory: action.payload.subcategory
+        ? action.payload.subcategory
+        : null,
+      fromAccount: action.payload.account,
+      key: action.payload.key,
+    };
+
+    if (monthlyExpense.key) {
+      this.monthlyExpenseService.update(monthlyExpense);
+    } else {
+      this.monthlyExpenseService.create(monthlyExpense);
     }
   }
 }

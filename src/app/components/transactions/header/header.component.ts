@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Transaction } from 'src/app/models';
 import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions } from 'src/app/state';
+import { MonthlyExpenseActions } from 'src/app/state/expense/monthly.expense.actions';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
@@ -86,7 +87,18 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((expenseTransaction: Transaction) => {
       if (expenseTransaction) {
-        this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
+        if(expenseTransaction.isMonthly){
+          this.store.dispatch(new MonthlyExpenseActions.SaveMonthlyExpenseTransaction(expenseTransaction));
+
+          if(expenseTransaction.applied){
+            this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
+          }
+        }else if(expenseTransaction.isRecurring){
+          // ToDo: Save Recurring expense
+          // this.store.dispatch(new RecurringIncomeActions.SaveRecurringIncomeTransaction(incomeTransaction));          
+        }else{
+          this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
+        }
       }
     });
   }

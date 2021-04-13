@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExpenseService } from './expense.service';
+import { MonthlyExpenseService } from './monthly-expense.service';
 
 @NgModule({
   declarations: [],
@@ -8,7 +9,8 @@ import { ExpenseService } from './expense.service';
     CommonModule
   ],
   providers: [
-    ExpenseService
+    ExpenseService,
+    MonthlyExpenseService
   ]
 })
 export class ExpenseModule { }
