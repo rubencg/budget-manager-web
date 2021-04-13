@@ -23,6 +23,7 @@ import {
   ExpenseState,
   IncomeActions,
   IncomeState,
+  MonthlyExpenseActions,
   MonthlyIncomeActions,
   TransferState,
 } from 'src/app/state';
@@ -131,7 +132,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {}
 
   deleteDialog(transaction: Transaction) {
-
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: transaction,
       autoFocus: false,
@@ -152,6 +152,11 @@ export class TableComponent implements AfterViewInit, OnInit {
           case TransactionTypes.MonthlyIncome:
             this.store.dispatch(
               new MonthlyIncomeActions.DeleteMonthlyIncome(transaction)
+            );
+            break;
+          case TransactionTypes.MonthlyExpense:
+            this.store.dispatch(
+              new MonthlyExpenseActions.DeleteMonthlyExpense(transaction)
             );
             break;
         }
