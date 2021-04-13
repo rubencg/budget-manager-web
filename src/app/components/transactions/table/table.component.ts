@@ -213,6 +213,7 @@ export class TableComponent implements AfterViewInit, OnInit {
           }
         });
         break;
+      // ToDo: Modify monthly incomes and expenses
     }
   }
 
