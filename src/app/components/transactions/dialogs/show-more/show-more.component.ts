@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { RecurringTypes } from 'src/app/models';
 
 @Component({
   selector: 'show-more',
@@ -11,10 +12,10 @@ export class ShowMoreComponent implements OnInit {
   @Input() parentForm: FormGroup;
   showAdditionalData: Boolean = false;
   recurrences = [
-    { value: 0, viewValue: 'Dias' },
-    { value: 1, viewValue: 'Semanas' },
-    { value: 2, viewValue: 'Meses' },
-    { value: 3, viewValue: 'Años' },
+    { value: RecurringTypes.Days, viewValue: 'Dias' },
+    { value: RecurringTypes.Weeks, viewValue: 'Semanas' },
+    { value: RecurringTypes.Months, viewValue: 'Meses' },
+    { value: RecurringTypes.Years, viewValue: 'Años' },
   ];
   
 
@@ -22,7 +23,7 @@ export class ShowMoreComponent implements OnInit {
 
   ngOnInit(): void {
     this.parentForm.patchValue({
-      recurrence: 2,
+      recurrence: RecurringTypes.Months,
       times: 3
     });
 

@@ -153,6 +153,9 @@ export class IncomeComponent implements OnInit {
       applied: this.form.get('applied').value,
       key: this.data ? this.data.key : undefined,
       isMonthly: this.form.get('monthlyRecurrent').value,
+      isRecurring: this.form.get('repeat').value,
+      recurringTimes: this.form.get('times').value,
+      recurringType: this.form.get('recurrence').value,
     }
 
     this.dialogRef.close(transaction);

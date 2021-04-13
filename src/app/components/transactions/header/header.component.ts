@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { Income } from 'src/app/income';
 import { Transaction } from 'src/app/models';
-import { ExpenseActions, IncomeActions } from 'src/app/state';
-import { MonthlyIncomeActions } from 'src/app/state/income/monthly.income.actions';
+import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions } from 'src/app/state';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
 @Component({
@@ -71,6 +69,8 @@ export class HeaderComponent implements OnInit {
           if(incomeTransaction.applied){
             this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
           }
+        }else if(incomeTransaction.isRecurring){
+          this.store.dispatch(new RecurringIncomeActions.SaveRecurringIncomeTransaction(incomeTransaction));          
         }else{
           this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
         }

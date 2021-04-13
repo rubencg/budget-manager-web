@@ -12,11 +12,12 @@ import {
   MonthlyIncome,
   MonthlyIncomeService,
 } from 'src/app/income';
-import { Transaction, TransactionTypes } from 'src/app/models';
+import { RecurringTypes, Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { IncomeActions } from './income.actions';
 import { MonthlyIncomeActions } from './monthly.income.actions';
 import { patch, removeItem, append } from '@ngxs/store/operators';
+import { RecurringIncomeActions } from './recurring.income.actions';
 
 export interface IncomeStateModel {
   incomes: Income[];
@@ -119,7 +120,35 @@ export class IncomeState {
       key: income.key,
       notes: income.notes,
       type: TransactionTypes.Income,
-    }
+    };
+  }
+
+  private getIncomeFromTransaction(transaction: Transaction): Income {
+    return this.getIncomeFromTransactionAndDate(transaction, transaction.date);
+  }
+
+  private getIncomeFromTransactionAndDate(
+    transaction: Transaction,
+    date: Date
+  ): Income {
+    return {
+      amount: transaction.amount,
+      category: {
+        image: transaction.category.image,
+        name: transaction.category.name,
+        color: transaction.category.color,
+        subcategories: transaction.category.subcategories
+          ? transaction.category.subcategories
+          : [],
+      },
+      date: date,
+      isApplied: transaction.applied,
+      notes: transaction.notes,
+      subCategory: transaction.subcategory ? transaction.subcategory : null,
+      toAccount: transaction.account,
+      key: transaction.monthlyKey ? null : transaction.key,
+      monthlyKey: transaction.monthlyKey ? transaction.monthlyKey : null,
+    };
   }
 
   /* Monthly Income Categories */
@@ -177,8 +206,10 @@ export class IncomeState {
 
     ctx.setState(
       patch({
-        transactions: removeItem<Transaction>(t => t.key == action.payload.key),
-        incomes: removeItem<Income>(t => t.key == action.payload.key),
+        transactions: removeItem<Transaction>(
+          (t) => t.key == action.payload.key
+        ),
+        incomes: removeItem<Income>((t) => t.key == action.payload.key),
       })
     );
 
@@ -220,26 +251,7 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.SaveIncomeTransaction
   ) {
-    let income: Income = {
-      amount: action.payload.amount,
-      category: {
-        image: action.payload.category.image,
-        name: action.payload.category.name,
-        color: action.payload.category.color,
-        subcategories: action.payload.category.subcategories
-          ? action.payload.category.subcategories
-          : [],
-      },
-      date: action.payload.date,
-      isApplied: action.payload.applied,
-      notes: action.payload.notes,
-      subCategory: action.payload.subcategory
-        ? action.payload.subcategory
-        : null,
-      toAccount: action.payload.account,
-      key: action.payload.monthlyKey ? null : action.payload.key,
-      monthlyKey: action.payload.monthlyKey ? action.payload.monthlyKey : null,
-    };
+    let income: Income = this.getIncomeFromTransaction(action.payload);
 
     if (action.payload.key && action.payload.type == TransactionTypes.Income) {
       const stateIncome: Income = ctx
@@ -276,19 +288,18 @@ export class IncomeState {
 
       this.incomeService.update(income);
     } else {
-      this.incomeService.create(income).then(r => {
+      this.incomeService.create(income).then((r) => {
         let t: Transaction = this.getTransactionFromIncome(income);
         t.key = r.key;
-        
-        if (action.payload.type == TransactionTypes.MonthlyIncome){
+
+        if (action.payload.type == TransactionTypes.MonthlyIncome) {
           ctx.setState(
             patch({
-              transactions: append([t])
+              transactions: append([t]),
             })
           );
         }
       });
-
 
       if (income.isApplied) {
         this.store.dispatch(
@@ -329,6 +340,45 @@ export class IncomeState {
       this.monthlyIncomeService.update(monthlyIncome);
     } else {
       this.monthlyIncomeService.create(monthlyIncome);
+    }
+  }
+
+  @Action(RecurringIncomeActions.SaveRecurringIncomeTransaction)
+  saveRecurringIncomeTransaction(
+    ctx: StateContext<IncomeStateModel>,
+    action: RecurringIncomeActions.SaveRecurringIncomeTransaction
+  ) {
+    let transaction: Transaction = action.payload;
+    let transactions: Income[] = [];
+
+    for (let index = 0; index < transaction.recurringTimes; index++) {
+      if (transaction.applied && index == 0) {
+        transactions.push(transaction);
+      } else {
+        let newTransaction: Transaction = { ...transaction };
+        newTransaction.applied = false;
+        newTransaction.date = this.getDateByRecurringType(transaction, index);
+        transactions.push(newTransaction);
+      }
+    }
+
+    transactions.forEach((t: Transaction) => {
+      this.store.dispatch(new IncomeActions.SaveIncomeTransaction(t));
+    });
+  }
+
+  private getDateByRecurringType(transaction: Transaction, index: number): Date{
+    switch (transaction.recurringType) {
+      case RecurringTypes.Days:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + index);
+      case RecurringTypes.Weeks:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + (index * 7));
+      case RecurringTypes.Months:
+        return new Date(transaction.date.getFullYear(), transaction.date.getMonth() + index, transaction.date.getDate());
+      case RecurringTypes.Years:
+        return new Date(transaction.date.getFullYear() + index, transaction.date.getMonth(), transaction.date.getDate());
+      default:
+        return new Date();
     }
   }
 }

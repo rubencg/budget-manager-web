@@ -1,5 +1,6 @@
 import { Account } from "../account";
 import { Category } from "../category";
+import { RecurringTypes } from "./recurring-types";
 import { TransactionTypes } from "./transaction-types";
 
 export interface Transaction {
@@ -15,5 +16,8 @@ export interface Transaction {
   notes?: String;
   applied?: Boolean;
   isMonthly?: Boolean;
+  isRecurring?: Boolean;
   monthlyKey?: string;
+  recurringTimes?: number;
+  recurringType?: RecurringTypes;
 }

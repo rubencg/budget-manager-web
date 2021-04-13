@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as Chart from 'chart.js';
-import { AccountActions, CategoryActions, ExpenseActions, IncomeActions, TransferActions } from './state';
-import { MonthlyIncomeActions } from './state/income/monthly.income.actions';
+import { AccountActions, CategoryActions, ExpenseActions, IncomeActions, TransferActions, MonthlyIncomeActions } from './state';
 
 @Component({
   selector: 'app-root',

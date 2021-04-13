@@ -23,10 +23,10 @@ import {
   ExpenseState,
   IncomeActions,
   IncomeState,
+  MonthlyIncomeActions,
   TransferState,
 } from 'src/app/state';
 import { Observable } from 'rxjs';
-import { MonthlyIncomeActions } from 'src/app/state/income/monthly.income.actions';
 
 @Component({
   selector: 'transactions-table',
