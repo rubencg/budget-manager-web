@@ -24,6 +24,9 @@
                     <span>
                         {{transaction.category.name}}
                     </span>
+                    <span *ngIf="transaction.subcategory">
+                        &nbsp;>> {{transaction.subcategory}}
+                    </span>
                 </div>
             </td>
         </ng-container>
