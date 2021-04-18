@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Account, ArchivedAccountDataSource } from 'src/app/account';
+import { Account } from 'src/app/account';
 import { AccountActions, AccountState, AccountStateModel } from 'src/app/state';
 
 @Component({

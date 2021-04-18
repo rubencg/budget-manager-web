@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountService } from './account.service';
+import { DashboardAccountService } from './dashboard-account.service';
 
 @NgModule({
   declarations: [],
@@ -9,7 +10,8 @@ import { AccountService } from './account.service';
   ],
   exports: [],
   providers: [
-    AccountService
+    AccountService,
+    DashboardAccountService
   ]
 })
 export class AccountModule { }
