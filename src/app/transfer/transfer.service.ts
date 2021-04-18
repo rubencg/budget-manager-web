@@ -29,10 +29,26 @@ export class TransferService {
   }
 
   createNewTransfer(transfer: Transfer) {
-    this.db.list(this.transferUrl).push(transfer);
+    this.db.list(this.transferUrl).push({
+      amount: transfer.amount,
+      date: transfer.date.toISOString(),
+      fromAccount: transfer.fromAccount,
+      notes: transfer.notes,
+      toAccount: transfer.toAccount
+    });
   }
 
   deleteTransfer(transfer: Transfer): Promise<void> {
     return this.db.list(this.transferUrl).remove(transfer.key);
+  }
+
+  update(transfer: Transfer): Promise<void> {
+    return this.db.list(this.transferUrl).update(transfer.key, {
+      amount: transfer.amount,
+      notes: transfer.notes,
+      fromAccount: transfer.fromAccount,
+      toAccount: transfer.toAccount,
+      date: transfer.date.toISOString(),
+    });
   }
 }

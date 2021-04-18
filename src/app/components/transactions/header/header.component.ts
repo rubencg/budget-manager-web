@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Transaction } from 'src/app/models';
-import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions, RecurringExpenseActions } from 'src/app/state';
+import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions, RecurringExpenseActions, TransferActions } from 'src/app/state';
 import { MonthlyExpenseActions } from 'src/app/state/expense/monthly.expense.actions';
 import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
 
@@ -108,11 +108,9 @@ export class HeaderComponent implements OnInit {
       width: 'calc(100% - 64px)',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Created transfer', result);
-      } else {
-        console.log('Nothing was created');
+    dialogRef.afterClosed().subscribe((transaction: Transaction) => {
+      if (transaction) {
+        this.store.dispatch(new TransferActions.SaveTransferTransaction(transaction));
       }
     });
   }

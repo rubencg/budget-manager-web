@@ -6,6 +6,7 @@ import { AccountActions } from './account.actions';
 import { AccountGroup } from 'src/app/models';
 import { from } from 'rxjs';
 import { AdjustBalancePayload } from './models/adjust-balance.payload';
+import { patch, updateItem } from '@ngxs/store/operators';
 
 export class AccountStateModel {
   public accounts: Account[];
@@ -82,6 +83,12 @@ export class AccountState {
       const stateAccount: Account = context.getState().accounts.find(i => i.key == adjustment.accountKey);
       let account: Account =  { ... stateAccount};
       account.currentBalance += adjustment.adjustment;
+
+      context.setState(
+        patch({
+          accounts: updateItem<Account>(t => t.key == account.key, account),
+        })
+      );
 
       this.accountService.updateAccount(account);
   }

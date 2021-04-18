@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  State,
-  Action,
-  StateContext,
-  createSelector,
-} from '@ngxs/store';
+import { State, Action, StateContext, createSelector } from '@ngxs/store';
 import { Account } from 'src/app/account';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { Transfer, TransferService } from '../../transfer';
@@ -94,34 +89,72 @@ export class TransferState {
     });
   }
 
-  @Action(TransferActions.SaveTransfer)
+  @Action(TransferActions.SaveTransferTransaction)
   saveTransfer(
     ctx: StateContext<TransferStateModel>,
-    action: TransferActions.SaveTransfer
+    action: TransferActions.SaveTransferTransaction
   ) {
-    let transfer: Transfer = action.payload;
-    this.transferService.createNewTransfer(transfer);
-
-    let fromAccount: Account = {
-      accountType: transfer.fromAccount.accountType,
-      color: transfer.fromAccount.color,
-      currentBalance: transfer.fromAccount.currentBalance - transfer.amount,
-      name: transfer.fromAccount.name,
-      image: transfer.fromAccount.image,
-      key: transfer.fromAccount.key,
-      sumsToMonthlyBudget: transfer.fromAccount.sumsToMonthlyBudget,
+    let transfer: Transfer = {
+      amount: action.payload.amount,
+      date: action.payload.date,
+      fromAccount: action.payload.account,
+      toAccount: action.payload.transferAccount,
+      key: action.payload.monthlyKey ? null : action.payload.key,
+      notes: action.payload.notes,
     };
-    ctx.dispatch(new AccountActions.SaveAccount(fromAccount));
 
-    let toAccount: Account = {
-      accountType: transfer.toAccount.accountType,
-      color: transfer.toAccount.color,
-      currentBalance: transfer.toAccount.currentBalance + transfer.amount,
-      name: transfer.toAccount.name,
-      image: transfer.toAccount.image,
-      key: transfer.toAccount.key,
-      sumsToMonthlyBudget: transfer.toAccount.sumsToMonthlyBudget,
-    };
-    ctx.dispatch(new AccountActions.SaveAccount(toAccount));
+    if (transfer.key) {
+      const oldTransfer: Transfer = ctx
+        .getState()
+        .transfers.find((i) => i.key == action.payload.key);
+
+      // Adjust old from Account
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: oldTransfer.fromAccount.key,
+          adjustment: oldTransfer.amount,
+        })
+      );
+      // Adjust new from Account
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: transfer.fromAccount.key,
+          adjustment: transfer.amount * -1,
+        })
+      );
+      // Adjust old to account
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: oldTransfer.toAccount.key,
+          adjustment: oldTransfer.amount * -1,
+        })
+      );
+      // Adjust new to Account
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: transfer.toAccount.key,
+          adjustment: transfer.amount,
+        })
+      );
+
+      this.transferService.update(transfer);
+      
+    } else {
+      this.transferService.createNewTransfer(transfer);
+
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: transfer.fromAccount.key,
+          adjustment: transfer.amount * -1,
+        })
+      );
+
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: transfer.toAccount.key,
+          adjustment: transfer.amount,
+        })
+      );
+    }
   }
 }

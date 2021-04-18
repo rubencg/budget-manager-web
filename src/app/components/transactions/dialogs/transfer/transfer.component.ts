@@ -68,14 +68,8 @@ export class TransferComponent implements OnInit {
         amount: Math.abs(transaction.amount),
         date: transaction.date,
         notes: transaction.notes,
-        originAccount:
-          transaction.amount < 0
-            ? transaction.account
-            : transaction.transferAccount,
-        destinationAccount:
-          transaction.amount > 0
-            ? transaction.account
-            : transaction.transferAccount,
+        originAccount: transaction.account,
+        destinationAccount: transaction.transferAccount,
       });
     }
   }
@@ -99,17 +93,8 @@ export class TransferComponent implements OnInit {
       account: this.originAccountCtrl.value,
       transferAccount: this.destinationAccountCtrl.value,
       notes: this.form.get('notes').value,
+      key: this.data.key
     };
-
-    let transfer: Transfer = {
-      amount: transaction.amount,
-      date: transaction.date,
-      fromAccount: transaction.account,
-      toAccount: transaction.transferAccount,
-      notes: this.form.get('notes').value
-    };
-
-    this.store.dispatch(new TransferActions.SaveTransfer(transfer));
 
     this.dialogRef.close(transaction);
   }

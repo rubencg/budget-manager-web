@@ -25,6 +25,7 @@ import {
   IncomeState,
   MonthlyExpenseActions,
   MonthlyIncomeActions,
+  TransferActions,
   TransferState,
 } from 'src/app/state';
 import { Observable } from 'rxjs';
@@ -190,9 +191,9 @@ export class TableComponent implements AfterViewInit, OnInit {
         });
         transferDialogRef.afterClosed().subscribe((result) => {
           if (result) {
-            console.log('Edit transfer', result);
-          } else {
-            console.log('Dont edit transfer');
+            this.store.dispatch(
+              new TransferActions.SaveTransferTransaction(result)
+            );
           }
         });
         break;
@@ -208,8 +209,6 @@ export class TableComponent implements AfterViewInit, OnInit {
             this.store.dispatch(
               new IncomeActions.SaveIncomeTransaction(result)
             );
-          } else {
-            console.log('Dont edit income');
           }
         });
         break;

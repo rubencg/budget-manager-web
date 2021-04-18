@@ -17,8 +17,8 @@ export namespace TransferActions{
     constructor(public payload: Transaction[]) {}
   }
   
-  export class SaveTransfer {
-    static readonly type = '[Transfer] SaveTransfer';
-    constructor(public payload: Transfer) {}
+  export class SaveTransferTransaction {
+    static readonly type = '[Transfer] SaveTransferTransaction';
+    constructor(public payload: Transaction) {}
   }
 }

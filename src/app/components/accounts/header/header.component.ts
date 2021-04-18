@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { AccountActions } from 'src/app/state';
+import { Transaction } from 'src/app/models';
+import { AccountActions, TransferActions } from 'src/app/state';
 import { TransferComponent } from '../../transactions/dialogs';
 import { AccountDialogComponent } from '../dialogs';
 
@@ -36,11 +37,9 @@ export class AccountsHeaderComponent implements OnInit {
       width: 'calc(100% - 64px)',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Created transfer', result);
-      } else {
-        console.log('Nothing was created');
+    dialogRef.afterClosed().subscribe((transaction: Transaction) => {
+      if (transaction) {
+        this.store.dispatch(new TransferActions.SaveTransferTransaction(transaction));
       }
     });
   }
