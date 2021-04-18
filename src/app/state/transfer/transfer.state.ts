@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, createSelector } from '@ngxs/store';
+import { patch, removeItem } from '@ngxs/store/operators';
 import { Account } from 'src/app/account';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { Transfer, TransferService } from '../../transfer';
@@ -89,6 +90,40 @@ export class TransferState {
     });
   }
 
+  @Action(TransferActions.DeleteTransfer)
+  deleteTransfer(
+    ctx: StateContext<TransferStateModel>,
+    action: TransferActions.DeleteTransfer
+  ) {
+    let transaction: Transaction = action.payload;
+
+    // Add amount to fromAccount
+    ctx.dispatch(
+      new AccountActions.AdjustAccountBalance({
+        accountKey: transaction.account.key,
+        adjustment: transaction.amount,
+      })
+    );
+    // Substract amount from toAccount
+    ctx.dispatch(
+      new AccountActions.AdjustAccountBalance({
+        accountKey: transaction.transferAccount.key,
+        adjustment: transaction.amount * -1,
+      })
+    );
+
+    // Remove transfer and transaction from state
+    this.transferService.delete(action.payload.key);
+    ctx.setState(
+      patch({
+        transactions: removeItem<Transaction>(
+          (t) => t.key == action.payload.key
+        ),
+        transfers: removeItem<Transfer>((t) => t.key == action.payload.key),
+      })
+    );
+  }
+
   @Action(TransferActions.SaveTransferTransaction)
   saveTransfer(
     ctx: StateContext<TransferStateModel>,
@@ -138,9 +173,8 @@ export class TransferState {
       );
 
       this.transferService.update(transfer);
-      
     } else {
-      this.transferService.createNewTransfer(transfer);
+      this.transferService.create(transfer);
 
       ctx.dispatch(
         new AccountActions.AdjustAccountBalance({

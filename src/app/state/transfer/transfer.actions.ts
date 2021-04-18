@@ -21,4 +21,9 @@ export namespace TransferActions{
     static readonly type = '[Transfer] SaveTransferTransaction';
     constructor(public payload: Transaction) {}
   }
+
+  export class DeleteTransfer {
+    static readonly type = '[TransactionsPage] DeleteTransfer';
+    constructor(public payload: Transaction) {}
+  }
 }

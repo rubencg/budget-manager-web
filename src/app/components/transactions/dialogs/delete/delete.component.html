@@ -9,7 +9,10 @@
     <div>
         <span>Cuenta: {{data.account.name}}</span>
     </div>
-    <div>
+    <div *ngIf="data.transferAccount">
+        <span>Cuenta destino: {{data.transferAccount.name}}</span>
+    </div>
+    <div *ngIf="data.category">
         <span>Categoria: {{data.category.name}}</span>
     </div>
     <div>

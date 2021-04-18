@@ -145,7 +145,7 @@ export class TableComponent implements AfterViewInit, OnInit {
             this.store.dispatch(new ExpenseActions.DeleteExpense(transaction));
             break;
           case TransactionTypes.Transfer:
-            // ToDo: Delete Transfer
+           this.store.dispatch(new TransferActions.DeleteTransfer(transaction));
             break;
           case TransactionTypes.Income:
             this.store.dispatch(new IncomeActions.DeleteIncome(transaction));

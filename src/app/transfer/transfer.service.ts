@@ -28,7 +28,7 @@ export class TransferService {
       );
   }
 
-  createNewTransfer(transfer: Transfer) {
+  create(transfer: Transfer) {
     this.db.list(this.transferUrl).push({
       amount: transfer.amount,
       date: transfer.date.toISOString(),
@@ -38,8 +38,8 @@ export class TransferService {
     });
   }
 
-  deleteTransfer(transfer: Transfer): Promise<void> {
-    return this.db.list(this.transferUrl).remove(transfer.key);
+  delete(key: string): Promise<void> {
+    return this.db.list(this.transferUrl).remove(key);
   }
 
   update(transfer: Transfer): Promise<void> {
