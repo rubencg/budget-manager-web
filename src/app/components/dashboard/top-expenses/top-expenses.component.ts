@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Color } from 'ng2-charts';
-import { TopExpense } from 'src/app/models';
+import { Observable } from 'rxjs';
+import { TopExpense, Transaction } from 'src/app/models';
+import { ExpenseState } from 'src/app/state';
 
 @Component({
   selector: 'top-expenses',
@@ -8,8 +11,10 @@ import { TopExpense } from 'src/app/models';
   styleUrls: ['./top-expenses.component.scss'],
 })
 export class TopExpensesComponent implements OnInit {
-  @Input() data: TopExpense[];
-  constructor() {}
+  topExpenses$: Observable<TopExpense[]>;
+  date: Date = new Date();
+  data: TopExpense[];
+  constructor(private store: Store) {}
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
@@ -34,10 +39,26 @@ export class TopExpensesComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.data = this.data.sort((a, b) => b.amount - a.amount);
-    this.data.forEach(element => {
-      this.barChartLabels.push(element.name);
-      this.barChartData[0].data.push(element.amount);
+    this.topExpenses$ = this.store.select(
+      ExpenseState.getExpensesGrouppedByCategoryForMonth(this.date)
+    );
+    this.topExpenses$.subscribe((topExpenses: TopExpense[]) => {
+      this.data = [];
+      this.barChartLabels = [];
+      this.barChartData = [
+        {
+          data: [],
+        },
+      ];
+
+      this.data = topExpenses.sort((a, b) => b.amount - a.amount);
+      for (let index = 0; index < 3; index++) {
+        const element = this.data[index];
+        if(element){
+          this.barChartLabels.push(element.name);
+          this.barChartData[0].data.push(element.amount); 
+        }
+      };
     });
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import {
   State,
   Action,
@@ -7,8 +8,13 @@ import {
   Store,
 } from '@ngxs/store';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { Expense, ExpenseService, MonthlyExpense, MonthlyExpenseService } from 'src/app/expense';
-import { RecurringTypes, Transaction, TransactionTypes } from 'src/app/models';
+import {
+  Expense,
+  ExpenseService,
+  MonthlyExpense,
+  MonthlyExpenseService,
+} from 'src/app/expense';
+import { RecurringTypes, TopExpense, Transaction, TransactionTypes } from 'src/app/models';
 import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
 import { MonthlyExpenseActions } from './monthly.expense.actions';
@@ -30,8 +36,11 @@ export interface ExpenseStateModel {
 })
 @Injectable()
 export class ExpenseState {
-  constructor(private expenseService: ExpenseService, private store: Store,
-    private monthlyExpenseService: MonthlyExpenseService) {}
+  constructor(
+    private expenseService: ExpenseService,
+    private store: Store,
+    private monthlyExpenseService: MonthlyExpenseService
+  ) {}
 
   static selectTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
@@ -95,6 +104,29 @@ export class ExpenseState {
     });
   }
 
+  static getExpensesGrouppedByCategoryForMonth(date: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) => {
+      // group expenses by category
+      const appliedExpenses: Expense[] = state.expenses.filter(
+        (t: Expense) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear() &&
+          t.isApplied
+      );
+      const expensesByCategory = _.groupBy(appliedExpenses, (e: Expense) => e.category.name);
+      
+      const topExpenses: TopExpense[] = _.map(expensesByCategory, function(value, key) {
+        const topExpense: TopExpense = { 
+          name: key, 
+          amount: value.reduce((a, b: Expense) => +a + b.amount, 0)
+        };
+        return topExpense;
+      });
+      
+      return topExpenses;
+    });
+  }
+
   @Action(ExpenseActions.Get)
   getAllExpenses(context: StateContext<ExpenseStateModel>) {
     this.expenseService.getAll().subscribe((inputExpenses: Expense[]) => {
@@ -109,7 +141,7 @@ export class ExpenseState {
           isApplied: t.isApplied,
           key: t.key,
           notes: t.notes,
-          monthlyKey: t.monthlyKey
+          monthlyKey: t.monthlyKey,
         });
       });
       context.dispatch(new ExpenseActions.GetSuccess(expenses));
@@ -228,16 +260,18 @@ export class ExpenseState {
       patch({
         transactions: removeItem<Transaction>(
           (t) => t.key == action.payload.key
-        )
+        ),
       })
     );
-    
+
     ctx.dispatch(new ExpenseActions.SaveExpenseTransaction(action.payload));
 
-    ctx.dispatch(new AccountActions.AdjustAccountBalance({
-      accountKey: action.payload.account.key,
-      adjustment: action.payload.amount * -1
-    }));
+    ctx.dispatch(
+      new AccountActions.AdjustAccountBalance({
+        accountKey: action.payload.account.key,
+        adjustment: action.payload.amount * -1,
+      })
+    );
   }
 
   @Action(ExpenseActions.DeleteExpense)
@@ -255,12 +289,14 @@ export class ExpenseState {
         expenses: removeItem<Expense>((t) => t.key == action.payload.key),
       })
     );
-    
-    if(action.payload.applied){
-      ctx.dispatch(new AccountActions.AdjustAccountBalance({
-        accountKey: action.payload.account.key,
-        adjustment: action.payload.amount
-      }));
+
+    if (action.payload.applied) {
+      ctx.dispatch(
+        new AccountActions.AdjustAccountBalance({
+          accountKey: action.payload.account.key,
+          adjustment: action.payload.amount,
+        })
+      );
     }
   }
 
@@ -271,38 +307,50 @@ export class ExpenseState {
   ) {
     let expense: Expense = this.getExpenseFromTransaction(action.payload);
 
-    if(action.payload.key && action.payload.type == TransactionTypes.Expense){
-      const stateExpense: Expense = ctx.getState().expenses.find(i => i.key == action.payload.key);
+    if (action.payload.key && action.payload.type == TransactionTypes.Expense) {
+      const stateExpense: Expense = ctx
+        .getState()
+        .expenses.find((i) => i.key == action.payload.key);
 
-      if(stateExpense.isApplied){
+      if (stateExpense.isApplied) {
         // Adjustment in same account
-        if(stateExpense.fromAccount.key == expense.fromAccount.key){
+        if (stateExpense.fromAccount.key == expense.fromAccount.key) {
           let adjustment: number = stateExpense.amount - expense.amount;
 
-          this.store.dispatch(new AccountActions.AdjustAccountBalance({
-            adjustment: adjustment,
-            accountKey: expense.fromAccount.key
-          }));
-        } else { // Adjustment to different account
-          this.store.dispatch(new AccountActions.AdjustAccountBalance({
-            adjustment: stateExpense.amount,
-            accountKey: stateExpense.fromAccount.key
-          }));
-          this.store.dispatch(new AccountActions.AdjustAccountBalance({
-            adjustment: expense.amount * -1,
-            accountKey: expense.fromAccount.key
-          }));
+          this.store.dispatch(
+            new AccountActions.AdjustAccountBalance({
+              adjustment: adjustment,
+              accountKey: expense.fromAccount.key,
+            })
+          );
+        } else {
+          // Adjustment to different account
+          this.store.dispatch(
+            new AccountActions.AdjustAccountBalance({
+              adjustment: stateExpense.amount,
+              accountKey: stateExpense.fromAccount.key,
+            })
+          );
+          this.store.dispatch(
+            new AccountActions.AdjustAccountBalance({
+              adjustment: expense.amount * -1,
+              accountKey: expense.fromAccount.key,
+            })
+          );
         }
       }
 
       ctx.setState(
         patch({
-          transactions: updateItem<Transaction>(t => t.key == action.payload.key, action.payload),
+          transactions: updateItem<Transaction>(
+            (t) => t.key == action.payload.key,
+            action.payload
+          ),
         })
       );
-      
+
       this.expenseService.update(expense);
-    }else{
+    } else {
       this.expenseService.create(expense).then((r) => {
         let t: Transaction = this.getTransactionFromExpense(expense);
         t.key = r.key;
@@ -313,11 +361,13 @@ export class ExpenseState {
         );
       });
 
-      if(expense.isApplied){
-        this.store.dispatch(new AccountActions.AdjustAccountBalance({
-          adjustment: expense.amount * -1,
-          accountKey: expense.fromAccount.key
-        }));
+      if (expense.isApplied) {
+        this.store.dispatch(
+          new AccountActions.AdjustAccountBalance({
+            adjustment: expense.amount * -1,
+            accountKey: expense.fromAccount.key,
+          })
+        );
       }
     }
   }
@@ -377,18 +427,48 @@ export class ExpenseState {
     });
   }
 
-  private getDateByRecurringType(transaction: Transaction, index: number): Date{
+  private getDateByRecurringType(
+    transaction: Transaction,
+    index: number
+  ): Date {
     switch (transaction.recurringType) {
       case RecurringTypes.Days:
-        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + index);
+        return new Date(
+          transaction.date.getFullYear(),
+          transaction.date.getMonth(),
+          transaction.date.getDate() + index
+        );
       case RecurringTypes.Weeks:
-        return new Date(transaction.date.getFullYear(), transaction.date.getMonth(), transaction.date.getDate() + (index * 7));
+        return new Date(
+          transaction.date.getFullYear(),
+          transaction.date.getMonth(),
+          transaction.date.getDate() + index * 7
+        );
       case RecurringTypes.Months:
-        return new Date(transaction.date.getFullYear(), transaction.date.getMonth() + index, transaction.date.getDate());
+        return new Date(
+          transaction.date.getFullYear(),
+          transaction.date.getMonth() + index,
+          transaction.date.getDate()
+        );
       case RecurringTypes.Years:
-        return new Date(transaction.date.getFullYear() + index, transaction.date.getMonth(), transaction.date.getDate());
+        return new Date(
+          transaction.date.getFullYear() + index,
+          transaction.date.getMonth(),
+          transaction.date.getDate()
+        );
       default:
         return new Date();
     }
   }
+}
+
+function groupBy(key) {
+  return function group(array) {
+    return array.reduce((acc, obj) => {
+      const property = obj[key];
+      acc[property] = acc[property] || [];
+      acc[property].push(obj);
+      return acc;
+    }, {});
+  };
 }

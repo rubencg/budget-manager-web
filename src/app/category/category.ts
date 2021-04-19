@@ -1,5 +1,5 @@
 export interface Category{
-    name: String,
+    name: string,
     image: String,
     color?: String,
     key?: string,
