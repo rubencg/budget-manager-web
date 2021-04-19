@@ -43,6 +43,28 @@ export class ExpenseState {
     );
   }
 
+  static selectUnpaidTransactionsForMonth(date: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear() &&
+          !t.applied
+      )
+    );
+  }
+
+  static selectPaidTransactionsForMonth(date: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear() &&
+          t.applied
+      )
+    );
+  }
+
   static selectMonthlyExpenseTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       let monthlyExpenseTransactions: Transaction[] = [];

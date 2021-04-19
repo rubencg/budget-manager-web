@@ -42,6 +42,11 @@ export class AccountState {
   static selectAccounts(state: AccountStateModel) {
     return state.accounts;
   }
+
+  @Selector()
+  static selectSumsToBudgetAccounts(state: AccountStateModel) {
+    return state.accounts.filter(a => a.sumsToMonthlyBudget);
+  }
   
   @Selector()
   static selectAccountGroups(state: AccountStateModel) {
