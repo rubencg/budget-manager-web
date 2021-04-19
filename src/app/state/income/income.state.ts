@@ -236,6 +236,13 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.ApplyIncomeTransaction
   ) {
+    ctx.setState(
+      patch({
+        transactions: removeItem<Transaction>(
+          (t) => t.key == action.payload.key
+        )
+      })
+    );
     ctx.dispatch(new IncomeActions.SaveIncomeTransaction(action.payload));
 
     ctx.dispatch(
@@ -297,14 +304,11 @@ export class IncomeState {
       this.incomeService.create(income).then((r) => {
         let t: Transaction = this.getTransactionFromIncome(income);
         t.key = r.key;
-
-        if (action.payload.type == TransactionTypes.MonthlyIncome) {
-          ctx.setState(
-            patch({
-              transactions: append([t]),
-            })
-          );
-        }
+        ctx.setState(
+          patch({
+            transactions: append([t]),
+          })
+        );
       });
 
       if (income.isApplied) {

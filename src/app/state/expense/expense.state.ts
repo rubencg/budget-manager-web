@@ -202,6 +202,14 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: ExpenseActions.ApplyExpenseTransaction
   ) {
+    ctx.setState(
+      patch({
+        transactions: removeItem<Transaction>(
+          (t) => t.key == action.payload.key
+        )
+      })
+    );
+    
     ctx.dispatch(new ExpenseActions.SaveExpenseTransaction(action.payload));
 
     ctx.dispatch(new AccountActions.AdjustAccountBalance({
@@ -276,14 +284,11 @@ export class ExpenseState {
       this.expenseService.create(expense).then((r) => {
         let t: Transaction = this.getTransactionFromExpense(expense);
         t.key = r.key;
-
-        if (action.payload.type == TransactionTypes.MonthlyExpense) {
-          ctx.setState(
-            patch({
-              transactions: append([t]),
-            })
-          );
-        }
+        ctx.setState(
+          patch({
+            transactions: append([t]),
+          })
+        );
       });
 
       if(expense.isApplied){
