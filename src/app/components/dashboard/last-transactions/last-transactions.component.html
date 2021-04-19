@@ -1,9 +1,9 @@
 <div class="d-flex w-100 justify-content-between">
     <h6>Transacciones</h6>
-    <small><a href="#">Ver todas</a></small>
+    <small><a routerLink="/transactions">Ver todas</a></small>
 </div>
 <div class="list-group">
-    <a href="#" class="list-group-item" *ngFor="let item of data">
+    <a class="list-group-item" *ngFor="let item of data">
         <div class="row">
             <div class="col-md-2">
                 <div [class]="[getClass(item.type), 'vertical-center', 'transaction']">
@@ -13,8 +13,27 @@
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-8">
-                        <h7>
-                            {{item.title}}
+                        <h7 *ngIf="item.type == 2" class="transaction-description">
+                            <span>
+                                {{item.account.name}}
+                            </span>
+                            <div class="table-icon disable-select transfer-icon" >
+                                <fa-icon [icon]="['fas', 'angle-double-right']"></fa-icon>
+                            </div>
+                            <span>
+                                {{item.transferAccount.name}}
+                            </span>
+                        </h7>
+                        <h7 *ngIf="item.type != 2" class="transaction-description">
+                            <span>
+                                {{item.category.name}}
+                            </span>
+                            <div class="table-icon disable-select transfer-icon" *ngIf="item.subcategory">
+                                <fa-icon [icon]="['fas', 'angle-double-right']"></fa-icon>
+                            </div>
+                            <span *ngIf="item.subcategory">
+                                {{item.subcategory}}
+                            </span>
                         </h7>
                     </div>
                     <div class="col-md-4 date">

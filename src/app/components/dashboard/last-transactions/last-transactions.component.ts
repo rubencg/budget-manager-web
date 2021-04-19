@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { concat, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Transaction, TransactionTypes } from 'src/app/models';
+import { ExpenseState, IncomeState, TransferState } from 'src/app/state';
 
 @Component({
   selector: 'last-transactions',
@@ -7,11 +11,48 @@ import { Transaction, TransactionTypes } from 'src/app/models';
   styleUrls: ['./last-transactions.component.scss'],
 })
 export class LastTransactionsComponent implements OnInit {
-  @Input() data: Transaction[];
+  data: Transaction[] = [];
+  date: Date = new Date();
+  incomes$: Observable<Transaction[]>;
+  expenses$: Observable<Transaction[]>;
+  transfers$: Observable<Transaction[]>;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.init();
+  }
+
+  init() {
+    this.incomes$ = this.store.select(
+      IncomeState.selectTransactionsForMonth(this.date)
+    );
+    this.expenses$ = this.store.select(
+      ExpenseState.selectPaidTransactionsForMonth(this.date)
+    );
+    this.transfers$ = this.store.select(
+      TransferState.selectTransactionsForMonth(this.date)
+    );
+
+    this.expenses$.subscribe((expenses: Transaction[]) => {
+      this.incomes$.subscribe((incomes: Transaction[]) => {
+        this.transfers$.subscribe((transfers: Transaction[]) => {
+          let transactions = transfers
+                  .concat(incomes)
+                  .concat(expenses)
+                  .sort(compareTransactions);
+          
+          this.data = [];
+          for (let index = 0; index < 5; index++) {
+            const transaction = transactions[index];
+            if(transaction){
+              this.data.push(transaction);
+            }
+          }
+        });
+      });
+    });
+  }
 
   getIcon(type: TransactionTypes) {
     switch (type) {
@@ -25,7 +66,7 @@ export class LastTransactionsComponent implements OnInit {
         return 'exchange-alt';
     }
   }
-  
+
   getClass(type: TransactionTypes) {
     switch (type) {
       case TransactionTypes.Expense:
@@ -38,4 +79,14 @@ export class LastTransactionsComponent implements OnInit {
         return 'transfer';
     }
   }
+}
+
+function compareTransactions(a: Transaction, b: Transaction) {
+  if (a.date > b.date) {
+    return -1;
+  }
+  if (a.date < b.date) {
+    return 1;
+  }
+  return 0;
 }

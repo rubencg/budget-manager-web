@@ -48,3 +48,12 @@
 .income {
   background-color: $light-blue;
 }
+
+.transaction-description {
+  display: flex;
+  align-items: center;
+}
+.transaction-description div{
+  margin-right: 5px;
+  margin-left: 5px;
+}
