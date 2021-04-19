@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Transaction } from 'src/app/models';
-
+import { Transaction, TransactionTypes } from 'src/app/models';
 
 @Component({
   selector: 'last-transactions',
@@ -14,14 +13,29 @@ export class LastTransactionsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getIcon(type: String){    
+  getIcon(type: TransactionTypes) {
     switch (type) {
-      case 'expense':
-        return "angle-double-down";
-        case 'income':
-        return "angle-double-up";
-        case 'transfer':
-        return "exchange-alt";
+      case TransactionTypes.Expense:
+      case TransactionTypes.MonthlyExpense:
+        return 'angle-double-down';
+      case TransactionTypes.Income:
+      case TransactionTypes.MonthlyIncome:
+        return 'angle-double-up';
+      case TransactionTypes.Transfer:
+        return 'exchange-alt';
+    }
+  }
+  
+  getClass(type: TransactionTypes) {
+    switch (type) {
+      case TransactionTypes.Expense:
+      case TransactionTypes.MonthlyExpense:
+        return 'expense';
+      case TransactionTypes.Income:
+      case TransactionTypes.MonthlyIncome:
+        return 'income';
+      case TransactionTypes.Transfer:
+        return 'transfer';
     }
   }
 }

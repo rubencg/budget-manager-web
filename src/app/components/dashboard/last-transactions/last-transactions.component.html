@@ -6,7 +6,7 @@
     <a href="#" class="list-group-item" *ngFor="let item of data">
         <div class="row">
             <div class="col-md-2">
-                <div [class]="[item.type, 'vertical-center', 'transaction']">
+                <div [class]="[getClass(item.type), 'vertical-center', 'transaction']">
                     <fa-icon class="center" [icon]="getIcon(item.type)"></fa-icon>
                 </div>
             </div>
