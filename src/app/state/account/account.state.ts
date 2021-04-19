@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { AccountService, Account, AccountType } from 'src/app/account';
+import { AccountService, Account, AccountType, DashboardAccountService, DashboardAccount } from 'src/app/account';
 import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { AccountActions } from './account.actions';
 import { AccountGroup } from 'src/app/models';
 import { from } from 'rxjs';
 import { AdjustBalancePayload } from './models/adjust-balance.payload';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { DashboardAccountActions } from './dashboard-account.actions';
 
 export class AccountStateModel {
   public accounts: Account[];
   public accountGroups: AccountGroup[];
   public accountTypes: AccountType[];
   public archivedAccounts: Account[];
+  public dashboardAccounts: DashboardAccount[];
 }
 
 const defaults = {
   accounts: [],
   archivedAccounts: [],
   accountGroups: [],
-  accountTypes: []
+  accountTypes: [],
+  dashboardAccounts: [],
 };
 
 @State<AccountStateModel>({
@@ -29,7 +32,7 @@ const defaults = {
 @Injectable()
 export class AccountState {
 
-  constructor(private accountService: AccountService){
+  constructor(private accountService: AccountService, private dashboardAccountService: DashboardAccountService){
 
   }
 
@@ -185,4 +188,27 @@ export class AccountState {
       accountGroups: accountGroups
     });
   }
+  
+  /* Dashboard Accounts */
+
+  @Action(DashboardAccountActions.Get)
+  getAllDashboardAccounts(context: StateContext<AccountStateModel>){
+    this.dashboardAccountService
+      .getAll()
+      .subscribe((accs: DashboardAccount[]) => context.dispatch(new DashboardAccountActions.GetSuccess(accs)));
+  }
+
+  @Action(DashboardAccountActions.GetSuccess)
+  dashboardAccountsLoaded(
+    ctx: StateContext<AccountStateModel>,
+    action: DashboardAccountActions.GetSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      dashboardAccounts: action.payload,
+    });
+  }
+
+  /* Ends Dashboard Accounts */
 }
