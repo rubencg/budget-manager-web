@@ -93,7 +93,7 @@ export class TransferComponent implements OnInit {
       account: this.originAccountCtrl.value,
       transferAccount: this.destinationAccountCtrl.value,
       notes: this.form.get('notes').value,
-      key: this.data.key
+      key: this.data ? this.data.key : undefined,
     };
 
     this.dialogRef.close(transaction);

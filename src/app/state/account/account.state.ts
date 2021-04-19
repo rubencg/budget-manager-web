@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
 import { AccountService, Account, AccountType, DashboardAccountService, DashboardAccount } from 'src/app/account';
 import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { AccountActions } from './account.actions';
@@ -207,6 +207,28 @@ export class AccountState {
     ctx.setState({
       ...state,
       dashboardAccounts: action.payload,
+    });
+  }
+
+  @Selector()
+  static selectDashboardAccounts(state: AccountStateModel) {
+    return state.dashboardAccounts;
+  }
+
+  static selectAccountsFromDashboardAccounts(dashboardAccounts: DashboardAccount[]) {
+    return createSelector([AccountState], (state: AccountStateModel) => {
+      let accounts: Account[] = [];
+
+      dashboardAccounts.forEach((dashboardAccount: DashboardAccount) => {
+        const filteredAccount = state.accounts.find(
+          (i) => i.key == dashboardAccount.accountKey
+        );
+
+        if (filteredAccount) {
+          accounts.push(filteredAccount);
+        }
+      });
+      return accounts;
     });
   }
 

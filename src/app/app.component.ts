@@ -18,6 +18,7 @@ export class AppComponent {
     Chart.defaults.global.defaultFontFamily = 'Maven Pro';
 
     this.store.dispatch(AccountActions.Get);
+    this.store.dispatch(DashboardAccountActions.Get);
     this.store.dispatch(AccountActions.GetTypes);
     this.store.dispatch(AccountActions.GetArchivedAccounts);
     this.store.dispatch(CategoryActions.GetExpenseCategories);
@@ -27,7 +28,6 @@ export class AppComponent {
     this.store.dispatch(ExpenseActions.Get);
     this.store.dispatch(MonthlyIncomeActions.Get);
     this.store.dispatch(MonthlyExpenseActions.Get);
-    this.store.dispatch(DashboardAccountActions.Get);
     
   }
 
