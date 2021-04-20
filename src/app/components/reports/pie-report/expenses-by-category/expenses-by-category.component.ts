@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { createSelector, Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { Expense } from 'src/app/expense';
 import { PieElement } from 'src/app/models';
-import { ExpenseState, ExpenseStateModel } from 'src/app/state';
 import * as _ from 'lodash';
 import { PieChartComponent } from '../pie-chart/pie-chart.component';
 
@@ -28,8 +27,8 @@ export class ExpensesByCategoryComponent implements OnInit, AfterViewInit {
   }
 
   changeDate(date: Date){
-    console.log('entering changed date');
     this.expenses$ = this.store.select((state) => state.expenseState.expenses).pipe(
+      delay(0),
       map((expenses: Expense[]) => {
         
         // group expenses by category
@@ -39,7 +38,6 @@ export class ExpensesByCategoryComponent implements OnInit, AfterViewInit {
           t.date.getFullYear() == date.getFullYear() &&
           t.isApplied
           );
-        console.log('appliedExpenses', appliedExpenses);
         const expensesByCategory = _.groupBy(appliedExpenses, (e: Expense) => e.category.name);
         const totalAmount = appliedExpenses.reduce((a, b: Expense) => +a + b.amount, 0);
         

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ExpensesByAccountComponent } from './expenses-by-account/expenses-by-account.component';
 import { ExpensesByCategoryComponent } from './expenses-by-category/expenses-by-category.component';
 
 @Component({
@@ -8,6 +9,7 @@ import { ExpensesByCategoryComponent } from './expenses-by-category/expenses-by-
 })
 export class PieReportComponent implements OnInit {
   @ViewChild(ExpensesByCategoryComponent) expensesByCategory: ExpensesByCategoryComponent;
+  @ViewChild(ExpensesByAccountComponent) expensesByAccount: ExpensesByAccountComponent;
 
   constructor() { }
 
@@ -15,7 +17,12 @@ export class PieReportComponent implements OnInit {
   }
 
   changeDate(date: Date){    
-    this.expensesByCategory.changeDate(date);
+    if(this.expensesByCategory){
+      this.expensesByCategory.changeDate(date);
+    }
+    if(this.expensesByAccount){
+      this.expensesByAccount.changeDate(date);
+    }
   }
 
 }
