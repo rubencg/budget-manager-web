@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import * as _ from 'lodash';
   templateUrl: './incomes-by-category.component.html',
   styleUrls: ['./incomes-by-category.component.scss']
 })
-export class IncomesByCategoryComponent implements OnInit {
+export class IncomesByCategoryComponent implements OnInit, AfterViewInit {
 
   @ViewChild(PieChartComponent) pieChart: PieChartComponent;
   incomes$: Observable<PieElement[]>;
