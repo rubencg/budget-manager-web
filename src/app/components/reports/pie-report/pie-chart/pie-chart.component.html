@@ -34,7 +34,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Porcentaje </th>
                     <td mat-cell *matCellDef="let element">
                         <span>
-                            {{element.percentage}} %
+                            {{element.percentage | number:'1.2-2'}} %
                         </span>
                     </td>
                 </ng-container>

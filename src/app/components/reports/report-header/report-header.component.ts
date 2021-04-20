@@ -45,6 +45,7 @@ export class ReportHeaderComponent implements OnInit {
       this.dateToDisplay.getMonth(),
       1
     );
+    this.onDateChanged.emit(this.dateToDisplay);
   }
 
   substract() {

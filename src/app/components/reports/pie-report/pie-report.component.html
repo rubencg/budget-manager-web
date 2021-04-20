@@ -1,10 +1,10 @@
 <mat-tab-group>
     <mat-tab label="Gastos por categoria">
         <ng-template matTabContent>
-            <expenses-by-category></expenses-by-category>
+            <expenses-by-category #expensesByCategory></expenses-by-category>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Gastos por cuenta">
+    <!-- <mat-tab label="Gastos por cuenta">
         <ng-template matTabContent>
             <expenses-by-account></expenses-by-account>
         </ng-template>
@@ -28,5 +28,5 @@
         <ng-template matTabContent>
             <fixed-variable-incomes></fixed-variable-incomes>
         </ng-template>
-    </mat-tab>
+    </mat-tab> -->
 </mat-tab-group>

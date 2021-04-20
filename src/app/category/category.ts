@@ -1,7 +1,7 @@
 export interface Category{
     name: string,
-    image: String,
-    color?: String,
+    image: string,
+    color?: string,
     key?: string,
     subcategories?: string[]
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateTypes } from 'src/app/models';
+import { PieReportComponent } from '../pie-report/pie-report.component';
 
 @Component({
   selector: 'app-reports',
@@ -9,10 +10,12 @@ import { DateTypes } from 'src/app/models';
 export class ReportsComponent implements OnInit {
   dateType: DateTypes = DateTypes.Month;
   currentDate: Date = new Date();
+  @ViewChild(PieReportComponent) pieReport: PieReportComponent;
 
   constructor() { }
 
   ngOnInit(): void {
+  
   }
 
   // ToDo: Call this if the inner report changes the type
@@ -22,6 +25,7 @@ export class ReportsComponent implements OnInit {
 
   onDateChanged(date: Date){
     this.currentDate = date;
+    this.pieReport.changeDate(date);
   }
 
 }
