@@ -62,6 +62,7 @@ import { ExpensesByYearComponent } from './reports/linear-report/expenses-by-yea
 import { ProfileComponent } from './profile/profile.component';
 import { ChangeInfoComponent } from './profile/change-info/change-info.component';
 import { MainAccountsComponent } from './profile/main-accounts/main-accounts.component';
+import { ExpensesBySubcategoryComponent } from './reports/pie-report/expenses-by-subcategory/expenses-by-subcategory.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { MainAccountsComponent } from './profile/main-accounts/main-accounts.com
     ExpensesByYearComponent,
     ProfileComponent,
     ChangeInfoComponent,
-    MainAccountsComponent
+    MainAccountsComponent,
+    ExpensesBySubcategoryComponent
   ],
   exports: [
     NavbarComponent,
