@@ -352,13 +352,7 @@ export class ExpenseState {
       this.expenseService.update(expense);
     } else {
       this.expenseService.create(expense).then((r) => {
-        let t: Transaction = this.getTransactionFromExpense(expense);
-        t.key = r.key;
-        ctx.setState(
-          patch({
-            transactions: append([t]),
-          })
-        );
+        ctx.dispatch(new ExpenseActions.GetSuccess(ctx.getState().expenses));
       });
 
       if (expense.isApplied) {

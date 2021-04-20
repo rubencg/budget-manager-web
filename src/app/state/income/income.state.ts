@@ -302,13 +302,7 @@ export class IncomeState {
       );
     } else {
       this.incomeService.create(income).then((r) => {
-        let t: Transaction = this.getTransactionFromIncome(income);
-        t.key = r.key;
-        ctx.setState(
-          patch({
-            transactions: append([t]),
-          })
-        );
+        ctx.dispatch(new IncomeActions.GetSuccess(ctx.getState().incomes));
       });
 
       if (income.isApplied) {
