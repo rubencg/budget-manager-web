@@ -24,7 +24,7 @@ export class PieReportComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  changeDate(date: Date){    
+  changeDate(date: Date){
     if(this.expensesByCategory){
       this.expensesByCategory.changeDate(date);
     }

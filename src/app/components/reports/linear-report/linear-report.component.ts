@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ExpensesByMonthComponent } from './expenses-by-month/expenses-by-month.component';
 
 @Component({
   selector: 'linear-report',
@@ -6,12 +7,19 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./linear-report.component.scss']
 })
 export class LinearReportComponent implements OnInit {
-  @Input() currentDate: Date;
+  @ViewChild(ExpensesByMonthComponent) expensesByMonth: ExpensesByMonthComponent;
 
   constructor() { }
 
   ngOnInit(): void {
     
+
+  }
+
+  changeDate(date: Date){
+    if(this.expensesByMonth){
+      this.expensesByMonth.changeDate(date);
+    }
   }
 
 }

@@ -1,12 +1,12 @@
 <mat-tab-group>
     <mat-tab label="Gastos por mes">
         <ng-template matTabContent>
-            <expenses-by-month [currentDate]="currentDate"></expenses-by-month>
+            <expenses-by-month #expensesByMonth></expenses-by-month>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Gastos por año">
+    <!-- <mat-tab label="Gastos por año">
         <ng-template matTabContent>
             <expenses-by-year [currentDate]="currentDate"></expenses-by-year>
         </ng-template>
-    </mat-tab>
+    </mat-tab> -->
 </mat-tab-group>

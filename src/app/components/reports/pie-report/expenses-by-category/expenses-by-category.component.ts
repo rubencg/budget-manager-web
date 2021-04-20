@@ -18,7 +18,8 @@ export class ExpensesByCategoryComponent implements OnInit, AfterViewInit {
   
   constructor(private store: Store) { 
 
-  }  
+  }
+    
   ngAfterViewInit(): void {
     this.changeDate(new Date());
   }

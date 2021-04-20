@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { Observable } from 'rxjs';
 import { LineElement } from 'src/app/models';
 import { LinearChartTypes } from '../linear-chart-types';
 
@@ -10,15 +11,13 @@ import { LinearChartTypes } from '../linear-chart-types';
   styleUrls: ['./linear-chart.component.scss'],
 })
 export class LinearChartComponent implements OnInit {
-  @Input() data: LineElement[] = [];
   @Input() color: string;
-  @Input() currentDate: Date; // 0 based months
   @Input() linearChartType: LinearChartTypes;  
 
   constructor() {}
 
   ngOnInit(): void {
-    this.fillChart(this.currentDate, this.data);
+    
   }
 
   clearChart(){
@@ -27,18 +26,20 @@ export class LinearChartComponent implements OnInit {
     this.lineChartColors[0].backgroundColor = [];
   }
 
-  public fillChart(date: Date, data: LineElement[]){
-    this.clearChart();
+  public setData(date: Date, data: Observable<LineElement[]>){
+    data.subscribe((elements: LineElement[]) => {
+      this.clearChart();
 
-    // Fill
-    switch (this.linearChartType) {
-      case LinearChartTypes.Month:
-        this.fillByMonth(date, data);
-        break;
-      case LinearChartTypes.Year:
-        this.fillByYear(date, data);
-        break;
-    }
+      // Fill
+      switch (this.linearChartType) {
+        case LinearChartTypes.Month:
+          this.fillByMonth(date, elements);
+          break;
+        case LinearChartTypes.Year:
+          this.fillByYear(date, elements);
+          break;
+      }
+    });
     
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateTypes } from 'src/app/models';
+import { LinearReportComponent } from '../linear-report/linear-report.component';
 import { PieReportComponent } from '../pie-report/pie-report.component';
 
 @Component({
@@ -9,8 +10,8 @@ import { PieReportComponent } from '../pie-report/pie-report.component';
 })
 export class ReportsComponent implements OnInit {
   dateType: DateTypes = DateTypes.Month;
-  currentDate: Date = new Date();
   @ViewChild(PieReportComponent) pieReport: PieReportComponent;
+  @ViewChild(LinearReportComponent) linearReport: LinearReportComponent;
 
   constructor() { }
 
@@ -24,8 +25,12 @@ export class ReportsComponent implements OnInit {
   }
 
   onDateChanged(date: Date){
-    this.currentDate = date;
-    this.pieReport.changeDate(date);
+    if(this.pieReport){
+      this.pieReport.changeDate(date);
+    }
+    if(this.linearReport){
+      this.linearReport.changeDate(date);
+    }
   }
 
 }

@@ -22,8 +22,6 @@ export class PieChartComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['description', 'amount', 'percentage'];
-  @Input() data: Observable<PieElement[]>;
-
   dataSource = new MatTableDataSource<PieElement>();
 
   constructor() {}
