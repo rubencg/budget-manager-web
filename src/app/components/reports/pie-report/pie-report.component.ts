@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ExpensesByAccountComponent } from './expenses-by-account/expenses-by-account.component';
 import { ExpensesByCategoryComponent } from './expenses-by-category/expenses-by-category.component';
+import { FixedVariableExpensesComponent } from './fixed-variable-expenses/fixed-variable-expenses.component';
 import { IncomesByAccountComponent } from './incomes-by-account/incomes-by-account.component';
 import { IncomesByCategoryComponent } from './incomes-by-category/incomes-by-category.component';
 
@@ -14,6 +15,7 @@ export class PieReportComponent implements OnInit {
   @ViewChild(ExpensesByAccountComponent) expensesByAccount: ExpensesByAccountComponent;
   @ViewChild(IncomesByCategoryComponent) incomesByCategory: IncomesByCategoryComponent;
   @ViewChild(IncomesByAccountComponent) incomesByAccount: IncomesByAccountComponent;
+  @ViewChild(FixedVariableExpensesComponent) fixedVariableExpenses: FixedVariableExpensesComponent;
 
   constructor() { }
 
@@ -32,6 +34,9 @@ export class PieReportComponent implements OnInit {
     }
     if(this.incomesByAccount){
       this.incomesByAccount.changeDate(date);
+    }
+    if(this.fixedVariableExpenses){
+      this.fixedVariableExpenses.changeDate(date);
     }
   }
 
