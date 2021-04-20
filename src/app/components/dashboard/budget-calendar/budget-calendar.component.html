@@ -24,13 +24,13 @@
         <span>{{ viewDate | date : 'MMMM, yyyy' : undefined :'es-ES' }}</span>
     </div>
     <div class="cal-month-controls">
-        <div class="cal-button disable-select" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+        <div class="cal-button disable-select" mwlCalendarPreviousView (click)="dateChanged()" [view]="view" [(viewDate)]="viewDate">
             <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
         </div>
-        <div class="cal-today-button cal-button disable-select" mwlCalendarToday [(viewDate)]="viewDate">
+        <div class="cal-today-button cal-button disable-select" mwlCalendarToday (click)="dateChanged()" [(viewDate)]="viewDate">
             <span>Hoy</span>
         </div>
-        <div class="cal-button disable-select" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+        <div class="cal-button disable-select" mwlCalendarNextView (click)="dateChanged()" [view]="view" [(viewDate)]="viewDate">
             <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
         </div>
     </div>

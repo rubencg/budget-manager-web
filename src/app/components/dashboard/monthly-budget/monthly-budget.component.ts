@@ -13,7 +13,6 @@ import { AccountState, ExpenseState, IncomeState } from 'src/app/state';
   styleUrls: ['./monthly-budget.component.scss'],
 })
 export class MonthlyBudgetComponent implements OnInit {
-  date: Date = new Date();
   monthlyIncomes$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
   monthlyExpenses$: Observable<Transaction[]>;
@@ -52,18 +51,22 @@ export class MonthlyBudgetComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.setData(new Date());
+  }
+
+  public setData(date: Date){
     // Monthly Budget
     this.monthlyIncomes$ = this.store.select(
-      IncomeState.selectMonthlyIncomeTransactionsForMonth(this.date)
+      IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
     );
     this.incomes$ = this.store.select(
-      IncomeState.selectTransactionsForMonth(this.date)
+      IncomeState.selectTransactionsForMonth(date)
     );
     this.monthlyExpenses$ = this.store.select(
-      ExpenseState.selectMonthlyExpenseTransactionsForMonth(this.date)
+      ExpenseState.selectMonthlyExpenseTransactionsForMonth(date)
     );
     this.expenses$ = this.store.select(
-      ExpenseState.selectTransactionsForMonth(this.date)
+      ExpenseState.selectTransactionsForMonth(date)
     );
     this.incomes$.subscribe((incomes) => {
       this.expenses$.subscribe((expenses) => {
@@ -120,7 +123,7 @@ export class MonthlyBudgetComponent implements OnInit {
     this.totalforMonth = this.calculateTotalForMonth(monthlyBudgetData);
   }
 
-  calculateTotalForMonth(monthlyBudgetData: MonthlyBudget): number {
+  private calculateTotalForMonth(monthlyBudgetData: MonthlyBudget): number {
     return (
       monthlyBudgetData.currentBalance - monthlyBudgetData.budgetExpensesAmount
     );

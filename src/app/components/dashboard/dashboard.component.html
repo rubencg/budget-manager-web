@@ -1,6 +1,6 @@
 <div class="row dashboard-row">
     <div class="col-md-6">
-        <budget-calendar></budget-calendar>
+        <budget-calendar (onDateChanged)="onDateChanged($event)"></budget-calendar>
     </div>
     <div class="col-md-6">
         <monthly-budget #monthlyBudget></monthly-budget>
@@ -9,9 +9,9 @@
 <div class="content-divider"></div>
 <div class="row dashboard-row">
     <div class="col-md-6">
-        <top-expenses></top-expenses>
+        <top-expenses #topExpenses></top-expenses>
     </div>
     <div class="col-md-6">
-        <last-transactions></last-transactions>
+        <last-transactions #lastTransactions></last-transactions>
     </div>
 </div>

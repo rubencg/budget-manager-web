@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
+
 
 @Component({
   selector: 'budget-calendar',
@@ -7,6 +8,7 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
   styleUrls: ['./budget-calendar.component.scss'],
 })
 export class BudgetCalendarComponent implements OnInit {
+  @Output() onDateChanged: EventEmitter<Date> = new EventEmitter();
   constructor() {}
 
   ngOnInit(): void {}
@@ -19,5 +21,9 @@ export class BudgetCalendarComponent implements OnInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     console.log('logged', date);
+  }
+
+  dateChanged(){
+    this.onDateChanged.emit(this.viewDate);    
   }
 }

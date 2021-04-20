@@ -12,7 +12,6 @@ import { ExpenseState, IncomeState, TransferState } from 'src/app/state';
 })
 export class LastTransactionsComponent implements OnInit {
   data: Transaction[] = [];
-  date: Date = new Date();
   incomes$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   transfers$: Observable<Transaction[]>;
@@ -20,18 +19,18 @@ export class LastTransactionsComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.init();
+    this.setData(new Date());
   }
 
-  init() {
+  public setData(date: Date) {
     this.incomes$ = this.store.select(
-      IncomeState.selectTransactionsForMonth(this.date)
+      IncomeState.selectTransactionsForMonth(date)
     );
     this.expenses$ = this.store.select(
-      ExpenseState.selectPaidTransactionsForMonth(this.date)
+      ExpenseState.selectPaidTransactionsForMonth(date)
     );
     this.transfers$ = this.store.select(
-      TransferState.selectTransactionsForMonth(this.date)
+      TransferState.selectTransactionsForMonth(date)
     );
 
     this.expenses$.subscribe((expenses: Transaction[]) => {

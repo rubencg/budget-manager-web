@@ -12,7 +12,6 @@ import { ExpenseState } from 'src/app/state';
 })
 export class TopExpensesComponent implements OnInit {
   topExpenses$: Observable<TopExpense[]>;
-  date: Date = new Date();
   data: TopExpense[];
   constructor(private store: Store) {}
 
@@ -39,8 +38,12 @@ export class TopExpensesComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.setData(new Date());
+  }
+
+  public setData(date: Date){
     this.topExpenses$ = this.store.select(
-      ExpenseState.getExpensesGrouppedByCategoryForMonth(this.date)
+      ExpenseState.getExpensesGrouppedByCategoryForMonth(date)
     );
     this.topExpenses$.subscribe((topExpenses: TopExpense[]) => {
       this.data = [];
