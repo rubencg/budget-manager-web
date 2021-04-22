@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, createSelector, Store } from '@ngxs/store';
 import { AccountService, Account, AccountType, DashboardAccountService, DashboardAccount } from 'src/app/account';
 import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { AccountActions } from './account.actions';
@@ -32,7 +32,9 @@ const defaults = {
 @Injectable()
 export class AccountState {
 
-  constructor(private accountService: AccountService, private dashboardAccountService: DashboardAccountService){
+  constructor(private accountService: AccountService, 
+    private dashboardAccountService: DashboardAccountService,
+    private store: Store){
 
   }
 
@@ -68,20 +70,22 @@ export class AccountState {
   saveAccount(context: StateContext<AccountStateModel>,
     action: AccountActions.SaveAccount){
       const account: Account = action.payload;
+      const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
       // Update 
       if(account.key){
-        this.accountService.updateAccount(account);
+        this.accountService.updateAccount(uId, account);
       } else { // Insert
-        this.accountService.createNewAccount(account);
+        this.accountService.createNewAccount(uId, account);
       }
-  }
-
-  @Action(AccountActions.ArchiveAccount)
-  archiveAccount(context: StateContext<AccountStateModel>,
-    action: AccountActions.ArchiveAccount){
-      const account: Account = action.payload;
-      this.accountService.deleteAccount(account);
-      this.accountService.createNewArchivedAccount(account);
+    }
+    
+    @Action(AccountActions.ArchiveAccount)
+    archiveAccount(context: StateContext<AccountStateModel>,
+      action: AccountActions.ArchiveAccount){
+        const account: Account = action.payload;
+        const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+        this.accountService.deleteAccount(uId, account);
+        this.accountService.createNewArchivedAccount(uId, account);
   }
   
   @Action(AccountActions.AdjustAccountBalance)
@@ -98,42 +102,43 @@ export class AccountState {
         })
       );
 
-      this.accountService.updateAccount(account);
+      this.accountService.updateAccount(this.store.selectSnapshot((state) => state.authenticationState.user).uid, account);
   }
 
   @Action(AccountActions.UnarchiveAccount)
   unArchiveAccount(context: StateContext<AccountStateModel>,
     action: AccountActions.UnarchiveAccount){
       const account: Account = action.payload;
-      this.accountService.createNewAccount(account);
-      this.accountService.deleteArchivedAccount(account);
+      const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+      this.accountService.createNewAccount(uId, account);
+      this.accountService.deleteArchivedAccount(uId, account);
   }
 
   @Action(AccountActions.DeleteArchivedAccount)
   deleteArchiveAccount(context: StateContext<AccountStateModel>,
     action: AccountActions.DeleteArchivedAccount){
       const account: Account = action.payload;
-      this.accountService.deleteArchivedAccount(account);
+      this.accountService.deleteArchivedAccount(this.store.selectSnapshot((state) => state.authenticationState.user).uid, account);
   }
 
   @Action(AccountActions.Get)
   getAllAccounts(context: StateContext<AccountStateModel>){
     this.accountService
-      .getAll()
+    .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((accs: Account[]) => context.dispatch(new AccountActions.GetSuccess(accs)));
   }
 
   @Action(AccountActions.GetArchivedAccounts)
   getAllArchivedAccountTypes(context: StateContext<AccountStateModel>){
     this.accountService
-      .getAllArchivedAccounts()
+      .getAllArchivedAccounts(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((archivedAccounts: Account[]) => context.dispatch(new AccountActions.GetArchivedAccountsSuccess(archivedAccounts)));
   }
   
   @Action(AccountActions.GetTypes)
   getAllAccountTypes(context: StateContext<AccountStateModel>){
     this.accountService
-      .getAllTypes()
+      .getAllTypes(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((types: AccountType[]) => context.dispatch(new AccountActions.GetTypesSuccess(types)));
   }
 
@@ -199,7 +204,7 @@ export class AccountState {
   @Action(DashboardAccountActions.Get)
   getAllDashboardAccounts(context: StateContext<AccountStateModel>){
     this.dashboardAccountService
-      .getAll()
+      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((accs: DashboardAccount[]) => context.dispatch(new DashboardAccountActions.GetSuccess(accs)));
   }
 

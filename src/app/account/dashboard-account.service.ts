@@ -6,15 +6,13 @@ import { DashboardAccount } from './dashboard-account';
 @Injectable()
 export class DashboardAccountService {
   entityName: String = 'dashboardAccounts';
-  dashboardAccountsUrl: string;
   
   constructor(private db: AngularFireDatabase) {
-    this.dashboardAccountsUrl = 'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.entityName;
   }
 
-  getAll() {
+  getAll(uId: string) {
     return this.db
-      .list(this.dashboardAccountsUrl)
+      .list(`${uId}/${this.entityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -27,22 +25,22 @@ export class DashboardAccountService {
       );
   }
 
-  update(account: DashboardAccount): Promise<void> {
-    return this.db.list(this.dashboardAccountsUrl).update(account.key, {
+  update(uId: string, account: DashboardAccount): Promise<void> {
+    return this.db.list(`${uId}/${this.entityName}`).update(account.key, {
       accountKey: account.accountKey,
       order: account.order,
     });
   }
 
-  create(account: DashboardAccount) {
-    this.db.list(this.dashboardAccountsUrl).push({
+  create(uId: string, account: DashboardAccount) {
+    this.db.list(`${uId}/${this.entityName}`).push({
       accountKey: account.accountKey,
       order: account.order
     });
   }
 
-  delete(account: DashboardAccount): Promise<void> {
-    return this.db.list(this.dashboardAccountsUrl).remove(account.key);
+  delete(uId: string, account: DashboardAccount): Promise<void> {
+    return this.db.list(`${uId}/${this.entityName}`).remove(account.key);
   }
 
 }

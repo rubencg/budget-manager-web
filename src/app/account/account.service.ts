@@ -6,25 +6,16 @@ import { AccountType } from './account-type';
 
 @Injectable()
 export class AccountService {
-  entityName: String = 'accounts';
-  typesEntityName: String = 'accountTypes';
-  archiveEntityName: String = 'archivedAccounts';
-  accountsUrl: string;
-  accountTypesUrl: string;
-  archivedAccountsUrl: string;
+  entityName: string = 'accounts';
+  typesEntityName: string = 'accountTypes';
+  archiveEntityName: string = 'archivedAccounts';
 
-  constructor(private db: AngularFireDatabase) {
-    this.accountsUrl = 'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.entityName;
-    this.accountTypesUrl =
-      'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.typesEntityName;
-    this.archivedAccountsUrl =
-      'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.archiveEntityName;
-  }
+  constructor(private db: AngularFireDatabase) { }
 
   /* Starts Account */
-  getAll() {
+  getAll(uId: string) {
     return this.db
-      .list(this.accountsUrl)
+      .list(`${uId}/${this.entityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -37,8 +28,8 @@ export class AccountService {
       );
   }
 
-  updateAccount(account: Account): Promise<void> {
-    return this.db.list(this.accountsUrl).update(account.key, {
+  updateAccount(uId: string, account: Account): Promise<void> {
+    return this.db.list(`${uId}/${this.entityName}`).update(account.key, {
       currentBalance: account.currentBalance,
       sumsToMonthlyBudget: account.sumsToMonthlyBudget,
       color: account.color,
@@ -48,8 +39,8 @@ export class AccountService {
     });
   }
 
-  createNewAccount(account: Account) {
-    this.db.list(this.accountsUrl).push({
+  createNewAccount(uId: string, account: Account) {
+    this.db.list(`${uId}/${this.entityName}`).push({
       name: account.name,
       accountType: account.accountType,
       color: account.color,
@@ -59,16 +50,16 @@ export class AccountService {
     });
   }
 
-  deleteAccount(account: Account): Promise<void> {
-    return this.db.list(this.accountsUrl).remove(account.key);
+  deleteAccount(uId: string, account: Account): Promise<void> {
+    return this.db.list(`${uId}/${this.entityName}`).remove(account.key);
   }
 
   /* Ends Account */
 
   /* Starts AccountTypes */
-  getAllTypes() {
+  getAllTypes(uId: string) {
     return this.db
-      .list(this.accountTypesUrl)
+      .list(`${uId}/${this.typesEntityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -84,9 +75,9 @@ export class AccountService {
   /* Ends AccountTypes */
 
   /* Starts Archived Accounts */
-  getAllArchivedAccounts() {
+  getAllArchivedAccounts(uId: string) {
     return this.db
-      .list(this.archivedAccountsUrl)
+      .list(`${uId}/${this.archiveEntityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -99,8 +90,8 @@ export class AccountService {
       );
   }
 
-  createNewArchivedAccount(account: Account) {
-    this.db.list(this.archivedAccountsUrl).push({
+  createNewArchivedAccount(uId: string, account: Account) {
+    this.db.list(`${uId}/${this.archiveEntityName}`).push({
       name: account.name,
       accountType: account.accountType,
       color: account.color,
@@ -110,8 +101,8 @@ export class AccountService {
     });
   }
 
-  deleteArchivedAccount(account: Account): Promise<void> {
-    return this.db.list(this.archivedAccountsUrl).remove(account.key);
+  deleteArchivedAccount(uId: string, account: Account): Promise<void> {
+    return this.db.list(`${uId}/${this.archiveEntityName}`).remove(account.key);
   }
   /* Ends Archived Accounts */
 }
