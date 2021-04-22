@@ -21,6 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthGuard } from './authentication/auth.guard';
 
 registerLocaleData(localeES);
 
@@ -38,6 +40,7 @@ registerLocaleData(localeES);
     TransferModule,
     ComponentsModule,
     ChartsModule,
+    AuthenticationModule,
     NgxsModule.forRoot(
       budgetManagerState, {
       developmentMode: !environment.production
@@ -52,7 +55,7 @@ registerLocaleData(localeES);
     BrowserAnimationsModule
   ],
   providers: [
-    
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { AuthenticationActions } from 'src/app/state';
 
 @Component({
   selector: 'navbar',
@@ -9,9 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+  }
+
+  logout(){
+    this.store.dispatch(new AuthenticationActions.Logout());
   }
 
 }

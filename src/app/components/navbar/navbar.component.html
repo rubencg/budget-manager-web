@@ -36,5 +36,5 @@
 </div>
 <mat-menu #profileMenu="matMenu">
   <button mat-menu-item routerLink="/profile">Perfil</button>
-  <button mat-menu-item >Cerrar sesion</button>
+  <button mat-menu-item (click)="logout()">Cerrar sesion</button>
 </mat-menu>

@@ -6,15 +6,18 @@ import { ArchivedAccountsComponent } from './components/archived-accounts/archiv
 import { CategoriesContentComponent } from './components/categories';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ReportsComponent } from './components/reports/reports/reports.component';
+import { LoginComponent } from './authentication/login/login.component';
+import { AuthGuard } from './authentication/auth.guard';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'transactions', component: TransactionsComponent },
-  { path: 'accounts', component: AccountsComponent },
-  { path: 'archived-accounts', component: ArchivedAccountsComponent },
-  { path: 'reports', component: ReportsComponent },
-  { path: 'categories', component: CategoriesContentComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'login', component: LoginComponent, },
+  { path: 'dashboard', component: DashboardComponent,  canActivate: [AuthGuard] },
+  { path: 'transactions', component: TransactionsComponent,  canActivate: [AuthGuard] },
+  { path: 'accounts', component: AccountsComponent,  canActivate: [AuthGuard] },
+  { path: 'archived-accounts', component: ArchivedAccountsComponent,  canActivate: [AuthGuard] },
+  { path: 'reports', component: ReportsComponent,  canActivate: [AuthGuard] },
+  { path: 'categories', component: CategoriesContentComponent,  canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent,  canActivate: [AuthGuard] },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: DashboardComponent }
 ];
