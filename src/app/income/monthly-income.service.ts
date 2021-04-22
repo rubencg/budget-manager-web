@@ -5,16 +5,13 @@ import { MonthlyIncome } from './monthly-income';
 
 @Injectable()
 export class MonthlyIncomeService {
-  entityName: String = 'monthlyIncomes';
-  monthlyIncomesUrl: string;
+  entityName: string = 'monthlyIncomes';
 
-  constructor(private db: AngularFireDatabase) {
-    this.monthlyIncomesUrl = 'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.entityName;
-  }
+  constructor(private db: AngularFireDatabase) { }
 
-  getAll() {
+  getAll(uid: string) {
     return this.db
-      .list(this.monthlyIncomesUrl)
+      .list(`${uid}/${this.entityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -27,8 +24,8 @@ export class MonthlyIncomeService {
       );
   }
 
-  update(income: MonthlyIncome): Promise<void> {
-    return this.db.list(this.monthlyIncomesUrl).update(income.key, {
+  update(uid: string, income: MonthlyIncome): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).update(income.key, {
       amount: income.amount,
       category: income.category,
       notes: income.notes,
@@ -38,8 +35,8 @@ export class MonthlyIncomeService {
     });
   }
 
-  create(income: MonthlyIncome) {
-    this.db.list(this.monthlyIncomesUrl).push({
+  create(uid: string, income: MonthlyIncome) {
+    this.db.list(`${uid}/${this.entityName}`).push({
       amount: income.amount,
       category: {
         image: income.category.image,
@@ -54,7 +51,7 @@ export class MonthlyIncomeService {
     });
   }
 
-  delete(key: string): Promise<void> {
-    return this.db.list(this.monthlyIncomesUrl).remove(key);
+  delete(uid: string, key: string): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).remove(key);
   }
 }

@@ -83,7 +83,7 @@ export class IncomeState {
 
   @Action(IncomeActions.Get)
   getAllIncomes(context: StateContext<IncomeStateModel>) {
-    this.incomeService.getAll().subscribe((inputIncomes: Income[]) => {
+    this.incomeService.getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid).subscribe((inputIncomes: Income[]) => {
       let incomes: Income[] = [];
       inputIncomes.forEach((t) => {
         incomes.push({
@@ -155,7 +155,7 @@ export class IncomeState {
   @Action(MonthlyIncomeActions.Get)
   getAllMonthlyIncome(context: StateContext<IncomeStateModel>) {
     this.monthlyIncomeService
-      .getAll()
+      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((monthlyIncomes: MonthlyIncome[]) =>
         context.dispatch(new MonthlyIncomeActions.GetSuccess(monthlyIncomes))
       );
@@ -202,7 +202,7 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.DeleteIncome
   ) {
-    this.incomeService.delete(action.payload.key);
+    this.incomeService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
 
     ctx.setState(
       patch({
@@ -228,7 +228,7 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: MonthlyIncomeActions.DeleteMonthlyIncome
   ) {
-    this.monthlyIncomeService.delete(action.payload.key);
+    this.monthlyIncomeService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
   }
 
   @Action(IncomeActions.ApplyIncomeTransaction)
@@ -259,6 +259,7 @@ export class IncomeState {
     action: IncomeActions.SaveIncomeTransaction
   ) {
     let income: Income = this.getIncomeFromTransaction(action.payload);
+    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
 
     if (action.payload.key && action.payload.type == TransactionTypes.Income) {
       const stateIncome: Income = ctx
@@ -293,7 +294,7 @@ export class IncomeState {
         }
       }
 
-      this.incomeService.update(income);
+      this.incomeService.update(uid, income);
 
       ctx.setState(
         patch({
@@ -301,7 +302,7 @@ export class IncomeState {
         })
       );
     } else {
-      this.incomeService.create(income).then((r) => {
+      this.incomeService.create(uid, income).then((r) => {
         ctx.dispatch(new IncomeActions.GetSuccess(ctx.getState().incomes));
       });
 
@@ -340,10 +341,11 @@ export class IncomeState {
       key: action.payload.key,
     };
 
+    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
     if (monthlyIncome.key) {
-      this.monthlyIncomeService.update(monthlyIncome);
+      this.monthlyIncomeService.update(uid, monthlyIncome);
     } else {
-      this.monthlyIncomeService.create(monthlyIncome);
+      this.monthlyIncomeService.create(uid, monthlyIncome);
     }
   }
 
