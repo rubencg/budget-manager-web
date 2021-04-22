@@ -29,6 +29,7 @@ import {
   TransferState,
 } from 'src/app/state';
 import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'transactions-table',
@@ -58,7 +59,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit(): void {
-    this.loadTable(this.date);
+    
   }
 
   public loadTable(date: Date) {
@@ -81,7 +82,11 @@ export class TableComponent implements AfterViewInit, OnInit {
       this.incomes$.subscribe((incomes: Transaction[]) => {
         this.expenses$.subscribe((expenses: Transaction[]) => {
           this.monthlyExpenses$.subscribe((monthlyExpenses: Transaction[]) => {
-            this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
+            this.monthlyIncomes$
+            .pipe(
+              delay(0),
+            )
+            .subscribe((monthlyIncomes: Transaction[]) => {
               this.dataSource = new MatTableDataSource<Transaction>(
                 transfers
                   .concat(incomes)
@@ -130,7 +135,9 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this.loadTable(this.date);
+  }
 
   deleteDialog(transaction: Transaction) {
     const dialogRef = this.dialog.open(DeleteComponent, {
