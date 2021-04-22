@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext, createSelector } from '@ngxs/store';
+import { State, Action, StateContext, createSelector, Store } from '@ngxs/store';
 import { patch, removeItem } from '@ngxs/store/operators';
-import { Account } from 'src/app/account';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { Transfer, TransferService } from '../../transfer';
 import { AccountActions } from '../account';
@@ -21,7 +20,8 @@ export interface TransferStateModel {
 })
 @Injectable()
 export class TransferState {
-  constructor(private transferService: TransferService) {}
+  constructor(private transferService: TransferService,
+    private store: Store) {}
 
   static selectTransactionsForMonth(date: Date) {
     return createSelector([TransferState], (state: TransferStateModel) =>
@@ -35,7 +35,7 @@ export class TransferState {
 
   @Action(TransferActions.Get)
   getAllTransfers(context: StateContext<TransferStateModel>) {
-    this.transferService.getAll().subscribe((inputTransfers: Transfer[]) => {
+    this.transferService.getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid).subscribe((inputTransfers: Transfer[]) => {
       let transfers: Transfer[] = [];
       inputTransfers.forEach((t) => {
         transfers.push({
@@ -113,7 +113,7 @@ export class TransferState {
     );
 
     // Remove transfer and transaction from state
-    this.transferService.delete(action.payload.key);
+    this.transferService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
     ctx.setState(
       patch({
         transactions: removeItem<Transaction>(
@@ -137,6 +137,7 @@ export class TransferState {
       key: action.payload.monthlyKey ? null : action.payload.key,
       notes: action.payload.notes,
     };
+    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
 
     if (transfer.key) {
       const oldTransfer: Transfer = ctx
@@ -172,9 +173,9 @@ export class TransferState {
         })
       );
 
-      this.transferService.update(transfer);
+      this.transferService.update(uid, transfer);
     } else {
-      this.transferService.create(transfer);
+      this.transferService.create(uid, transfer);
 
       ctx.dispatch(
         new AccountActions.AdjustAccountBalance({

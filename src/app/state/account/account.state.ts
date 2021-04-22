@@ -73,9 +73,9 @@ export class AccountState {
       const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
       // Update 
       if(account.key){
-        this.accountService.updateAccount(uid, account);
+        this.accountService.update(uid, account);
       } else { // Insert
-        this.accountService.createNewAccount(uid, account);
+        this.accountService.create(uid, account);
       }
     }
     
@@ -84,7 +84,7 @@ export class AccountState {
       action: AccountActions.ArchiveAccount){
         const account: Account = action.payload;
         const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
-        this.accountService.deleteAccount(uid, account);
+        this.accountService.delete(uid, account);
         this.accountService.createNewArchivedAccount(uid, account);
   }
   
@@ -102,7 +102,7 @@ export class AccountState {
         })
       );
 
-      this.accountService.updateAccount(this.store.selectSnapshot((state) => state.authenticationState.user).uid, account);
+      this.accountService.update(this.store.selectSnapshot((state) => state.authenticationState.user).uid, account);
   }
 
   @Action(AccountActions.UnarchiveAccount)
@@ -110,7 +110,7 @@ export class AccountState {
     action: AccountActions.UnarchiveAccount){
       const account: Account = action.payload;
       const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
-      this.accountService.createNewAccount(uid, account);
+      this.accountService.create(uid, account);
       this.accountService.deleteArchivedAccount(uid, account);
   }
 

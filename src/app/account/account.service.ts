@@ -28,7 +28,7 @@ export class AccountService {
       );
   }
 
-  updateAccount(uid: string, account: Account): Promise<void> {
+  update(uid: string, account: Account): Promise<void> {
     return this.db.list(`${uid}/${this.entityName}`).update(account.key, {
       currentBalance: account.currentBalance,
       sumsToMonthlyBudget: account.sumsToMonthlyBudget,
@@ -39,7 +39,7 @@ export class AccountService {
     });
   }
 
-  createNewAccount(uid: string, account: Account) {
+  create(uid: string, account: Account) {
     this.db.list(`${uid}/${this.entityName}`).push({
       name: account.name,
       accountType: account.accountType,
@@ -50,7 +50,7 @@ export class AccountService {
     });
   }
 
-  deleteAccount(uid: string, account: Account): Promise<void> {
+  delete(uid: string, account: Account): Promise<void> {
     return this.db.list(`${uid}/${this.entityName}`).remove(account.key);
   }
 

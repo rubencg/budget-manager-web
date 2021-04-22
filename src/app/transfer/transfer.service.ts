@@ -5,17 +5,13 @@ import { Transfer } from './transfer';
 
 @Injectable()
 export class TransferService {
+  entityName: string = 'transfers';
 
-  entityName: String = 'transfers';
-  transferUrl: string;
+  constructor(private db: AngularFireDatabase) { }
 
-  constructor(private db: AngularFireDatabase) { 
-    this.transferUrl = 'axEUkilpFOrtiMnLEaTSHBHmeGEx/' + this.entityName;
-  }
-
-  getAll(){
+  getAll(uid: string){
     return this.db
-      .list(this.transferUrl)
+      .list(`${uid}/${this.entityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -28,8 +24,8 @@ export class TransferService {
       );
   }
 
-  create(transfer: Transfer) {
-    this.db.list(this.transferUrl).push({
+  create(uid: string, transfer: Transfer) {
+    this.db.list(`${uid}/${this.entityName}`).push({
       amount: transfer.amount,
       date: transfer.date.toISOString(),
       fromAccount: transfer.fromAccount,
@@ -38,12 +34,12 @@ export class TransferService {
     });
   }
 
-  delete(key: string): Promise<void> {
-    return this.db.list(this.transferUrl).remove(key);
+  delete(uid: string, key: string): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).remove(key);
   }
 
-  update(transfer: Transfer): Promise<void> {
-    return this.db.list(this.transferUrl).update(transfer.key, {
+  update(uid: string, transfer: Transfer): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).update(transfer.key, {
       amount: transfer.amount,
       notes: transfer.notes,
       fromAccount: transfer.fromAccount,
