@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import {
   Category,
   ExpenseCategoryService,
@@ -23,7 +23,8 @@ export interface CategoryStateModel {
 export class CategoryState {
   constructor(
     private incomeCategoryService: IncomeCategoryService,
-    private expenseCategoryService: ExpenseCategoryService
+    private expenseCategoryService: ExpenseCategoryService,
+    private store: Store
   ) {}
 
   @Selector()
@@ -40,7 +41,7 @@ export class CategoryState {
   @Action(CategoryActions.GetIncomeCategories)
   getAllIncomeCategories(context: StateContext<CategoryStateModel>) {
     this.incomeCategoryService
-      .getAll()
+      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((categories: Category[]) =>
         context.dispatch(
           new CategoryActions.GetIncomeCategorySuccess(categories)
@@ -64,18 +65,19 @@ export class CategoryState {
   saveIncomeCategory(context: StateContext<CategoryStateModel>,
     action: CategoryActions.SaveIncomeCategory){
       const category: Category = action.payload;
+      const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
       // Update 
       if(category.key){
-        this.incomeCategoryService.update(category);
+        this.incomeCategoryService.update(uid, category);
       } else { // Insert
-        this.incomeCategoryService.create(category);
+        this.incomeCategoryService.create(uid, category);
       }
   }
 
   @Action(CategoryActions.DeleteIncomeCategory)
   deleteIncomeCategory(context: StateContext<CategoryStateModel>,
     action: CategoryActions.DeleteIncomeCategory){
-      this.incomeCategoryService.delete(action.payload);
+      this.incomeCategoryService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload);
   }
   /* Ends Income Categories */
 
@@ -83,7 +85,7 @@ export class CategoryState {
   @Action(CategoryActions.GetExpenseCategories)
   getAllExpenseCategories(context: StateContext<CategoryStateModel>) {
     this.expenseCategoryService
-      .getAll()
+      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
       .subscribe((categories: Category[]) =>
         context.dispatch(
           new CategoryActions.GetExpenseCategorySuccess(categories)
@@ -107,18 +109,19 @@ export class CategoryState {
   saveExpenseCategory(context: StateContext<CategoryStateModel>,
     action: CategoryActions.SaveExpenseCategory){
       const category: Category = action.payload;
+      const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
       // Update 
       if(category.key){
-        this.expenseCategoryService.update(category);
+        this.expenseCategoryService.update(uid, category);
       } else { // Insert
-        this.expenseCategoryService.create(category);
+        this.expenseCategoryService.create(uid, category);
       }
   }
 
   @Action(CategoryActions.DeleteExpenseCategory)
   deleteExpenseCategory(context: StateContext<CategoryStateModel>,
     action: CategoryActions.DeleteExpenseCategory){
-      this.expenseCategoryService.delete(action.payload);
+      this.expenseCategoryService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload);
   }
   /* Ends Expense Categories */
 }

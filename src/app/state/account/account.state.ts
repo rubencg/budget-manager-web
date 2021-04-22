@@ -70,12 +70,12 @@ export class AccountState {
   saveAccount(context: StateContext<AccountStateModel>,
     action: AccountActions.SaveAccount){
       const account: Account = action.payload;
-      const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+      const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
       // Update 
       if(account.key){
-        this.accountService.updateAccount(uId, account);
+        this.accountService.updateAccount(uid, account);
       } else { // Insert
-        this.accountService.createNewAccount(uId, account);
+        this.accountService.createNewAccount(uid, account);
       }
     }
     
@@ -83,9 +83,9 @@ export class AccountState {
     archiveAccount(context: StateContext<AccountStateModel>,
       action: AccountActions.ArchiveAccount){
         const account: Account = action.payload;
-        const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
-        this.accountService.deleteAccount(uId, account);
-        this.accountService.createNewArchivedAccount(uId, account);
+        const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+        this.accountService.deleteAccount(uid, account);
+        this.accountService.createNewArchivedAccount(uid, account);
   }
   
   @Action(AccountActions.AdjustAccountBalance)
@@ -109,9 +109,9 @@ export class AccountState {
   unArchiveAccount(context: StateContext<AccountStateModel>,
     action: AccountActions.UnarchiveAccount){
       const account: Account = action.payload;
-      const uId: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
-      this.accountService.createNewAccount(uId, account);
-      this.accountService.deleteArchivedAccount(uId, account);
+      const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+      this.accountService.createNewAccount(uid, account);
+      this.accountService.deleteArchivedAccount(uid, account);
   }
 
   @Action(AccountActions.DeleteArchivedAccount)

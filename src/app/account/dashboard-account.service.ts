@@ -10,9 +10,9 @@ export class DashboardAccountService {
   constructor(private db: AngularFireDatabase) {
   }
 
-  getAll(uId: string) {
+  getAll(uid: string) {
     return this.db
-      .list(`${uId}/${this.entityName}`)
+      .list(`${uid}/${this.entityName}`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -25,22 +25,22 @@ export class DashboardAccountService {
       );
   }
 
-  update(uId: string, account: DashboardAccount): Promise<void> {
-    return this.db.list(`${uId}/${this.entityName}`).update(account.key, {
+  update(uid: string, account: DashboardAccount): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).update(account.key, {
       accountKey: account.accountKey,
       order: account.order,
     });
   }
 
-  create(uId: string, account: DashboardAccount) {
-    this.db.list(`${uId}/${this.entityName}`).push({
+  create(uid: string, account: DashboardAccount) {
+    this.db.list(`${uid}/${this.entityName}`).push({
       accountKey: account.accountKey,
       order: account.order
     });
   }
 
-  delete(uId: string, account: DashboardAccount): Promise<void> {
-    return this.db.list(`${uId}/${this.entityName}`).remove(account.key);
+  delete(uid: string, account: DashboardAccount): Promise<void> {
+    return this.db.list(`${uid}/${this.entityName}`).remove(account.key);
   }
 
 }
