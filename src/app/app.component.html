@@ -8,8 +8,10 @@
 </div>
 <div class="container-fluid router-outlet-container">
     <div class="row">
-        <div class="col-md-3 no-float accounts">
-            <account-nav *ngIf="user$ | async"></account-nav>
+        <div class="col-md-3" *ngIf="!(user$ | async)">
+        </div>
+        <div class="col-md-3 no-float accounts" *ngIf="user$ | async">
+            <account-nav ></account-nav>
         </div>
         <div class="col-md-9 no-float content">
             <div>

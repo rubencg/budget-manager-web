@@ -1,0 +1,17 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginContainer {
+    width: 60%;
+    margin-top: 100px;
+}
+
+.loginContainer h1 {
+    margin-bottom: 15px;
+}
+
+.prefixIcon{
+    margin-right: 10px;
+}

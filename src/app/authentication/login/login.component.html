@@ -1,8 +1,26 @@
-
-<form [formGroup]="form">
-
-    <input type="text" formControlName="email">
-    <input type="text" formControlName="password">
-</form>
-
-<button (click)="logIn()">Accesar</button>
+<div class="loginContainer">
+    <h1>Ingresar a Tiki-Budget manager</h1>
+    <form [formGroup]="form" class="loginForm">
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'user']"></fa-icon>
+            </span>
+            <mat-label>Email</mat-label>
+            <input type="text" formControlName="email" matInput>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'key']"></fa-icon>
+            </span>
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Esconder password'"
+                [attr.aria-pressed]="hidePassword">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+    
+        <button mat-raised-button color="primary" (click)="logIn()">Accesar</button>
+    </form>
+</div>

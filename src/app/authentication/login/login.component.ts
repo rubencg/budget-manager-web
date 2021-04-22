@@ -9,6 +9,7 @@ import { AuthenticationActions } from 'src/app/state/authentication/authenticati
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  hidePassword = true;
 
   constructor(private store: Store) { }
 
