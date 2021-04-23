@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { AuthenticationActions } from 'src/app/state/authentication/authentication.actions';
 
@@ -11,7 +12,7 @@ import { AuthenticationActions } from 'src/app/state/authentication/authenticati
 export class LoginComponent implements OnInit {
   hidePassword = true;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +24,9 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new AuthenticationActions.Login({
       username: email,
       password: password
-    }));
+    })).subscribe(() => {
+      this.router.navigate(['dashboard']);
+    });
   }
 
   form: FormGroup = new FormGroup({

@@ -22,7 +22,7 @@ export interface AuthenticationStateModel {
 })
 @Injectable()
 export class AuthenticationState {
-  constructor(private authService: AuthService, private store: Store, private router: Router) {}
+  constructor(private authService: AuthService, private store: Store) {}
 
   @Selector()
   static user(state: AuthenticationStateModel): User | null {
@@ -66,8 +66,6 @@ export class AuthenticationState {
         this.store.dispatch(ExpenseActions.Get);
         this.store.dispatch(MonthlyIncomeActions.Get);
         this.store.dispatch(MonthlyExpenseActions.Get);
-
-        this.router.navigate(['dashboard']);
       });
   }
 
@@ -79,7 +77,6 @@ export class AuthenticationState {
       });
 
       localStorage.setItem('user', null);
-      this.router.navigate(['login']);
     });
   }
 }

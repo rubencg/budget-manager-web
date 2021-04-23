@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { AuthenticationActions } from 'src/app/state';
 
@@ -11,13 +12,15 @@ import { AuthenticationActions } from 'src/app/state';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   logout(){
-    this.store.dispatch(new AuthenticationActions.Logout());
+    this.store.dispatch(new AuthenticationActions.Logout()).subscribe(() => {
+      this.router.navigate(['login']);
+    });
   }
 
 }

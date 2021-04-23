@@ -8,17 +8,13 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   userData: any; // Save logged in user data
 
-  constructor(public afAuth: AngularFireAuth) {
-    if(!environment.production){
-      console.log('using local authentication');
-      
-      afAuth.useEmulator('http://localhost:9099/');
-    }
-  }
+  constructor(public afAuth: AngularFireAuth) { }
 
   // Sign in with email/password
   signIn(email, password) {
-    return this.afAuth.signInWithEmailAndPassword(email, password);
+    return this.afAuth.setPersistence('local').then(_ => {
+      return this.afAuth.signInWithEmailAndPassword(email, password);
+    });
   }
   // Sign out
   signOut() {
