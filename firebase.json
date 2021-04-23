@@ -13,5 +13,19 @@
       "enabled": true,
       "port": 5001
     }
+  },
+  "hosting": {
+    "public": "dist/budget-manager-web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
