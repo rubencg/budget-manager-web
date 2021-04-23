@@ -30,6 +30,7 @@ import {
 } from 'src/app/state';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'transactions-table',
@@ -38,6 +39,7 @@ import { delay } from 'rxjs/operators';
 })
 export class TableComponent implements AfterViewInit, OnInit {
   @Input() date: Date;
+  showNotAppliedTransactions: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = [
@@ -87,14 +89,18 @@ export class TableComponent implements AfterViewInit, OnInit {
               delay(0),
             )
             .subscribe((monthlyIncomes: Transaction[]) => {
-              this.dataSource = new MatTableDataSource<Transaction>(
-                transfers
-                  .concat(incomes)
-                  .concat(monthlyExpenses)
-                  .concat(monthlyIncomes)
-                  .concat(expenses)
+              let source = this.showNotAppliedTransactions ? transfers
+                .concat(incomes)
+                .concat(monthlyExpenses)
+                .concat(monthlyIncomes)
+                .concat(expenses)
+                .sort(compareTransactions) :
+                  transfers
+                  .concat(incomes.filter(i => i.applied))
+                  .concat(expenses.filter(i => i.applied))
                   .sort(compareTransactions)
-              );
+                ;
+              this.dataSource = new MatTableDataSource<Transaction>(source);
               this.dataSource.filterPredicate = (
                 data: Transaction,
                 filter: string
@@ -280,6 +286,13 @@ export class TableComponent implements AfterViewInit, OnInit {
           }
         }
       });
+  }
+
+  appliedTransactionsToggleChanged($event: MatSlideToggleChange){
+    console.log($event);
+    
+    this.showNotAppliedTransactions = $event.checked;
+    this.loadTable(this.date);
   }
 }
 

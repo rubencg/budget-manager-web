@@ -1,3 +1,8 @@
+<div>
+    <mat-slide-toggle (change)="appliedTransactionsToggleChanged($event)">
+        Mostrar transacciones no aplicadas
+    </mat-slide-toggle>
+</div>
 <div class="table-content">
     <table class="table-div" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="date">
