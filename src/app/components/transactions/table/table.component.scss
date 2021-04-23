@@ -1,6 +1,14 @@
 @import "../../../../colors.scss";
 @import "../../../../table.scss";
 
+.not-applied-income-amount {
+  color: rgb(235, 195, 52);
+}
+
+.not-applied-amount {
+  color: rgb(8, 79, 28);
+}
+
 .expense-amount {
   color: rgb(239, 83, 80);
 }

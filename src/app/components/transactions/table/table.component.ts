@@ -227,12 +227,12 @@ export class TableComponent implements AfterViewInit, OnInit {
     switch (transaction.type) {
       case TransactionTypes.Expense:
       case TransactionTypes.MonthlyExpense:
-        return 'expense-amount';
+        return transaction.applied ? 'expense-amount' : 'not-applied-amount';
       case TransactionTypes.Transfer:
         return 'transfer-amount';
       case TransactionTypes.Income:
       case TransactionTypes.MonthlyIncome:
-        return 'income-amount';
+        return transaction.applied ? 'income-amount' : 'not-applied-income-amount';
       default:
         return '';
     }
