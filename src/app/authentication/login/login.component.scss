@@ -4,19 +4,19 @@
 }
 
 .loginContainer {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
 @media only screen and (min-width: 768px) {
-    [class="loginContainer"] {
-        width: 60%;
-    }
+  [class="loginContainer"] {
+    width: 60%;
   }
-
-.loginContainer h1 {
-    margin-bottom: 15px;
 }
 
-.prefixIcon{
-    margin-right: 10px;
+.loginContainer h1 {
+  margin-bottom: 15px;
+}
+
+.prefixIcon {
+  margin-right: 10px;
 }
