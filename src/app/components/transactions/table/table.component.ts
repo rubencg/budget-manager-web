@@ -31,6 +31,7 @@ import {
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'transactions-table',
@@ -42,14 +43,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   showNotAppliedTransactions: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns: string[] = [
-    'date',
-    'category',
-    'account',
-    'amount',
-    'notes',
-    'actions',
-  ];
+  displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Transaction>();
 
   transfers$: Observable<Transaction[]>;
@@ -58,11 +52,17 @@ export class TableComponent implements AfterViewInit, OnInit {
   monthlyIncomes$: Observable<Transaction[]>;
   monthlyExpenses$: Observable<Transaction[]>;
 
-  constructor(public dialog: MatDialog, public store: Store) {}
-
-  ngOnInit(): void {
-    
+  constructor(
+    public dialog: MatDialog,
+    public store: Store,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.displayedColumns = this.deviceService.isMobile()
+      ? ['transaction-content']
+      : ['date', 'category', 'account', 'amount', 'notes', 'actions'];
   }
+
+  ngOnInit(): void {}
 
   public loadTable(date: Date) {
     this.transfers$ = this.store.select(
@@ -85,52 +85,51 @@ export class TableComponent implements AfterViewInit, OnInit {
         this.expenses$.subscribe((expenses: Transaction[]) => {
           this.monthlyExpenses$.subscribe((monthlyExpenses: Transaction[]) => {
             this.monthlyIncomes$
-            .pipe(
-              delay(0),
-            )
-            .subscribe((monthlyIncomes: Transaction[]) => {
-              let source = this.showNotAppliedTransactions ? transfers
-                .concat(incomes)
-                .concat(monthlyExpenses)
-                .concat(monthlyIncomes)
-                .concat(expenses)
-                .sort(compareTransactions) :
-                  transfers
-                  .concat(incomes.filter(i => i.applied))
-                  .concat(expenses.filter(i => i.applied))
-                  .sort(compareTransactions)
-                ;
-              this.dataSource = new MatTableDataSource<Transaction>(source);
-              this.dataSource.filterPredicate = (
-                data: Transaction,
-                filter: string
-              ) => {
-                const category: string = data.category
-                  ? data.category.name.toString()
-                  : '';
-                const amount: string = data.amount
-                  ? data.amount.toString()
-                  : '';
-                const account: string = data.account
-                  ? data.account.name.toString()
-                  : '';
-                const transferAccount: string = data.transferAccount
-                  ? data.transferAccount.name.toString()
-                  : '';
-                const notes: string = data.notes ? data.notes.toString() : '';
+              .pipe(delay(0))
+              .subscribe((monthlyIncomes: Transaction[]) => {
+                let source = this.showNotAppliedTransactions
+                  ? transfers
+                      .concat(incomes)
+                      .concat(monthlyExpenses)
+                      .concat(monthlyIncomes)
+                      .concat(expenses)
+                      .sort(compareTransactions)
+                  : transfers
+                      .concat(incomes.filter((i) => i.applied))
+                      .concat(expenses.filter((i) => i.applied))
+                      .sort(compareTransactions);
+                this.dataSource = new MatTableDataSource<Transaction>(source);
+                this.dataSource.filterPredicate = (
+                  data: Transaction,
+                  filter: string
+                ) => {
+                  const category: string = data.category
+                    ? data.category.name.toString()
+                    : '';
+                  const amount: string = data.amount
+                    ? data.amount.toString()
+                    : '';
+                  const account: string = data.account
+                    ? data.account.name.toString()
+                    : '';
+                  const transferAccount: string = data.transferAccount
+                    ? data.transferAccount.name.toString()
+                    : '';
+                  const notes: string = data.notes ? data.notes.toString() : '';
 
-                const transactionData = category
-                  .concat(amount)
-                  .concat(account)
-                  .concat(transferAccount)
-                  .concat(notes);
-                return (
-                  !filter || transactionData.toLowerCase().indexOf(filter) != -1
-                );
-              };
-              this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator;
-            });
+                  const transactionData = category
+                    .concat(amount)
+                    .concat(account)
+                    .concat(transferAccount)
+                    .concat(notes);
+                  return (
+                    !filter ||
+                    transactionData.toLowerCase().indexOf(filter) != -1
+                  );
+                };
+                this.dataSource.sort = this.sort;
+                this.dataSource.paginator = this.paginator;
+              });
           });
         });
       });
@@ -158,7 +157,9 @@ export class TableComponent implements AfterViewInit, OnInit {
             this.store.dispatch(new ExpenseActions.DeleteExpense(transaction));
             break;
           case TransactionTypes.Transfer:
-           this.store.dispatch(new TransferActions.DeleteTransfer(transaction));
+            this.store.dispatch(
+              new TransferActions.DeleteTransfer(transaction)
+            );
             break;
           case TransactionTypes.Income:
             this.store.dispatch(new IncomeActions.DeleteIncome(transaction));
@@ -238,7 +239,9 @@ export class TableComponent implements AfterViewInit, OnInit {
         return 'transfer-amount';
       case TransactionTypes.Income:
       case TransactionTypes.MonthlyIncome:
-        return transaction.applied ? 'income-amount' : 'not-applied-income-amount';
+        return transaction.applied
+          ? 'income-amount'
+          : 'not-applied-income-amount';
       default:
         return '';
     }
@@ -288,9 +291,9 @@ export class TableComponent implements AfterViewInit, OnInit {
       });
   }
 
-  appliedTransactionsToggleChanged($event: MatSlideToggleChange){
+  appliedTransactionsToggleChanged($event: MatSlideToggleChange) {
     console.log($event);
-    
+
     this.showNotAppliedTransactions = $event.checked;
     this.loadTable(this.date);
   }

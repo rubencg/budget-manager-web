@@ -1,0 +1,36 @@
+@import "../../../../../colors.scss";
+@import "../../../../../table.scss";
+
+.mobile-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.left-container > div {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.right-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.action-buttons-group{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.amount {
+    font-size: large;
+}
+
+.date {
+    padding-top: 5px;
+}
