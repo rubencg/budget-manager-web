@@ -4,9 +4,14 @@
 }
 
 .loginContainer {
-    width: 60%;
     margin-top: 100px;
 }
+
+@media only screen and (min-width: 768px) {
+    [class="loginContainer"] {
+        width: 60%;
+    }
+  }
 
 .loginContainer h1 {
     margin-bottom: 15px;
