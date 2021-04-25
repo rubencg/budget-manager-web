@@ -4,15 +4,15 @@
 </div>
 <div class="list-group">
     <a class="list-group-item" *ngFor="let item of data">
-        <div class="row">
-            <div class="col-md-2">
-                <div [class]="[getClass(item.type), 'vertical-center', 'transaction']">
-                    <fa-icon class="center" [icon]="getIcon(item.type)"></fa-icon>
+        <div class="transaction-item">
+            <div class="icon-and-description">
+                <div>
+                    <div [class]="[getClass(item.type), 'transaction']">
+                        <fa-icon [icon]="getIcon(item.type)"></fa-icon>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-8">
+                <div class="description-and-amount">
+                    <div>
                         <h7 *ngIf="item.type == 2" class="transaction-description">
                             <span>
                                 {{item.account.name}}
@@ -36,11 +36,13 @@
                             </span>
                         </h7>
                     </div>
-                    <div class="col-md-4 date">
-                        <small>{{item.date | date : 'd MMM yyyy' : undefined :'es-ES' }}</small>
+                    <div>
+                        <small class="amount">{{item.amount | currency }}</small>
                     </div>
                 </div>
-                <small class="amount">{{item.amount | currency }}</small>
+            </div>
+            <div>
+                <small>{{item.date | date : 'd MMM yyyy' : undefined :'es-ES' }}</small>
             </div>
         </div>
     </a>
