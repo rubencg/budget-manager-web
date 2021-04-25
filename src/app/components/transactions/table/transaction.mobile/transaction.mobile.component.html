@@ -39,7 +39,7 @@
     </div>
     <div class="right-container">
         <div class="date">
-            {{transaction.date | date : 'dd/MM/yyyy'}}
+            {{transaction.date | date : 'EEEE dd/MM/y' : undefined :'es-ES'}}
         </div>
         <div class="action-buttons-group">
             <div class="action-container">
