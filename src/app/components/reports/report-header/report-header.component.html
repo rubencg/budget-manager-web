@@ -8,11 +8,13 @@
                 <h4>{{dateToDisplay | date : getDateFormat() : undefined :'es-ES' }}</h4>
             </div>
         </div>
-        <div class="header-button" (click)="substract()">
-            <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
-        </div>
-        <div class="header-button" (click)="add()">
-            <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+        <div class="header-left-right">
+            <div class="header-button" (click)="substract()">
+                <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
+            </div>
+            <div class="header-button" (click)="add()">
+                <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+            </div>
         </div>
     </div>
 </div>

@@ -1,7 +1,33 @@
-@import '../../../../header.scss';
+@import "../../../../header.scss";
 
-.header-date{
-    display: flex;
-    align-items: center;
+.header-date {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  flex-flow: column;
+}
+.header-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-left-right {
+  display: flex;
+  flex-flow: row;
+}
+
+@media only screen and (min-width: 768px) {
+  .header {
+    flex-flow: row;
+  }
+
+  .header-date {
     margin: 0px 10px;
+  }
+
+  .pie-table {
+    width: 60%;
+  }
 }
