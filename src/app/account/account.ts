@@ -1,7 +1,7 @@
 import { AccountType } from "./";
 
 export interface Account{
-    name?: String,
+    name?: string,
     key?: string,
     image?: string,
     color?: string,
