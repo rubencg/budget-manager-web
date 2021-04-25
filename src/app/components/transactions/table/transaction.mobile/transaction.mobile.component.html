@@ -1,0 +1,60 @@
+<div class="mobile-container">
+    <div class="left-container">
+        <div class="amount">
+            <span [class]="getAmountClassByType(transaction)">
+                {{transaction.amount | currency }}
+            </span>
+        </div>
+        <div>
+            <div *ngIf="transaction.type == 2">
+                Transferencia
+            </div>
+            <div *ngIf="transaction.type != 2" class="icon-span">
+                <div class="table-icon disable-select" [style.background-color]="transaction.category.color">
+                    <fa-icon [icon]="['fas', transaction.category.image]"></fa-icon>
+                </div>
+                <span>
+                    {{transaction.category.name}}
+                </span>
+            </div>
+        </div>
+        <div>
+            <div class="icon-span">
+                <div class="table-icon disable-select" [style.background-color]="transaction.account.color">
+                    <fa-icon [icon]="['fas', transaction.account.image]"></fa-icon>
+                </div>
+                <span>
+                    {{transaction.account.name}}
+                </span>
+                <div class="icon-span" *ngIf="transaction.type == 2">
+                    <div class="table-icon disable-select transfer-icon" >
+                        <fa-icon [icon]="['fas', 'angle-double-right']"></fa-icon>
+                    </div>
+                    <span>
+                        {{transaction.transferAccount.name}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-container">
+        <div class="date">
+            {{transaction.date | date : 'dd/MM/yyyy'}}
+        </div>
+        <div class="action-buttons-group">
+            <div class="action-container">
+                <div *ngIf="transaction.type != 2 && !transaction.applied" matTooltip="Aplicar" class="action-button disable-select" (click)="applyTransaction(transaction)">
+                    <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
+                </div>
+                <div *ngIf="transaction.type != 3 && transaction.type != 4" class="action-button disable-select"
+                    (click)="editTransaction(transaction)" matTooltip="Editar">
+                    <fa-icon [icon]="['far', 'edit']"></fa-icon>
+                </div>
+                <div class="action-button disable-select" (click)="deleteTransaction(transaction)" matTooltip="Eliminar">
+                    <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

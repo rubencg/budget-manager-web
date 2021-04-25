@@ -6,21 +6,15 @@
   padding: 5px 0px;
 }
 
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.transaction-item{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
 }
 
-.center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  color: white;
+.icon-and-description{
+  display: flex;
+  flex-flow: row;
 }
 
 .date {
@@ -56,4 +50,15 @@
 .transaction-description div{
   margin-right: 5px;
   margin-left: 5px;
+}
+
+.description-and-amount{
+  margin-left: 10px;
+}
+
+.transaction{
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

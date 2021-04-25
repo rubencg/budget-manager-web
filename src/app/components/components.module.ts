@@ -63,6 +63,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ChangeInfoComponent } from './profile/change-info/change-info.component';
 import { MainAccountsComponent } from './profile/main-accounts/main-accounts.component';
 import { ExpensesBySubcategoryComponent } from './reports/pie-report/expenses-by-subcategory/expenses-by-subcategory.component';
+import { TransactionMobileComponent } from './transactions/table/transaction.mobile/transaction.mobile.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import { ExpensesBySubcategoryComponent } from './reports/pie-report/expenses-by
     ProfileComponent,
     ChangeInfoComponent,
     MainAccountsComponent,
-    ExpensesBySubcategoryComponent
+    ExpensesBySubcategoryComponent,
+    TransactionMobileComponent
   ],
   exports: [
     NavbarComponent,

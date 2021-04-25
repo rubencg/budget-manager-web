@@ -16,8 +16,13 @@
 }
 
 .pie-table {
-  width: 60%;
   min-width: 200px;
+}
+
+@media only screen and (min-width: 768px) {
+  .pie-table {
+    width: 60%;
+  }
 }
 
 .pie-table-row {
