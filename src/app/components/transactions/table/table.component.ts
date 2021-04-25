@@ -32,6 +32,7 @@ import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'transactions-table',
@@ -46,6 +47,13 @@ export class TableComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Transaction>();
 
+  // Params
+  startDate: Date;
+  endDate: Date;
+  categories: string[];
+  accounts: string[];
+  types: string[];
+
   transfers$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
@@ -55,16 +63,27 @@ export class TableComponent implements AfterViewInit, OnInit {
   constructor(
     public dialog: MatDialog,
     public store: Store,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.displayedColumns = this.deviceService.isMobile()
       ? ['transaction-content']
       : ['date', 'category', 'account', 'amount', 'notes', 'actions'];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      this.startDate = params['startDate'] ? new Date(params['startDate']) : undefined;
+      this.endDate = params['endDate'] ? new Date(params['endDate']) : undefined;
+      this.categories = params['categories'] ? params['categories'].split(',') : undefined;
+      this.accounts = params['accounts'] ? params['accounts'].split(',') : undefined;
+      this.types = params['types'] ? params['types'].split(',') : undefined;
+    });
+  }
 
   public loadTable(date: Date) {
+    
+
     this.transfers$ = this.store.select(
       TransferState.selectTransactionsForMonth(date)
     );
@@ -87,53 +106,88 @@ export class TableComponent implements AfterViewInit, OnInit {
             this.monthlyIncomes$
               .pipe(delay(0))
               .subscribe((monthlyIncomes: Transaction[]) => {
-                let source = this.showNotAppliedTransactions
-                  ? transfers
-                      .concat(incomes)
-                      .concat(monthlyExpenses)
-                      .concat(monthlyIncomes)
-                      .concat(expenses)
-                      .sort(compareTransactions)
-                  : transfers
-                      .concat(incomes.filter((i) => i.applied))
-                      .concat(expenses.filter((i) => i.applied))
-                      .sort(compareTransactions);
-                this.dataSource = new MatTableDataSource<Transaction>(source);
-                this.dataSource.filterPredicate = (
-                  data: Transaction,
-                  filter: string
-                ) => {
-                  const category: string = data.category
-                    ? data.category.name.toString()
-                    : '';
-                  const amount: string = data.amount
-                    ? data.amount.toString()
-                    : '';
-                  const account: string = data.account
-                    ? data.account.name.toString()
-                    : '';
-                  const transferAccount: string = data.transferAccount
-                    ? data.transferAccount.name.toString()
-                    : '';
-                  const notes: string = data.notes ? data.notes.toString() : '';
+                
 
-                  const transactionData = category
-                    .concat(amount)
-                    .concat(account)
-                    .concat(transferAccount)
-                    .concat(notes);
-                  return (
-                    !filter ||
-                    transactionData.toLowerCase().indexOf(filter) != -1
-                  );
-                };
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
+                  let source = this.showNotAppliedTransactions
+                    ? transfers
+                        .concat(incomes)
+                        .concat(monthlyExpenses)
+                        .concat(monthlyIncomes)
+                        .concat(expenses)
+                        .sort(compareTransactions)
+                    : transfers
+                        .concat(incomes.filter((i) => i.applied))
+                        .concat(expenses.filter((i) => i.applied))
+                        .sort(compareTransactions);
+
+                  source = this.filterWithQueryParams(source);
+
+                  this.dataSource = new MatTableDataSource<Transaction>(source);
+                  this.dataSource.filterPredicate = (
+                    data: Transaction,
+                    filter: string
+                  ) => {
+                    const category: string = data.category
+                      ? data.category.name.toString()
+                      : '';
+                    const amount: string = data.amount
+                      ? data.amount.toString()
+                      : '';
+                    const account: string = data.account
+                      ? data.account.name.toString()
+                      : '';
+                    const transferAccount: string = data.transferAccount
+                      ? data.transferAccount.name.toString()
+                      : '';
+                    const notes: string = data.notes
+                      ? data.notes.toString()
+                      : '';
+
+                    const transactionData = category
+                      .concat(amount)
+                      .concat(account)
+                      .concat(transferAccount)
+                      .concat(notes);
+                    return (
+                      !filter ||
+                      transactionData.toLowerCase().indexOf(filter) != -1
+                    );
+                  };
+                  this.dataSource.sort = this.sort;
+                  this.dataSource.paginator = this.paginator;
               });
           });
         });
       });
     });
+  }
+
+  filterWithQueryParams(source: Transaction[]){
+    if(this.startDate && this.endDate){
+      source = source.filter(t => 
+        t.date.getFullYear() >= this.startDate.getFullYear()
+        && t.date.getMonth() >= this.startDate.getMonth()
+        && t.date.getDate() >= this.startDate.getDate()
+        && t.date.getFullYear() <= this.endDate.getFullYear()
+        && t.date.getMonth() <= this.endDate.getMonth()
+        && t.date.getDate() <= this.endDate.getDate()
+      )
+    }
+
+    if(this.categories){
+      source = source.filter(t => t.category && this.categories.includes(t.category.name));
+    }
+    
+    if(this.accounts){
+      source = source.filter(t => (t.account && this.accounts.includes(t.account.name))
+      || (t.transferAccount && this.accounts.includes(t.transferAccount.name)));
+    }
+
+    if(this.types){
+      source = source.filter(t => this.types.includes(t.type.toString()));
+    }
+
+    return source;
   }
 
   applyFilter(filterValue: string) {
@@ -292,7 +346,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 
   appliedTransactionsToggleChanged($event: MatSlideToggleChange) {
-    console.log($event);
 
     this.showNotAppliedTransactions = $event.checked;
     this.loadTable(this.date);

@@ -36,6 +36,11 @@ export class CategoryState {
   static selectExpenseCategories(state: CategoryStateModel) {
     return state.expenseCategories;
   }
+  
+  @Selector()
+  static selectAllCategories(state: CategoryStateModel) {
+    return state.expenseCategories.concat(state.incomeCategories);
+  }
 
   /* Income Categories */
   @Action(CategoryActions.GetIncomeCategories)

@@ -1,15 +1,35 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Transaction } from 'src/app/models';
-import { ExpenseActions, IncomeActions, RecurringIncomeActions, MonthlyIncomeActions, RecurringExpenseActions, TransferActions } from 'src/app/state';
+import { Filter, Transaction } from 'src/app/models';
+import {
+  ExpenseActions,
+  IncomeActions,
+  RecurringIncomeActions,
+  MonthlyIncomeActions,
+  RecurringExpenseActions,
+  TransferActions,
+} from 'src/app/state';
 import { MonthlyExpenseActions } from 'src/app/state/expense/monthly.expense.actions';
-import { ExpenseComponent, FiltersComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import {
+  ExpenseComponent,
+  FiltersComponent,
+  IncomeComponent,
+  TransferComponent,
+} from '../dialogs';
 
 @Component({
   selector: 'transactions-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   /* Animations */
@@ -17,13 +37,17 @@ export class HeaderComponent implements OnInit {
   @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();
   @Output() onMonthDecreased: EventEmitter<any> = new EventEmitter();
   @Output() onTextChanged: EventEmitter<string> = new EventEmitter();
+  @Output() onFilter: EventEmitter<Filter> = new EventEmitter();
   @ViewChild('searchInput') searchInput;
   searchOpen = false;
   searchText: String;
-  constructor(public dialog: MatDialog, public store: Store) { }
+  constructor(
+    public dialog: MatDialog,
+    public store: Store,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   displaySearch($event) {
     let input = this.searchInput.nativeElement;
@@ -44,36 +68,48 @@ export class HeaderComponent implements OnInit {
     return style.display === 'none';
   }
 
-  decreaseMonth(){
+  decreaseMonth() {
     this.onMonthDecreased.emit(null);
   }
-  
-  increaseMonth(){
+
+  increaseMonth() {
     this.onMonthIncreased.emit(null);
   }
 
-  onFilterTextChanged($event){
+  onFilterTextChanged($event) {
     const filterValue = ($event.target as HTMLInputElement).value;
     this.onTextChanged.emit(filterValue);
   }
 
-  createIncomeDialog(){
+  createIncomeDialog() {
     const dialogRef = this.dialog.open(IncomeComponent, {
       maxWidth: '600px',
-      width: 'calc(100% - 64px)'
+      width: 'calc(100% - 64px)',
     });
 
     dialogRef.afterClosed().subscribe((incomeTransaction: Transaction) => {
-      if(incomeTransaction){
-        if(incomeTransaction.isMonthly){
-          this.store.dispatch(new MonthlyIncomeActions.SaveMonthlyIncomeTransaction(incomeTransaction));
-          if(incomeTransaction.applied){
-            this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
+      if (incomeTransaction) {
+        if (incomeTransaction.isMonthly) {
+          this.store.dispatch(
+            new MonthlyIncomeActions.SaveMonthlyIncomeTransaction(
+              incomeTransaction
+            )
+          );
+          if (incomeTransaction.applied) {
+            this.store.dispatch(
+              new IncomeActions.SaveIncomeTransaction(incomeTransaction)
+            );
           }
-        }else if(incomeTransaction.isRecurring){
-          this.store.dispatch(new RecurringIncomeActions.SaveRecurringIncomeTransaction(incomeTransaction));          
-        }else{
-          this.store.dispatch(new IncomeActions.SaveIncomeTransaction(incomeTransaction));
+        } else if (incomeTransaction.isRecurring) {
+          this.store.dispatch(
+            new RecurringIncomeActions.SaveRecurringIncomeTransaction(
+              incomeTransaction
+            )
+          );
+        } else {
+          this.store.dispatch(
+            new IncomeActions.SaveIncomeTransaction(incomeTransaction)
+          );
         }
       }
     });
@@ -87,16 +123,28 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((expenseTransaction: Transaction) => {
       if (expenseTransaction) {
-        if(expenseTransaction.isMonthly){
-          this.store.dispatch(new MonthlyExpenseActions.SaveMonthlyExpenseTransaction(expenseTransaction));
+        if (expenseTransaction.isMonthly) {
+          this.store.dispatch(
+            new MonthlyExpenseActions.SaveMonthlyExpenseTransaction(
+              expenseTransaction
+            )
+          );
 
-          if(expenseTransaction.applied){
-            this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
+          if (expenseTransaction.applied) {
+            this.store.dispatch(
+              new ExpenseActions.SaveExpenseTransaction(expenseTransaction)
+            );
           }
-        }else if(expenseTransaction.isRecurring){
-          this.store.dispatch(new RecurringExpenseActions.SaveRecurringExpenseTransaction(expenseTransaction));          
-        }else{
-          this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expenseTransaction));
+        } else if (expenseTransaction.isRecurring) {
+          this.store.dispatch(
+            new RecurringExpenseActions.SaveRecurringExpenseTransaction(
+              expenseTransaction
+            )
+          );
+        } else {
+          this.store.dispatch(
+            new ExpenseActions.SaveExpenseTransaction(expenseTransaction)
+          );
         }
       }
     });
@@ -110,22 +158,22 @@ export class HeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((transaction: Transaction) => {
       if (transaction) {
-        this.store.dispatch(new TransferActions.SaveTransferTransaction(transaction));
+        this.store.dispatch(
+          new TransferActions.SaveTransferTransaction(transaction)
+        );
       }
     });
   }
 
-  createFilterDialog(){
+  createFilterDialog() {
     const dialogRef = this.dialog.open(FiltersComponent, {
       maxWidth: '600px',
       width: 'calc(100% - 64px)',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: Filter) => {
       if (result) {
-        console.log('Filters', result);
-      } else {
-        console.log('No filters applies');
+        this.onFilter.emit(result);
       }
     });
   }

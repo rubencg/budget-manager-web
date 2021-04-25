@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Filter } from 'src/app/models';
 import { TableComponent } from './table/table.component';
 
 @Component({
@@ -10,7 +12,7 @@ export class TransactionsComponent implements OnInit {
   date = new Date();
   @ViewChild('transactionsTable') transactionsTable: TableComponent;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,9 +26,26 @@ export class TransactionsComponent implements OnInit {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 1);
     this.transactionsTable.loadTable(this.date);
   }
-
+  
   onTextChanged(value: string){
     this.transactionsTable.applyFilter(value);
+  }
+  
+  onFilter(filter: Filter){
+    if(filter.clearFilters){
+      this.router.navigate(['/transactions']);  
+    } else {
+      this.router.navigate(['/transactions'], {
+        queryParams: {
+          startDate: filter.startDate,
+          endDate: filter.endDate,
+          categories: filter.categories ? filter.categories.join(',') : undefined,
+          accounts: filter.accounts ? filter.accounts.join(',') : undefined,
+          types: filter.types ? filter.types.join(',') : undefined
+        },
+      });
+    }
+    this.transactionsTable.loadTable(this.date);
   }
 
 }
