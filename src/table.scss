@@ -52,11 +52,11 @@
 }
 
 .not-applied-amount {
-  color: rgb(235, 195, 52);
+  color: $not-applied-expense;
 }
 
 .not-applied-income-amount {
-  color: rgb(8, 79, 28);
+  color: $not-applied-income;
 }
 
 .expense-amount {

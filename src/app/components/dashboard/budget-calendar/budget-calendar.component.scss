@@ -1,6 +1,34 @@
 @import '../../../../styles.scss';
 @import '../../../../colors.scss';
 
+.day-legend{
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.day{
+  width: 5px;
+  height: 5px;
+  border-radius: 2.5px;
+}
+
+.day-with-incomes{
+  background-color: $income-color;
+}
+.day-with-expenses{
+  background-color: $expense-color;
+}
+.day-with-transfers{
+  background-color: $transfer-color;
+}
+.day-with-unpaid-expenses{
+  background-color: $not-applied-expense;
+}
+.day-with-unpaid-incomes{
+  background-color: $not-applied-income;
+}
+
 h3 {
   margin: 0 0 10px;
 }

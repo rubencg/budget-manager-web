@@ -1,8 +1,11 @@
 <ng-template #customCellTemplate let-day="day" let-locale="locale">
     <div class="day-cell">
-        <span class="cal-day-number">
+        <div class="cal-day-number">
             {{ day.date | calendarDate:'monthViewDayNumber':locale }}
-        </span>
+        </div>
+        <div class="day-legend">
+            <div *ngFor="let event of day.events" [class]="event.cssClass"></div>
+        </div>
     </div>
 </ng-template>
 
