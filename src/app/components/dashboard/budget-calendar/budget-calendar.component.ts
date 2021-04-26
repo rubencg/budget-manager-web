@@ -61,12 +61,12 @@ export class BudgetCalendarComponent implements OnInit {
 
                 source.forEach(t => {
                   let event = this.events.find(e => e.start.getDate() == t.date.getDate() 
-                    && e.cssClass == this.getCssClassByType(t.type));
+                    && e.cssClass == this.getCssClassByType(t));
                   if(!event){
                     this.events.push({
                       title: '',
                       start: t.date,
-                      cssClass: this.getCssClassByType(t.type)
+                      cssClass: this.getCssClassByType(t)
                     });
                   }
                 });
@@ -77,12 +77,12 @@ export class BudgetCalendarComponent implements OnInit {
       });
   }
 
-  getCssClassByType(type: TransactionTypes){
-    switch (type) {
+  getCssClassByType(transaction: Transaction){
+    switch (transaction.type) {
       case TransactionTypes.Income:
         return 'day day-with-incomes';
       case TransactionTypes.Expense:
-        return 'day day-with-expenses';
+        return transaction.applied ? 'day day-with-expenses' : 'day day-with-unpaid-expenses';
       case TransactionTypes.Transfer:
         return 'day day-with-transfers';
       case TransactionTypes.MonthlyIncome:
