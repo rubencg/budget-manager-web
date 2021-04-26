@@ -78,7 +78,8 @@ export class MonthlyBudgetComponent implements OnInit {
                 monthlyIncomes,
                 expenses,
                 monthlyExpenses,
-                accounts
+                accounts,
+                date
               );
             });
           });
@@ -92,7 +93,8 @@ export class MonthlyBudgetComponent implements OnInit {
     monthlyIncomes: Transaction[], 
     expenses: Transaction[],
     monthlyExpenses: Transaction[],
-    accounts: Account[]
+    accounts: Account[],
+    date: Date
   ) {
     const incomesAmount: number = incomes.reduce((a, b) => +a + +b.amount, 0);
     const monthlyIncomesAmount: number = monthlyIncomes.reduce((a, b) => +a + +b.amount, 0);
@@ -112,20 +114,26 @@ export class MonthlyBudgetComponent implements OnInit {
       currentBalance: accountsBalanceAmount,
     };
 
-    this.initMonthlyDataGraph(monthlyBudgetData);
+    this.initMonthlyDataGraph(monthlyBudgetData, date);
   }
 
-  private initMonthlyDataGraph(monthlyBudgetData: MonthlyBudget) {
+  private initMonthlyDataGraph(monthlyBudgetData: MonthlyBudget, date: Date) {
     this.doughnutChartData = [];
     this.doughnutChartData.push(monthlyBudgetData.budgetExpensesAmount);
     this.doughnutChartData.push(monthlyBudgetData.expensesAmount);
     this.doughnutChartData.push(monthlyBudgetData.incomesAmount);
-    this.totalforMonth = this.calculateTotalForMonth(monthlyBudgetData);
+    this.totalforMonth = this.calculateTotalForMonth(monthlyBudgetData, date);
   }
 
-  private calculateTotalForMonth(monthlyBudgetData: MonthlyBudget): number {
-    return (
-      monthlyBudgetData.currentBalance - monthlyBudgetData.budgetExpensesAmount
-    );
+  private calculateTotalForMonth(monthlyBudgetData: MonthlyBudget, date: Date): number {
+    const today = new Date();
+    const todaysYearMonth: number = +`${today.getFullYear()}${today.getMonth()}`;
+    const dateYearMonth: number = +`${date.getFullYear()}${date.getMonth()}`;
+    return todaysYearMonth > dateYearMonth ?
+        monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount :
+      todaysYearMonth < dateYearMonth ?
+        monthlyBudgetData.incomesAmount - monthlyBudgetData.budgetExpensesAmount :
+        monthlyBudgetData.currentBalance - monthlyBudgetData.budgetExpensesAmount
+      ;
   }
 }
