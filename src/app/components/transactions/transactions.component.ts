@@ -6,46 +6,49 @@ import { TableComponent } from './table/table.component';
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss']
+  styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent implements OnInit {
   date = new Date();
   @ViewChild('transactionsTable') transactionsTable: TableComponent;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  monthDecreased(){
+  monthDecreased() {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth() - 1, 1);
     this.transactionsTable.loadTable(this.date);
   }
-  
-  monthIncreased(){
+
+  monthIncreased() {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 1);
     this.transactionsTable.loadTable(this.date);
   }
-  
-  onTextChanged(value: string){
+
+  onTextChanged(value: string) {
     this.transactionsTable.applyFilter(value);
   }
-  
-  onFilter(filter: Filter){
-    if(filter.clearFilters){
-      this.router.navigate(['/transactions']);  
-    } else {
-      this.router.navigate(['/transactions'], {
-        queryParams: {
-          startDate: filter.startDate,
-          endDate: filter.endDate,
-          categories: filter.categories ? filter.categories.join(',') : undefined,
-          accounts: filter.accounts ? filter.accounts.join(',') : undefined,
-          types: filter.types ? filter.types.join(',') : undefined
-        },
-      });
-    }
-    this.transactionsTable.loadTable(this.date);
-  }
 
+  onFilter(filter: Filter) {
+    if (filter.clearFilters) {
+      this.router
+        .navigate(['/transactions'])
+        .then(() => this.transactionsTable.loadTable(this.date));
+    } else {
+      this.router
+        .navigate(['/transactions'], {
+          queryParams: {
+            startDate: filter.startDate,
+            endDate: filter.endDate,
+            categories: filter.categories
+              ? filter.categories.join(',')
+              : undefined,
+            accounts: filter.accounts ? filter.accounts.join(',') : undefined,
+            types: filter.types ? filter.types.join(',') : undefined,
+          },
+        })
+        .then(() => this.transactionsTable.loadTable(this.date));
+    }
+  }
 }
