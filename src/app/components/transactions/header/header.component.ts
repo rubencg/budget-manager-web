@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Filter, Transaction } from 'src/app/models';
 import {
@@ -34,6 +34,8 @@ import {
 export class HeaderComponent implements OnInit {
   /* Animations */
   @Input() date: Date;
+  startDate: Date;
+  endDate: Date;
   @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();
   @Output() onMonthDecreased: EventEmitter<any> = new EventEmitter();
   @Output() onTextChanged: EventEmitter<string> = new EventEmitter();
@@ -44,10 +46,15 @@ export class HeaderComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public store: Store,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      this.startDate = params['startDate'] ? new Date(params['startDate']) : undefined;
+      this.endDate = params['endDate'] ? new Date(params['endDate']) : undefined;
+    });
+  }
 
   displaySearch($event) {
     let input = this.searchInput.nativeElement;

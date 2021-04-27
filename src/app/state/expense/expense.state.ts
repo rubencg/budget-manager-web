@@ -52,6 +52,20 @@ export class ExpenseState {
     );
   }
 
+  static selectTransactionsForDates(startDate: Date, endDate: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getFullYear() >= startDate.getFullYear()
+          && t.date.getMonth() >= startDate.getMonth()
+          && t.date.getDate() >= startDate.getDate()
+          && t.date.getFullYear() <= endDate.getFullYear()
+          && t.date.getMonth() <= endDate.getMonth()
+          && t.date.getDate() <= endDate.getDate()
+      )
+    );
+  }
+
   static selectUnpaidTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
       state.transactions.filter(

@@ -84,15 +84,12 @@ export class TableComponent implements AfterViewInit, OnInit {
   public loadTable(date: Date) {
     
 
-    this.transfers$ = this.store.select(
-      TransferState.selectTransactionsForMonth(date)
-    );
-    this.incomes$ = this.store.select(
-      IncomeState.selectTransactionsForMonth(date)
-    );
-    this.expenses$ = this.store.select(
-      ExpenseState.selectTransactionsForMonth(date)
-    );
+    this.transfers$ = (this.startDate && this.endDate) ?  this.store.select(TransferState.selectTransactionsForDates(this.startDate, this.endDate)) :
+      this.store.select(TransferState.selectTransactionsForMonth(date));
+    this.incomes$ = (this.startDate && this.endDate) ?  this.store.select(IncomeState.selectTransactionsForDates(this.startDate, this.endDate)) :
+      this.store.select(IncomeState.selectTransactionsForMonth(date));
+    this.expenses$ = (this.startDate && this.endDate) ?  this.store.select(ExpenseState.selectTransactionsForDates(this.startDate, this.endDate)) :
+      this.store.select(ExpenseState.selectTransactionsForMonth(date));
     this.monthlyIncomes$ = this.store.select(
       IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
     );

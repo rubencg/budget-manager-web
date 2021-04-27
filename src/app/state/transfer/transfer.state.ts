@@ -33,6 +33,20 @@ export class TransferState {
     );
   }
 
+  static selectTransactionsForDates(startDate: Date, endDate: Date) {
+    return createSelector([TransferState], (state: TransferStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getFullYear() >= startDate.getFullYear()
+          && t.date.getMonth() >= startDate.getMonth()
+          && t.date.getDate() >= startDate.getDate()
+          && t.date.getFullYear() <= endDate.getFullYear()
+          && t.date.getMonth() <= endDate.getMonth()
+          && t.date.getDate() <= endDate.getDate()
+      )
+    );
+  }
+
   @Action(TransferActions.Get)
   getAllTransfers(context: StateContext<TransferStateModel>) {
     this.transferService.getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid).subscribe((inputTransfers: Transfer[]) => {

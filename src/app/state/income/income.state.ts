@@ -51,6 +51,20 @@ export class IncomeState {
     );
   }
 
+  static selectTransactionsForDates(startDate: Date, endDate: Date) {
+    return createSelector([IncomeState], (state: IncomeStateModel) =>
+      state.transactions.filter(
+        (t: Transaction) =>
+          t.date.getFullYear() >= startDate.getFullYear()
+          && t.date.getMonth() >= startDate.getMonth()
+          && t.date.getDate() >= startDate.getDate()
+          && t.date.getFullYear() <= endDate.getFullYear()
+          && t.date.getMonth() <= endDate.getMonth()
+          && t.date.getDate() <= endDate.getDate()
+      )
+    );
+  }
+
   static selectMonthlyIncomeTransactionsForMonth(date: Date) {
     return createSelector([IncomeState], (state: IncomeStateModel) => {
       let monthlyIncomeTransactions: Transaction[] = [];
