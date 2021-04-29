@@ -320,7 +320,7 @@ export class IncomeState {
         ctx.dispatch(new IncomeActions.GetSuccess(ctx.getState().incomes));
       });
 
-      if (income.isApplied) {
+      if (income.isApplied && action.payload.type == TransactionTypes.Income) {
         this.store.dispatch(
           new AccountActions.AdjustAccountBalance({
             adjustment: income.amount,

@@ -370,7 +370,7 @@ export class ExpenseState {
         ctx.dispatch(new ExpenseActions.GetSuccess(ctx.getState().expenses));
       });
 
-      if (expense.isApplied) {
+      if (expense.isApplied && action.payload.type == TransactionTypes.Expense) {
         this.store.dispatch(
           new AccountActions.AdjustAccountBalance({
             adjustment: expense.amount * -1,
