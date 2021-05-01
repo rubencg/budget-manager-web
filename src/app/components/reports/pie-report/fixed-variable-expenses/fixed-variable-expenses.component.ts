@@ -38,8 +38,7 @@ export class FixedVariableExpensesComponent implements OnInit, AfterViewInit {
         const variableExpenses: Expense[] = expenseState.expenses.filter(
           (t: Expense) =>
           t.date.getMonth() == date.getMonth() &&
-          t.date.getFullYear() == date.getFullYear() &&
-          t.isApplied
+          t.date.getFullYear() == date.getFullYear()
         );
         const fixedExpensesAmount = fixedExpenses.reduce((a, b: Expense) => +a + b.amount, 0);
         const variableExpensesAmount = variableExpenses.reduce((a, b: Expense) => +a + b.amount, 0);
