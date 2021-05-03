@@ -28,17 +28,17 @@
                 <div class="table-icon disable-select" [style.background-color]="transaction.account.color">
                     <fa-icon [icon]="['fas', transaction.account.image]"></fa-icon>
                 </div>
-                <span>
-                    {{transaction.account.name}}
-                </span>
-                <div class="icon-span" *ngIf="transaction.type == 2">
-                    <div class="table-icon disable-select transfer-icon" >
-                        <fa-icon [icon]="['fas', 'angle-double-right']"></fa-icon>
-                    </div>
+                <span class="category-span">
                     <span>
+                        {{transaction.account.name}}
+                        <span *ngIf="transaction.type == 2">
+                            &nbsp;a
+                        </span>
+                    </span>
+                    <span *ngIf="transaction.type == 2">
                         {{transaction.transferAccount.name}}
                     </span>
-                </div>
+                </span>
             </div>
         </div>
     </div>
