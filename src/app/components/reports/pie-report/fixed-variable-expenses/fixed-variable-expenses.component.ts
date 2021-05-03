@@ -61,18 +61,6 @@ export class FixedVariableExpensesComponent implements OnInit, AfterViewInit {
           },
         ];
         
-        // const pieElements: PieElement[] = _.map(expensesByCategory, function(value: Expense[], key) {
-        //   const categoryAmount = value.reduce((a, b: Expense) => +a + b.amount, 0);
-        //   const pieElement: PieElement = { 
-        //     description: key, 
-        //     amount: categoryAmount,
-        //     color: value[0].category.color,
-        //     icon: value[0].category.image,
-        //     percentage: +(categoryAmount / totalAmount * 100)
-        //   };
-        //   return pieElement;
-        // });
-        
         return pieElements.sort((a, b) => b.amount - a.amount );
       })
     );

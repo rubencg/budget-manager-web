@@ -13,8 +13,13 @@
                 <div class="table-icon disable-select" [style.background-color]="transaction.category.color">
                     <fa-icon [icon]="['fas', transaction.category.image]"></fa-icon>
                 </div>
-                <span>
-                    {{transaction.category.name}}
+                <span class="category-span">
+                    <span>
+                        {{transaction.category.name}}
+                    </span>
+                    <span *ngIf="transaction.subcategory">
+                        {{transaction.subcategory}}
+                    </span>
                 </span>
             </div>
         </div>
