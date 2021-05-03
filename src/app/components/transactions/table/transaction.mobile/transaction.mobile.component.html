@@ -40,6 +40,9 @@
                     </span>
                 </span>
             </div>
+            <div *ngIf="transaction.notes">
+                Nota: {{transaction.notes}}
+            </div>
         </div>
     </div>
     <div class="right-container">
