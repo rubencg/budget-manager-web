@@ -46,6 +46,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Transaction>();
+  currentFilterText: string;
 
   // Params
   startDate: Date;
@@ -124,6 +125,9 @@ export class TableComponent implements AfterViewInit, OnInit {
                     data: Transaction,
                     filter: string
                   ) => {
+                    const subcategory: string = data.subcategory
+                      ? data.subcategory.toString()
+                      : '';
                     const category: string = data.category
                       ? data.category.name.toString()
                       : '';
@@ -141,6 +145,7 @@ export class TableComponent implements AfterViewInit, OnInit {
                       : '';
 
                     const transactionData = category
+                      .concat(subcategory)
                       .concat(amount)
                       .concat(account)
                       .concat(transferAccount)
@@ -152,6 +157,9 @@ export class TableComponent implements AfterViewInit, OnInit {
                   };
                   this.dataSource.sort = this.sort;
                   this.dataSource.paginator = this.paginator;
+                  if(this.currentFilterText && this.currentFilterText != ''){
+                    this.applyFilter(this.currentFilterText);
+                  }
               });
           });
         });
@@ -188,6 +196,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 
   applyFilter(filterValue: string) {
+    this.currentFilterText = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
