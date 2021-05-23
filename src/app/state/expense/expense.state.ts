@@ -91,9 +91,14 @@ export class ExpenseState {
   static selectMonthlyExpenseTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       let monthlyExpenseTransactions: Transaction[] = [];
+      let expenses = state.expenses.filter(
+        (t: Expense) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear()
+      );
 
       state.monthlyExpenses.forEach((monthlyExpense: MonthlyExpense) => {
-        const filteredExpense = state.expenses.find(
+        const filteredExpense = expenses.find(
           (i) => i.monthlyKey == monthlyExpense.key
         );
 

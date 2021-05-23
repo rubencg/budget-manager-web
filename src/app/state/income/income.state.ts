@@ -68,9 +68,14 @@ export class IncomeState {
   static selectMonthlyIncomeTransactionsForMonth(date: Date) {
     return createSelector([IncomeState], (state: IncomeStateModel) => {
       let monthlyIncomeTransactions: Transaction[] = [];
+      let incomes = state.incomes.filter(
+        (t: Income) =>
+          t.date.getMonth() == date.getMonth() &&
+          t.date.getFullYear() == date.getFullYear()
+      );
 
       state.monthlyIncomes.forEach((monthlyIncome: MonthlyIncome) => {
-        const filteredIncome = state.incomes.find(
+        const filteredIncome = incomes.find(
           (i) => i.monthlyKey == monthlyIncome.key
         );
 
