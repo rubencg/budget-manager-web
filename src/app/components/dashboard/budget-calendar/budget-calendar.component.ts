@@ -21,7 +21,7 @@ export class BudgetCalendarComponent implements OnInit {
   expenses$: Observable<Transaction[]>;
   monthlyIncomes$: Observable<Transaction[]>;
   monthlyExpenses$: Observable<Transaction[]>;
-  
+
   constructor(public store: Store,
     private router: Router) {}
 
@@ -60,7 +60,7 @@ export class BudgetCalendarComponent implements OnInit {
                 this.events = [];
 
                 source.forEach(t => {
-                  let event = this.events.find(e => e.start.getDate() == t.date.getDate() 
+                  let event = this.events.find(e => e.start.getDate() == t.date.getDate()
                     && e.cssClass == this.getCssClassByType(t));
                   if(!event){
                     this.events.push({
@@ -80,7 +80,7 @@ export class BudgetCalendarComponent implements OnInit {
   getCssClassByType(transaction: Transaction){
     switch (transaction.type) {
       case TransactionTypes.Income:
-        return 'day day-with-incomes';
+        return transaction.applied ? 'day day-with-incomes' : 'day day-with-unpaid-incomes';
       case TransactionTypes.Expense:
         return transaction.applied ? 'day day-with-expenses' : 'day day-with-unpaid-expenses';
       case TransactionTypes.Transfer:
@@ -108,7 +108,7 @@ export class BudgetCalendarComponent implements OnInit {
   }
 
   dateChanged(){
-    this.onDateChanged.emit(this.viewDate);    
+    this.onDateChanged.emit(this.viewDate);
     this.loadCalendarEvents(this.viewDate);
   }
 }

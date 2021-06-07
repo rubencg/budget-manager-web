@@ -89,14 +89,17 @@ export class MonthlyBudgetComponent implements OnInit {
   }
 
   private setMonthlyData(
-    incomes: Transaction[], 
-    monthlyIncomes: Transaction[], 
+    incomes: Transaction[],
+    monthlyIncomes: Transaction[],
     expenses: Transaction[],
     monthlyExpenses: Transaction[],
     accounts: Account[],
     date: Date
-  ) {    
+  ) {
     const incomesAmount: number = incomes.reduce((a, b) => +a + +b.amount, 0);
+    const unpaidIncomesAmount: number = incomes
+      .filter((e) => !e.applied)
+      .reduce((a, b) => +a + +b.amount, 0);
     const monthlyIncomesAmount: number = monthlyIncomes.reduce((a, b) => +a + +b.amount, 0);
     const paidExpensesAmount: number = expenses
       .filter((e) => e.applied)
@@ -114,6 +117,7 @@ export class MonthlyBudgetComponent implements OnInit {
       currentBalance: accountsBalanceAmount,
       monthlyExpensesAmount: monthlyExpensesAmount,
       monthlyIncomesAmount: monthlyIncomesAmount,
+      unpaidIncomesAmount: unpaidIncomesAmount
     };
 
     this.initMonthlyDataGraph(monthlyBudgetData, date);
@@ -136,7 +140,8 @@ export class MonthlyBudgetComponent implements OnInit {
         monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount :
       todaysYearMonth < dateYearMonth ?
         monthlyBudgetData.incomesAmount - monthlyBudgetData.budgetExpensesAmount :
-        (monthlyBudgetData.currentBalance + monthlyBudgetData.monthlyIncomesAmount) 
+        (monthlyBudgetData.currentBalance + monthlyBudgetData.monthlyIncomesAmount
+        + monthlyBudgetData.unpaidIncomesAmount)
           - monthlyBudgetData.budgetExpensesAmount
       ;
   }
