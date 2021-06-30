@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
@@ -54,7 +54,7 @@ export class MonthlyBudgetComponent implements OnInit {
     this.setData(new Date());
   }
 
-  public setData(date: Date){
+  public setData(date: Date): void{
     // Monthly Budget
     this.monthlyIncomes$ = this.store.select(
       IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
@@ -95,7 +95,7 @@ export class MonthlyBudgetComponent implements OnInit {
     monthlyExpenses: Transaction[],
     accounts: Account[],
     date: Date
-  ) {
+  ): void {
     const incomesAmount: number = incomes.reduce((a, b) => +a + +b.amount, 0);
     const unpaidIncomesAmount: number = incomes
       .filter((e) => !e.applied)
@@ -115,15 +115,15 @@ export class MonthlyBudgetComponent implements OnInit {
       expensesAmount: paidExpensesAmount,
       incomesAmount: incomesAmount + monthlyIncomesAmount,
       currentBalance: accountsBalanceAmount,
-      monthlyExpensesAmount: monthlyExpensesAmount,
-      monthlyIncomesAmount: monthlyIncomesAmount,
-      unpaidIncomesAmount: unpaidIncomesAmount
+      monthlyExpensesAmount,
+      monthlyIncomesAmount,
+      unpaidIncomesAmount
     };
 
     this.initMonthlyDataGraph(monthlyBudgetData, date);
   }
 
-  private initMonthlyDataGraph(monthlyBudgetData: MonthlyBudget, date: Date) {
+  private initMonthlyDataGraph(monthlyBudgetData: MonthlyBudget, date: Date): void {
     this.doughnutChartData = [];
     this.doughnutChartData.push(monthlyBudgetData.budgetExpensesAmount);
     this.doughnutChartData.push(monthlyBudgetData.expensesAmount);
@@ -133,16 +133,17 @@ export class MonthlyBudgetComponent implements OnInit {
 
   private calculateTotalForMonth(monthlyBudgetData: MonthlyBudget, date: Date): number {
     const today = new Date();
-    const todaysYearMonth: number = +`${today.getFullYear()}${today.getMonth()}`;
+    const todayYearMonth: number = +`${today.getFullYear()}${today.getMonth()}`;
     const dateYearMonth: number = +`${date.getFullYear()}${date.getMonth()}`;
 
-    return todaysYearMonth > dateYearMonth ?
-        monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount :
-      todaysYearMonth < dateYearMonth ?
-        monthlyBudgetData.incomesAmount - monthlyBudgetData.budgetExpensesAmount :
-        (monthlyBudgetData.currentBalance + monthlyBudgetData.monthlyIncomesAmount
-        + monthlyBudgetData.unpaidIncomesAmount)
-          - monthlyBudgetData.budgetExpensesAmount
+    const isPastMonth = ()  => todayYearMonth > dateYearMonth;
+
+    return isPastMonth() ?
+      monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount :
+      monthlyBudgetData.currentBalance
+      + monthlyBudgetData.monthlyIncomesAmount
+      + monthlyBudgetData.unpaidIncomesAmount
+      - monthlyBudgetData.budgetExpensesAmount
       ;
   }
 }
