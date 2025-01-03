@@ -64,6 +64,7 @@ import { ChangeInfoComponent } from './profile/change-info/change-info.component
 import { MainAccountsComponent } from './profile/main-accounts/main-accounts.component';
 import { ExpensesBySubcategoryComponent } from './reports/pie-report/expenses-by-subcategory/expenses-by-subcategory.component';
 import { TransactionMobileComponent } from './transactions/table/transaction.mobile/transaction.mobile.component';
+import { SpendingPlanContentComponent } from './spending-plan';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { TransactionMobileComponent } from './transactions/table/transaction.mob
     CategoriesHeaderComponent,
     IncomeCategoriesComponent,
     CategoriesContentComponent,
+    SpendingPlanContentComponent,
     CategoriesTableComponent,
     CreateCategoryComponent,
     SubcategoryComponent,

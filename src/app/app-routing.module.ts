@@ -8,6 +8,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ReportsComponent } from './components/reports/reports/reports.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { AuthGuard } from './authentication/auth.guard';
+import { SpendingPlanContentComponent } from './components/spending-plan';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'archived-accounts', component: ArchivedAccountsComponent,  canActivate: [AuthGuard] },
   { path: 'reports', component: ReportsComponent,  canActivate: [AuthGuard] },
   { path: 'categories', component: CategoriesContentComponent,  canActivate: [AuthGuard] },
+  { path: 'spending-plan', component: SpendingPlanContentComponent,  canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent,  canActivate: [AuthGuard] },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: DashboardComponent }

@@ -1,0 +1,21 @@
+<div class="dashboard-container">
+  <!-- Left Section -->
+  <div class="left-section">
+    <div class="menu-item" (click)="selectSection('income')">
+      Income after bills & saving
+    </div>
+    <div class="menu-item" (click)="selectSection('planned')">
+      Planned spending
+    </div>
+    <div class="menu-item" (click)="selectSection('other')">
+      Other spending
+    </div>
+  </div>
+
+  <!-- Right Section -->
+  <div class="right-section">
+    <div *ngIf="selectedSection === 'income'">Income content goes here</div>
+    <div *ngIf="selectedSection === 'planned'">Planned spending content goes here</div>
+    <div *ngIf="selectedSection === 'other'">Other spending content goes here</div>
+  </div>
+</div>
