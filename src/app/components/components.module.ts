@@ -65,6 +65,8 @@ import { MainAccountsComponent } from './profile/main-accounts/main-accounts.com
 import { ExpensesBySubcategoryComponent } from './reports/pie-report/expenses-by-subcategory/expenses-by-subcategory.component';
 import { TransactionMobileComponent } from './transactions/table/transaction.mobile/transaction.mobile.component';
 import { SpendingPlanContentComponent } from './spending-plan';
+import { SpSummaryComponent } from './spending-plan/sp-summary/sp-summary.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,8 @@ import { SpendingPlanContentComponent } from './spending-plan';
     ChangeInfoComponent,
     MainAccountsComponent,
     ExpensesBySubcategoryComponent,
-    TransactionMobileComponent
+    TransactionMobileComponent,
+    SpSummaryComponent
   ],
   exports: [
     NavbarComponent,
@@ -159,6 +162,7 @@ import { SpendingPlanContentComponent } from './spending-plan';
     NgxMatColorPickerModule,
     MatTabsModule,
     MatChipsModule,
+    MatExpansionModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   providers: [

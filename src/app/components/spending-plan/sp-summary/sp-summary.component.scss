@@ -1,0 +1,17 @@
+.sp-summary-header-title-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+}
+
+.sp-summary-add {
+  padding-left: 20px;
+  font-size: small;
+}
+
+.sp-summary-header-total {
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+}

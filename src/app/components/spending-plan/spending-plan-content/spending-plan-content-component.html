@@ -14,7 +14,9 @@
 
   <!-- Right Section -->
   <div class="right-section">
-    <div *ngIf="selectedSection === 'income'">Income content goes here</div>
+    <div *ngIf="selectedSection === 'income'">
+      <app-sp-summary></app-sp-summary>
+    </div>
     <div *ngIf="selectedSection === 'planned'">Planned spending content goes here</div>
     <div *ngIf="selectedSection === 'other'">Other spending content goes here</div>
   </div>

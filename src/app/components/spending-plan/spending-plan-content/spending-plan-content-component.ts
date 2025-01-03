@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SpendingPlanContentComponent {
 
-  selectedSection: string = ''; // Variable para controlar el contenido
+  selectedSection: string = 'income'; // Variable para controlar el contenido
 
   selectSection(section: string) {
     this.selectedSection = section; // Cambia el contenido mostrado
