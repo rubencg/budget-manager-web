@@ -10,10 +10,13 @@
       </div>
     </mat-panel-title>
     <div class="sp-summary-header-total">
-      {{incomesSum | currency}}
+      {{ incomesSum | currency }}
     </div>
   </mat-expansion-panel-header>
-  <p>TODO: Mostrar ingresos</p>
+  <app-base-table
+    [displayedColumns]="displayedColumns"
+    [dataSource]="allIncomes"
+  ></app-base-table>
 </mat-expansion-panel>
 <br />
 <!-- Gastos Mensuales -->
@@ -28,8 +31,11 @@
       </div>
     </mat-panel-title>
     <div class="sp-summary-header-total">
-      {{expensesSum | currency}}
+      {{ expensesSum | currency }}
     </div>
   </mat-expansion-panel-header>
-  <p>TODO: Mostrar gastos mensuales</p>
+  <app-base-table
+    [displayedColumns]="displayedColumns"
+    [dataSource]="allExpenses"
+  ></app-base-table>
 </mat-expansion-panel>

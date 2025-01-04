@@ -17,7 +17,9 @@ export class SpSummaryComponent implements OnInit {
   incomesSum: number = 0;
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
+  allExpenses: Transaction[];
   expensesSum: number = 0;
+  displayedColumns: string[] = ['date', 'category', 'account', 'amount', 'notes', 'actions']
   // TODO: Get current date from control
   currentDate: Date = new Date();
 
@@ -48,6 +50,7 @@ export class SpSummaryComponent implements OnInit {
     );
     this.monthlyExpenses$.subscribe((monthlyExpenses: Transaction[]) => {
       this.expenses$.subscribe((expenses: Transaction[]) => {
+        this.allExpenses = monthlyExpenses.concat(expenses);
         this.expensesSum = (-1) * monthlyExpenses
           .concat(expenses)
           .reduce((acc, cur) => acc + cur.amount, 0);
