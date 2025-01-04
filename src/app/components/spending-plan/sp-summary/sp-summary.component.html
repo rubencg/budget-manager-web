@@ -1,41 +1,31 @@
-
-  <!-- Ingresos -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="sp-summary-header-title-container">
-          <div>
-            <h5>Ingresos</h5>
-          </div>
-          <div class="sp-summary-add">
-            Agregar ingreso +
-          </div>          
+<!-- Ingresos -->
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="sp-summary-header-title-container">
+        <div>
+          <h5>Ingresos</h5>
         </div>
-      </mat-panel-title>
-      <div class="sp-summary-header-total">
-        $9,125.00
+        <div class="sp-summary-add">Agregar ingreso +</div>
       </div>
-    </mat-expansion-panel-header>
-    <p>TODO: Mostrar ingresos</p>
-  </mat-expansion-panel>
-<br/>
-  <!-- Gastos Mensuales -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="sp-summary-header-title-container">
-          <div>
-            <h5>Gastos mensuales</h5>
-          </div>
-          <div class="sp-summary-add">
-            Agregar gasto mensual +
-          </div>          
+    </mat-panel-title>
+    <div class="sp-summary-header-total">$9,125.00</div>
+  </mat-expansion-panel-header>
+  <p>TODO: Mostrar ingresos</p>
+</mat-expansion-panel>
+<br />
+<!-- Gastos Mensuales -->
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="sp-summary-header-title-container">
+        <div>
+          <h5>Gastos mensuales</h5>
         </div>
-      </mat-panel-title>
-      <div class="sp-summary-header-total">
-        -$5,125.00
+        <div class="sp-summary-add">Agregar gasto mensual +</div>
       </div>
-    </mat-expansion-panel-header>
-    <p>TODO: Mostrar gastos mensuales</p>
-  </mat-expansion-panel>
-
+    </mat-panel-title>
+    <div class="sp-summary-header-total">-$5,125.00</div>
+  </mat-expansion-panel-header>
+  <p>TODO: Mostrar gastos mensuales</p>
+</mat-expansion-panel>
