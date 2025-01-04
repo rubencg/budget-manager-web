@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Transaction } from 'src/app/models';
+import { IncomeState } from 'src/app/state';
 
 @Component({
   selector: 'app-sp-summary',
@@ -6,11 +10,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sp-summary.component.scss']
 })
 export class SpSummaryComponent implements OnInit {
-  panelOpenState = false;
+  monthlyIncomes$: Observable<Transaction[]>;
+  incomes$: Observable<Transaction[]>;
+  incomesSum: number = 0;
+  // TODO: Get current date from control
+  currentDate: Date = new Date();
 
-  constructor() { }
+  constructor(public store: Store) { }
 
   ngOnInit(): void {
+    this.monthlyIncomes$ = this.store.select(
+      IncomeState.selectMonthlyIncomeTransactionsForMonth(this.currentDate)
+    );
+    this.incomes$ = this.store.select(
+      IncomeState.selectTransactionsForMonth(this.currentDate)
+    );
+    this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
+      this.incomes$.subscribe((incomes: Transaction[]) => {
+        this.incomesSum = monthlyIncomes
+          .concat(incomes)
+          .reduce((acc, cur) => acc + cur.amount, 0);
+      });
+
+      
+    });
   }
 
 }
