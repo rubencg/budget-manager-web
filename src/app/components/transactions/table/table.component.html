@@ -1,6 +1,9 @@
 <div>
-    <mat-slide-toggle (change)="appliedTransactionsToggleChanged($event)">
-        Mostrar transacciones no aplicadas
-    </mat-slide-toggle>
+  <mat-slide-toggle (change)="appliedTransactionsToggleChanged($event)">
+    Mostrar transacciones no aplicadas
+  </mat-slide-toggle>
 </div>
-<app-base-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-base-table>
+<app-base-table
+  [dataSource]="dataSource"
+  [displayedColumns]="displayedColumns"
+></app-base-table>

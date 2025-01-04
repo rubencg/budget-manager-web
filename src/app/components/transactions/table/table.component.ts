@@ -6,9 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Transaction } from 'src/app/models';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import {
@@ -30,8 +28,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class TableComponent implements AfterViewInit, OnInit {
   @Input() date: Date;
   showNotAppliedTransactions: boolean = false;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Transaction>();
   currentFilterText: string;
@@ -143,8 +139,7 @@ export class TableComponent implements AfterViewInit, OnInit {
                       transactionData.toLowerCase().indexOf(filter) != -1
                     );
                   };
-                  this.dataSource.sort = this.sort;
-                  this.dataSource.paginator = this.paginator;
+                  
                   if(this.currentFilterText && this.currentFilterText != ''){
                     this.applyFilter(this.currentFilterText);
                   }

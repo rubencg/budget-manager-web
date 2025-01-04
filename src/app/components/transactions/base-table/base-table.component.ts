@@ -1,25 +1,61 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Transaction, TransactionTypes } from 'src/app/models';
-import { ApplyTransactionComponent, DeleteComponent, ExpenseComponent, IncomeComponent, TransferComponent } from '../dialogs';
+import { MatPaginator } from '@angular/material/paginator';
+import {
+  ApplyTransactionComponent,
+  DeleteComponent,
+  ExpenseComponent,
+  IncomeComponent,
+  TransferComponent,
+} from '../dialogs';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { ExpenseActions, IncomeActions, MonthlyExpenseActions, MonthlyIncomeActions, TransferActions } from 'src/app/state';
+import {
+  ExpenseActions,
+  IncomeActions,
+  MonthlyExpenseActions,
+  MonthlyIncomeActions,
+  TransferActions,
+} from 'src/app/state';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-base-table',
   templateUrl: './base-table.component.html',
-  styleUrls: ['./base-table.component.scss']
+  styleUrls: ['./base-table.component.scss'],
 })
-export class BaseTableComponent implements OnInit {
+export class BaseTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() dataSource = new MatTableDataSource<Transaction>();
   @Input() displayedColumns: string[] = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public dialog: MatDialog,
-        public store: Store,
-  ) { }
+  constructor(public dialog: MatDialog, public store: Store) {}
 
   ngOnInit(): void {
+    this.updateDataSource();
+  }
+
+  ngOnChanges(): void {
+    // Configura paginator y sort si cambian
+    this.updateDataSource();
+  }
+
+  ngAfterViewInit(): void {
+    // Configura paginator y sort después de la inicialización de la vista
+    this.updateDataSource();
+  }
+
+  private updateDataSource(): void {
+    if (this.dataSource) {
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
+      if (this.sort) {
+        this.dataSource.sort = this.sort;
+      }
+    }
   }
 
   deleteDialog(transaction: Transaction) {
@@ -168,5 +204,4 @@ export class BaseTableComponent implements OnInit {
         }
       });
   }
-
 }
