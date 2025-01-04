@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -15,10 +15,14 @@ export class SpSummaryComponent implements OnInit {
   incomes$: Observable<Transaction[]>;
   allIncomes: Transaction[];
   incomesSum: number = 0;
+  @Output() incomesSumChange: EventEmitter<number> = new EventEmitter<number>();
+
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
   expensesSum: number = 0;
+  @Output() expensesSumChange: EventEmitter<number> = new EventEmitter<number>();
+
   displayedColumns: string[] = [
     'date',
     'category',
@@ -50,6 +54,7 @@ export class SpSummaryComponent implements OnInit {
             (acc, cur) => acc + cur.amount,
             0
           );
+          this.incomesSumChange.emit(this.incomesSum);
         });
     });
 
@@ -82,6 +87,7 @@ export class SpSummaryComponent implements OnInit {
 
           this.expensesSum =
             -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+          this.expensesSumChange.emit(this.expensesSum);
         });
     });
   }
