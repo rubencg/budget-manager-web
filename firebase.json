@@ -10,11 +10,11 @@
       "port": 9000
     },
     "hosting": {
-      "port": 5000
+      "port": 6001
     },
     "ui": {
       "enabled": true,
-      "port": 5001
+      "port": 6002
     }
   },
   "hosting": {
