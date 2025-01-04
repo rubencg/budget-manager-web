@@ -1,0 +1,39 @@
+<!-- Ingresos -->
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="sp-summary-header-title-container">
+        <div>
+          <h5>Ingresos</h5>
+        </div>
+      </div>
+    </mat-panel-title>
+    <div class="sp-summary-header-total">
+      {{ incomesSum | currency }}
+    </div>
+  </mat-expansion-panel-header>
+  <app-base-table
+    [displayedColumns]="displayedColumns"
+    [dataSource]="allIncomes"
+  ></app-base-table>
+</mat-expansion-panel>
+<br />
+<!-- Gastos Mensuales -->
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="sp-summary-header-title-container">
+        <div>
+          <h5>Gastos mensuales</h5>
+        </div>
+      </div>
+    </mat-panel-title>
+    <div class="sp-summary-header-total">
+      {{ expensesSum | currency }}
+    </div>
+  </mat-expansion-panel-header>
+  <app-base-table
+    [displayedColumns]="displayedColumns"
+    [dataSource]="allExpenses"
+  ></app-base-table>
+</mat-expansion-panel>

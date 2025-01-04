@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+  <!-- Left Section -->
+  <div class="left-section">
+    <mat-card class="menu-item" (click)="selectSection('income')"
+      [ngClass]="{'selected-card': selectedSection === 'income'}">
+      <mat-card-title class="card-title">Ingresos despues de gastos mensuales</mat-card-title>
+      <mat-card-content class="card-content">
+        {{ plannedIncome + plannedExpense | currency }}
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="menu-item" (click)="selectSection('planned')"
+      [ngClass]="{'selected-card': selectedSection === 'planned'}">
+      <mat-card-title class="card-title">Gastos planeados</mat-card-title>
+      <mat-card-content class="card-content">
+        -$4,500.70
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="menu-item" (click)="selectSection('other')"
+      [ngClass]="{'selected-card': selectedSection === 'other'}">
+      <mat-card-title class="card-title">Otros gastos</mat-card-title>
+      <mat-card-content class="card-content">
+        -$500.00
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Right Section -->
+  <div class="right-section">
+    <div *ngIf="selectedSection === 'income'">
+      <app-sp-summary (incomesSumChange)="updatePlannedIncomesSum($event)"
+        (expensesSumChange)="updatePlannedExpensesSum($event)"></app-sp-summary>
+    </div>
+    <div *ngIf="selectedSection === 'planned'">Planned spending content goes here</div>
+    <div *ngIf="selectedSection === 'other'">Other spending content goes here</div>
+  </div>
+</div>

@@ -49,7 +49,7 @@ registerLocaleData(localeES);
       disabled: environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({
-      disabled: environment.production,
+      disabled: true,
     }),
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule

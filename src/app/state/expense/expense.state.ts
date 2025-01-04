@@ -88,7 +88,7 @@ export class ExpenseState {
     );
   }
 
-  static selectMonthlyExpenseTransactionsForMonth(date: Date) {
+  static selectMonthlyExpenseTransactionsForMonth(date: Date, includeApplied: boolean = false) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       let monthlyExpenseTransactions: Transaction[] = [];
       let expenses = state.expenses.filter(
@@ -102,7 +102,7 @@ export class ExpenseState {
           (i) => i.monthlyKey == monthlyExpense.key
         );
 
-        if (!filteredExpense) {
+        if (includeApplied || !filteredExpense) {
           monthlyExpenseTransactions.push({
             amount: monthlyExpense.amount,
             date: new Date(

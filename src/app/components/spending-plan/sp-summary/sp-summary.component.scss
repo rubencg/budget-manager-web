@@ -1,0 +1,27 @@
+@import "../../../../colors.scss";
+
+.mat-expansion-panel-header, .mat-expansion-panel {
+  background-color: $primary-color !important;
+}
+
+.mat-expansion-panel-header:hover {
+  background-color: $third-color !important;
+}
+
+.sp-summary-header-title-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+}
+
+.sp-summary-add {
+  padding-left: 20px;
+  font-size: small;
+}
+
+.sp-summary-header-total {
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+}
