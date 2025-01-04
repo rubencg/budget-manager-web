@@ -67,6 +67,7 @@ import { TransactionMobileComponent } from './transactions/table/transaction.mob
 import { SpendingPlanContentComponent } from './spending-plan';
 import { SpSummaryComponent } from './spending-plan/sp-summary/sp-summary.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { BaseTableComponent } from './transactions/base-table/base-table.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MainAccountsComponent,
     ExpensesBySubcategoryComponent,
     TransactionMobileComponent,
-    SpSummaryComponent
+    SpSummaryComponent,
+    BaseTableComponent
   ],
   exports: [
     NavbarComponent,

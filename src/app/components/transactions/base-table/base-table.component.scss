@@ -1,0 +1,8 @@
+@import "../../../../colors.scss";
+@import "../../../../table.scss";
+
+.transaction-rows{
+    display: flex;
+    flex-flow: column;
+    margin-right: 10px;
+}
