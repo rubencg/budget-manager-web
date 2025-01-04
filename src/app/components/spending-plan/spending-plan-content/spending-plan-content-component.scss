@@ -19,11 +19,19 @@
   border-radius: 10px;
 }
 
-.menu-item:hover {
+.menu-item:hover, .selected-card {
   background-color: #2171cb;
 }
 
 .right-section {
   width: 75%;
   padding: 20px;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.card-content {
+  font-size: large;
 }
