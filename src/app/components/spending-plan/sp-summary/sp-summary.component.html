@@ -27,7 +27,9 @@
         <div class="sp-summary-add">Agregar gasto mensual +</div>
       </div>
     </mat-panel-title>
-    <div class="sp-summary-header-total">-$5,125.00</div>
+    <div class="sp-summary-header-total">
+      {{expensesSum | currency}}
+    </div>
   </mat-expansion-panel-header>
   <p>TODO: Mostrar gastos mensuales</p>
 </mat-expansion-panel>
