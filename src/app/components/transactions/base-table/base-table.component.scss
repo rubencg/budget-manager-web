@@ -1,8 +1,12 @@
 @import "../../../../colors.scss";
 @import "../../../../table.scss";
 
-.transaction-rows{
-    display: flex;
-    flex-flow: column;
-    margin-right: 10px;
+.transaction-rows {
+  display: flex;
+  flex-flow: column;
+  margin-right: 10px;
+}
+
+.applied-background{
+    background-color: $income-color;
 }

@@ -147,8 +147,9 @@ export class BaseTableComponent implements OnInit, OnChanges, AfterViewInit {
   getAmountClassByType(transaction: Transaction) {
     switch (transaction.type) {
       case TransactionTypes.Expense:
-      case TransactionTypes.MonthlyExpense:
         return transaction.applied ? 'expense-amount' : 'not-applied-amount';
+      case TransactionTypes.MonthlyExpense:
+        return 'not-applied-amount';
       case TransactionTypes.Transfer:
         return 'transfer-amount';
       case TransactionTypes.Income:
