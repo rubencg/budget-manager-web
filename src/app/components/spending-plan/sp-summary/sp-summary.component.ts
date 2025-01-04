@@ -8,7 +8,7 @@ import { ExpenseState, IncomeState } from 'src/app/state';
 @Component({
   selector: 'app-sp-summary',
   templateUrl: './sp-summary.component.html',
-  styleUrls: ['./sp-summary.component.scss']
+  styleUrls: ['./sp-summary.component.scss'],
 })
 export class SpSummaryComponent implements OnInit {
   monthlyIncomes$: Observable<Transaction[]>;
@@ -19,11 +19,19 @@ export class SpSummaryComponent implements OnInit {
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
   expensesSum: number = 0;
-  displayedColumns: string[] = ['date', 'category', 'account', 'amount', 'notes', 'actions']
+  displayedColumns: string[] = [
+    'date',
+    'category',
+    'account',
+    'amount',
+    'notes',
+    'applied',
+    'actions',
+  ];
   // TODO: Get current date from control
   currentDate: Date = new Date();
 
-  constructor(public store: Store) { }
+  constructor(public store: Store) {}
 
   ngOnInit(): void {
     // Get incomes for the current month
@@ -34,28 +42,47 @@ export class SpSummaryComponent implements OnInit {
       IncomeState.selectTransactionsForMonth(this.currentDate)
     );
     this.incomes$.subscribe((incomes: Transaction[]) => {
-      this.monthlyIncomes$.pipe(delay(0)).subscribe((monthlyIncomes: Transaction[]) => {
-        this.allIncomes = monthlyIncomes.concat(incomes);
-        this.incomesSum = this.allIncomes
-          .reduce((acc, cur) => acc + cur.amount, 0);
-      });  
+      this.monthlyIncomes$
+        .pipe(delay(0))
+        .subscribe((monthlyIncomes: Transaction[]) => {
+          this.allIncomes = monthlyIncomes.concat(incomes);
+          this.incomesSum = this.allIncomes.reduce(
+            (acc, cur) => acc + cur.amount,
+            0
+          );
+        });
     });
 
     // Get expenses for the current month
     this.monthlyExpenses$ = this.store.select(
-      ExpenseState.selectMonthlyExpenseTransactionsForMonth(this.currentDate)
+      ExpenseState.selectMonthlyExpenseTransactionsForMonth(
+        this.currentDate,
+        true
+      )
     );
     this.expenses$ = this.store.select(
       ExpenseState.selectTransactionsForMonth(this.currentDate)
     );
-    this.monthlyExpenses$.subscribe((monthlyExpenses: Transaction[]) => {
-      this.expenses$.subscribe((expenses: Transaction[]) => {
-        this.allExpenses = monthlyExpenses.concat(expenses);
-        this.expensesSum = (-1) * monthlyExpenses
-          .concat(expenses)
-          .reduce((acc, cur) => acc + cur.amount, 0);
-      });  
+    this.expenses$.subscribe((expenses: Transaction[]) => {
+      this.monthlyExpenses$
+        .pipe(delay(0))
+        .subscribe((monthlyExpenses: Transaction[]) => {
+          this.allExpenses = monthlyExpenses;
+
+          // Mark monthly expenses as applied
+          expenses
+            .filter((expense) => expense.monthlyKey)
+            .forEach((expense) => {
+              this.allExpenses
+                .filter((exp) => exp.key == expense.monthlyKey)
+                .forEach((exp) => {
+                  exp.applied = true;
+                });
+            });
+
+          this.expensesSum =
+            -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+        });
     });
   }
-
 }
