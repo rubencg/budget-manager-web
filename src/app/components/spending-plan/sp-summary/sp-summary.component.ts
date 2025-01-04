@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Transaction } from 'src/app/models';
 import { ExpenseState, IncomeState } from 'src/app/state';
 
@@ -12,6 +13,7 @@ import { ExpenseState, IncomeState } from 'src/app/state';
 export class SpSummaryComponent implements OnInit {
   monthlyIncomes$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
+  allIncomes: Transaction[];
   incomesSum: number = 0;
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
@@ -29,10 +31,10 @@ export class SpSummaryComponent implements OnInit {
     this.incomes$ = this.store.select(
       IncomeState.selectTransactionsForMonth(this.currentDate)
     );
-    this.monthlyIncomes$.subscribe((monthlyIncomes: Transaction[]) => {
-      this.incomes$.subscribe((incomes: Transaction[]) => {
-        this.incomesSum = monthlyIncomes
-          .concat(incomes)
+    this.incomes$.subscribe((incomes: Transaction[]) => {
+      this.monthlyIncomes$.pipe(delay(0)).subscribe((monthlyIncomes: Transaction[]) => {
+        this.allIncomes = monthlyIncomes.concat(incomes);
+        this.incomesSum = this.allIncomes
           .reduce((acc, cur) => acc + cur.amount, 0);
       });  
     });
