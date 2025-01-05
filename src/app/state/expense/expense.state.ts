@@ -19,11 +19,15 @@ import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
 import { MonthlyExpenseActions } from './monthly.expense.actions';
 import { RecurringExpenseActions } from './recurring.expense.actions';
+import { PlannedExpense } from 'src/app/planned-expense';
+import { PlannedExpenseActions } from './planned-expense.actions';
+import { PlannedExpenseService } from 'src/app/planned-expense/planned-expense.service';
 
 export interface ExpenseStateModel {
   expenses: Expense[];
   monthlyExpenses: MonthlyExpense[];
   transactions: Transaction[];
+  plannedExpenses: PlannedExpense[];
 }
 
 @State<ExpenseStateModel>({
@@ -32,6 +36,7 @@ export interface ExpenseStateModel {
     expenses: [],
     monthlyExpenses: [],
     transactions: [],
+    plannedExpenses: [],
   },
 })
 @Injectable()
@@ -39,8 +44,15 @@ export class ExpenseState {
   constructor(
     private expenseService: ExpenseService,
     private store: Store,
-    private monthlyExpenseService: MonthlyExpenseService
+    private monthlyExpenseService: MonthlyExpenseService,
+    private plannedExpenseService: PlannedExpenseService
   ) {}
+
+  static selectPlannedExpenses() {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) =>
+      state.plannedExpenses
+    );
+  }
 
   static selectTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
@@ -214,6 +226,68 @@ export class ExpenseState {
       key: transaction.monthlyKey ? null : transaction.key,
       monthlyKey: transaction.monthlyKey ? transaction.monthlyKey : null,
     };
+  }
+
+  // Planned Expense actions
+  @Action(PlannedExpenseActions.Get)
+  getAllPlannedExpense(context: StateContext<ExpenseStateModel>) {
+    this.plannedExpenseService
+      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
+      .subscribe((plannedExpenses: PlannedExpense[]) =>
+        context.dispatch(new PlannedExpenseActions.GetSuccess(plannedExpenses))
+      );
+  }
+
+  @Action(PlannedExpenseActions.GetSuccess)
+  plannedExpensesLoaded(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.GetSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      plannedExpenses: action.payload,
+    });
+  }
+
+  @Action(PlannedExpenseActions.DeletePlannedExpense)
+  deletePlannedExpense(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.DeletePlannedExpense
+  ) {
+    this.plannedExpenseService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
+  }
+
+  @Action(PlannedExpenseActions.SavePlannedExpense)
+  savePlannedExpenseTransaction(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.SavePlannedExpense
+  ) {
+    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+
+    let plannedExpense: PlannedExpense = {
+      name: action.payload.name,
+      totalAmount: action.payload.totalAmount,
+      remainingAmount: action.payload.remainingAmount,
+      category: {
+        image: action.payload.category.image,
+        name: action.payload.category.name,
+        color: action.payload.category.color,
+        subcategories: action.payload.category.subcategories
+          ? action.payload.category.subcategories
+          : [],
+      },
+      subCategory: action.payload.subCategory
+        ? action.payload.subCategory
+        : null,
+      key: action.payload.key,
+    };
+
+    if (plannedExpense.key) {
+      this.plannedExpenseService.update(uid, plannedExpense);
+    } else {
+      this.plannedExpenseService.create(uid, plannedExpense);
+    }
   }
 
   /* Monthly Expense Categories */

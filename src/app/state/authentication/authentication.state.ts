@@ -9,6 +9,7 @@ import { CategoryActions } from '../category';
 import { TransferActions } from '../transfer';
 import { IncomeActions, MonthlyIncomeActions } from '../income';
 import { ExpenseActions, MonthlyExpenseActions } from '../expense';
+import { PlannedExpenseActions } from '../expense/planned-expense.actions';
 
 export interface AuthenticationStateModel {
   user: User;
@@ -66,6 +67,7 @@ export class AuthenticationState {
         this.store.dispatch(ExpenseActions.Get);
         this.store.dispatch(MonthlyIncomeActions.Get);
         this.store.dispatch(MonthlyExpenseActions.Get);
+        this.store.dispatch(PlannedExpenseActions.Get);
       });
   }
 
