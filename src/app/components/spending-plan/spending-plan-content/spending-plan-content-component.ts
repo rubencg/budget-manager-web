@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Transaction } from 'src/app/models';
+import { Transaction, TransactionTypes } from 'src/app/models';
+import { PlannedExpense } from 'src/app/planned-expense';
 import { IncomeState, ExpenseState } from 'src/app/state';
 
 @Component({
@@ -11,9 +12,8 @@ import { IncomeState, ExpenseState } from 'src/app/state';
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  spentPlannedExpense: number = 0;
-
   selectedSection: string = 'income'; // Variable para controlar el contenido
+
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
@@ -23,7 +23,12 @@ export class SpendingPlanContentComponent implements OnInit {
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
-  expensesSum: number = 0;  
+  expensesSum: number = 0;
+  // Planned expenes
+  plannedExpenses$: Observable<PlannedExpense[]>;
+  plannedExpenses: PlannedExpense[];
+  plannedExpensesSum: number;
+  expensesForTheMonth: Transaction[];
   // TODO: Get current date from control
   currentDate: Date = new Date();
 
@@ -62,32 +67,40 @@ export class SpendingPlanContentComponent implements OnInit {
     );
     this.expenses$.subscribe((expenses: Transaction[]) => {
       this.monthlyExpenses$
-        .pipe(delay(0))
-        .subscribe((monthlyExpenses: Transaction[]) => {
-          this.allExpenses = monthlyExpenses;
-
-          // Mark monthly expenses as applied
-          expenses
-            .filter((expense) => expense.monthlyKey)
-            .forEach((expense) => {
-              this.allExpenses
-                .filter((exp) => exp.key == expense.monthlyKey)
-                .forEach((exp) => {
-                  exp.applied = true;
-                });
-            });
-
-          this.expensesSum =
-            -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+      .pipe(delay(0))
+      .subscribe((monthlyExpenses: Transaction[]) => {
+        // Used in sp-spending-plan-content
+        this.expensesForTheMonth = expenses.filter(
+          (t) => t.type == TransactionTypes.Expense
+        );
+        
+        // Used in sp-summary-component
+        this.allExpenses = monthlyExpenses;
+        // Mark monthly expenses as applied
+        expenses
+        .filter((expense) => expense.monthlyKey)
+        .forEach((expense) => {
+          this.allExpenses
+          .filter((exp) => exp.key == expense.monthlyKey)
+          .forEach((exp) => {
+            exp.applied = true;
+          });
         });
+        
+        this.expensesSum =
+        -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+      });
+    });
+    this.plannedExpenses$ = this.store.select(
+      ExpenseState.selectPlannedExpenses()
+    );
+    this.plannedExpenses$.subscribe((plannedExpenses: PlannedExpense[]) => {
+      this.plannedExpenses = plannedExpenses;
+      this.plannedExpensesSum = plannedExpenses.reduce((acc, cur) => acc + cur.totalAmount, 0);
     });
   }
 
   selectSection(section: string) {
     this.selectedSection = section; // Cambia el contenido mostrado
-  }
-  
-  updateSpendPlannedExpensesSum(newPlannedExpense: number): void {
-    this.spentPlannedExpense = newPlannedExpense;
   }
 }
