@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class SpendingPlanContentComponent {
   plannedIncome: number = 0;
   plannedExpense: number = 0;
+  spentPlannedExpense: number = 0;
   selectedSection: string = 'income'; // Variable para controlar el contenido
 
   selectSection(section: string) {
@@ -20,5 +21,9 @@ export class SpendingPlanContentComponent {
 
   updatePlannedExpensesSum(newPlannedExpense: number): void {
     this.plannedExpense = newPlannedExpense;
+  }
+  
+  updateSpendPlannedExpensesSum(newPlannedExpense: number): void {
+    this.spentPlannedExpense = newPlannedExpense;
   }
 }
