@@ -1,0 +1,21 @@
+<div class="cards-container">
+  <mat-card *ngFor="let expense of allPlannedExpenses" class="expense-card">
+    <mat-card-title>
+      {{ expense.name }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      Categoria: {{ getCategoryText(expense) }}
+    </mat-card-subtitle>
+
+    <mat-card-content>
+      <div class="amount-left">
+        {{ expense.totalAmount - getSpentAmount(expense) | currency }}
+        restante
+      </div>
+      <div class="spent-amount">
+        {{ getSpentAmount(expense) | currency }} gastado
+      </div>
+      <!-- Agregar la barra de cuanto se ha gastado -->
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -69,6 +69,7 @@ import { SpSummaryComponent } from './spending-plan/sp-summary/sp-summary.compon
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BaseTableComponent } from './transactions/base-table/base-table.component';
 import { MatCardModule } from '@angular/material/card';
+import { SpendingPlannedExpensesComponent } from './spending-plan/spending-planned-expenses/spending-planned-expenses.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { MatCardModule } from '@angular/material/card';
     ExpensesBySubcategoryComponent,
     TransactionMobileComponent,
     SpSummaryComponent,
-    BaseTableComponent
+    BaseTableComponent,
+    SpendingPlannedExpensesComponent
   ],
   exports: [
     NavbarComponent,

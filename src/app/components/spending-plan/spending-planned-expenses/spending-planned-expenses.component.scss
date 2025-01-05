@@ -1,0 +1,39 @@
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.expense-card {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.amount-left {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.spent-amount {
+  font-size: 0.875rem;
+  color: #757575;
+}
+
+.transactions {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: #757575;
+}
+
+.external-icon {
+  font-size: 1rem;
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #757575;
+}
+
+mat-progress-bar {
+  margin: 8px 0;
+}
