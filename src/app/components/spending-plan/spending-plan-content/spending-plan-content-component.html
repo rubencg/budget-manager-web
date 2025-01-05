@@ -4,7 +4,7 @@
     <mat-card class="menu-item" (click)="selectSection('income')"
       [ngClass]="{'selected-card': selectedSection === 'income'}">
       <mat-card-title class="card-title">
-        {{ plannedIncome + plannedExpense | currency }}
+        {{ incomesSum + expensesSum | currency }}
       </mat-card-title>
       <mat-card-content class="card-content">
         Ingresos despues de gastos mensuales
@@ -33,8 +33,8 @@
   <!-- Right Section -->
   <div class="right-section">
     <div *ngIf="selectedSection === 'income'">
-      <app-sp-summary (incomesSumChange)="updatePlannedIncomesSum($event)"
-        (expensesSumChange)="updatePlannedExpensesSum($event)"></app-sp-summary>
+      <app-sp-summary [incomeTransactions]="allIncomes" [incomesSum]="incomesSum"
+        [expenseTransactions]="allExpenses" [expensesSum]="expensesSum"></app-sp-summary>
     </div>
     <div *ngIf="selectedSection === 'planned'">
       <app-spending-planned-expenses (plannedExpensesSumChange)="updateSpendPlannedExpensesSum($event)"></app-spending-planned-expenses>
