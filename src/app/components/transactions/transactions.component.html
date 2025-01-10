@@ -1,4 +1,4 @@
-<transactions-header [date]="date" (onMonthIncreased)="monthIncreased()" (onMonthDecreased)="monthDecreased()"
+<transactions-header [date]="date" [displayFeatures]="headerDisplayFeatures" (onMonthIncreased)="monthIncreased()" (onMonthDecreased)="monthDecreased()"
     (onTextChanged)="onTextChanged($event)" (onFilter)="onFilter($event)">
 </transactions-header>
 <transactions-table [date]="date" #transactionsTable></transactions-table>

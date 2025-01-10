@@ -26,6 +26,15 @@ import {
   TransferComponent,
 } from '../dialogs';
 
+export enum HeaderFeatures {
+  SearchButton = 'SearchButton',
+  AddIncome = 'AddIncome',
+  AddExpense = 'AddExpense',
+  AddTransfer = 'AddTransfer',
+  AddPlannedExpense = 'AddPlannedExpense',
+  FilterButton = 'FilterButton',
+}
+
 @Component({
   selector: 'transactions-header',
   templateUrl: './header.component.html',
@@ -34,6 +43,8 @@ import {
 export class HeaderComponent implements OnInit {
   /* Animations */
   @Input() date: Date;
+  @Input() displayFeatures: Record<HeaderFeatures, boolean>;
+
   startDate: Date;
   endDate: Date;
   @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();

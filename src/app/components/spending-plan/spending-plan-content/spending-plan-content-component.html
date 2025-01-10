@@ -32,6 +32,10 @@
 
   <!-- Right Section -->
   <div class="right-section">
+    <div class="header">
+      <transactions-header [displayFeatures]="headerDisplayFeatures"
+        (onMonthIncreased)="monthIncreased()" (onMonthDecreased)="monthDecreased()" [date]="currentDate"></transactions-header>
+    </div>
     <div *ngIf="selectedSection === 'income'">
       <app-sp-summary [incomeTransactions]="allIncomes" [incomesSum]="incomesSum" [expenseTransactions]="allExpenses"
         [expensesSum]="expensesSum"></app-sp-summary>

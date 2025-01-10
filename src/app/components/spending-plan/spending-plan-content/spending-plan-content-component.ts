@@ -5,6 +5,7 @@ import { delay } from 'rxjs/operators';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
 import { IncomeState, ExpenseState } from 'src/app/state';
+import { HeaderFeatures } from '../../transactions/header/header.component';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -31,17 +32,30 @@ export class SpendingPlanContentComponent implements OnInit {
   expensesForTheMonth: Transaction[];
   // TODO: Get current date from control
   currentDate: Date = new Date();
+  headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
+    [HeaderFeatures.SearchButton]: false,
+    [HeaderFeatures.AddIncome]: false,
+    [HeaderFeatures.AddExpense]: false,
+    [HeaderFeatures.AddTransfer]: false,
+    [HeaderFeatures.AddPlannedExpense]: true,
+    [HeaderFeatures.FilterButton]: false,
+  };
 
   constructor(public store: Store) {
     
   }
+
   ngOnInit(): void {
+    this.loadData(this.currentDate)
+  }
+
+  loadData(date: Date){
     // Get incomes for the current month
     this.monthlyIncomes$ = this.store.select(
-      IncomeState.selectMonthlyIncomeTransactionsForMonth(this.currentDate)
+      IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
     );
     this.incomes$ = this.store.select(
-      IncomeState.selectTransactionsForMonth(this.currentDate)
+      IncomeState.selectTransactionsForMonth(date)
     );
     this.incomes$.subscribe((incomes: Transaction[]) => {
       this.monthlyIncomes$
@@ -58,12 +72,12 @@ export class SpendingPlanContentComponent implements OnInit {
     // Get expenses for the current month
     this.monthlyExpenses$ = this.store.select(
       ExpenseState.selectMonthlyExpenseTransactionsForMonth(
-        this.currentDate,
+        date,
         true
       )
     );
     this.expenses$ = this.store.select(
-      ExpenseState.selectTransactionsForMonth(this.currentDate)
+      ExpenseState.selectTransactionsForMonth(date)
     );
     this.expenses$.subscribe((expenses: Transaction[]) => {
       this.monthlyExpenses$
@@ -102,5 +116,15 @@ export class SpendingPlanContentComponent implements OnInit {
 
   selectSection(section: string) {
     this.selectedSection = section; // Cambia el contenido mostrado
+  } 
+
+  monthDecreased() {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
+    this.loadData(this.currentDate)
+  }
+
+  monthIncreased() {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1);
+    this.loadData(this.currentDate)
   }
 }
