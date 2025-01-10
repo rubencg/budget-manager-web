@@ -15,7 +15,7 @@ import { CategoryState } from 'src/app/state';
   styleUrls: ['./planned-expense.component.scss'],
 })
 export class PlannedExpenseComponent implements OnInit {
-  title: String = 'Nuevo gasto planeado';
+  title: String;
   subcategories: string[] = [];
   filteredSubcategories: Observable<string[]>;
   filteredCategories: Observable<Category[]>;
@@ -38,7 +38,21 @@ export class PlannedExpenseComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.title = 'Nuevo gasto planeado';
+    if (this.data != undefined && this.data != null){
+      this.title = 'Editar gasto planeado';
+      
+      this.form.patchValue({
+        name: this.data.name,
+        date: this.data.date,
+        isRecurring: this.data.isRecurring,
+        amount: Math.abs(this.data.totalAmount),
+        category: this.data.category,
+        subcategory: this.data.subCategory,
+      })
+    }
+  }
 
   private _filterCategoryElements(value: string): Observable<Category[]> {
     return this.categories$.pipe(
@@ -102,6 +116,7 @@ export class PlannedExpenseComponent implements OnInit {
       isRecurring: this.form.get('isRecurring').value,
       category: this.form.get('category').value,
       subCategory: this.form.get('subcategory').value,
+      key: this.data ? this.data.key : undefined,
     };
 
     this.dialogRef.close(plannedExpense);

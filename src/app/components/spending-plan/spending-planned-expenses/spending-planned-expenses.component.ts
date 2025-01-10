@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
 import { Transaction } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
-import { ConfirmationDialogComponent } from '../../transactions/dialogs';
+import { ConfirmationDialogComponent, PlannedExpenseComponent } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
 
@@ -57,6 +57,22 @@ export class SpendingPlannedExpensesComponent implements OnInit {
       if (result) {
         this.store.dispatch(
           new PlannedExpenseActions.DeletePlannedExpense(plannedExpense)
+        );
+      }
+    });
+  }
+
+  modify(plannedExpense: PlannedExpense): void {
+    const dialogRef = this.dialog.open(PlannedExpenseComponent, {
+      data: plannedExpense,
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+    
+    dialogRef.afterClosed().subscribe((plannedExpense: PlannedExpense) => {
+      if (plannedExpense) {
+        this.store.dispatch(
+          new PlannedExpenseActions.SavePlannedExpense(plannedExpense)
         );
       }
     });

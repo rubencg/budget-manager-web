@@ -13,7 +13,7 @@ import { HeaderFeatures } from '../../transactions/header/header.component';
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  selectedSection: string = 'income'; // Variable para controlar el contenido
+  selectedSection: string = 'planned'; // Variable para controlar el contenido
 
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
