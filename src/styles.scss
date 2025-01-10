@@ -152,3 +152,11 @@ a:active {
   display: flex !important;
   align-items: center;
 }
+
+.mat-progress-bar-fill::after {
+  background-color: $purple;
+}
+
+.mat-progress-bar-buffer {
+  background-color: $light-blue;
+}

@@ -34,4 +34,9 @@ export class SpendingPlannedExpensesComponent implements OnInit {
     
     return `${plannedExpense.category.name}${subCategory}`;
   }
+
+  getSpentPercentage(plannedExpense: PlannedExpense): number {
+    // return (plannedExpense.remainingAmount / plannedExpense.totalAmount) * 100
+    return 20;
+  }
 }

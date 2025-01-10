@@ -9,13 +9,18 @@
 
     <mat-card-content>
       <div class="amount-left">
-        {{ expense.totalAmount - getSpentAmount(expense) | currency }}
-        restante
-      </div>
-      <div class="spent-amount">
-        {{ getSpentAmount(expense) | currency }} gastado
+        {{ expense.totalAmount - getSpentAmount(expense) | currency }} restante
       </div>
       <!-- Agregar la barra de cuanto se ha gastado -->
+      <mat-progress-bar
+      mode="determinate"
+      color="primary"
+      [value]="getSpentPercentage(expense)"
+      ></mat-progress-bar>
+      <div class="total">
+        <span>{{ getSpentAmount(expense) | currency }} gastado</span>
+        <span>de {{ expense.totalAmount | currency }}</span>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
