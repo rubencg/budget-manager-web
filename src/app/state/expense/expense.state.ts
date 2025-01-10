@@ -265,6 +265,7 @@ export class ExpenseState {
             date: new Date(p.date),
             isRecurring: p.isRecurring,
             totalAmount: p.totalAmount,
+            key: p.key
           });
         });
         context.dispatch(new PlannedExpenseActions.GetSuccess(plannedExpenses));

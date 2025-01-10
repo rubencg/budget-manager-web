@@ -1,8 +1,19 @@
 <div class="cards-container">
   <mat-card *ngFor="let expense of plannedExpenses" class="expense-card">
-    <mat-card-title>
-      {{ expense.name }}
-      <fa-icon *ngIf="expense.isRecurring" class="recurring-icon" [icon]="['fas', 'redo-alt']"></fa-icon>
+    <mat-card-title class="card-title">
+      <div>
+        {{ expense.name }}
+        <fa-icon *ngIf="expense.isRecurring" class="recurring-icon" [icon]="['fas', 'redo-alt']"></fa-icon>
+      </div>
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Modificar</button>
+          <button mat-menu-item (click)="delete(expense)">Eliminar</button>
+        </mat-menu>
+      </div>
     </mat-card-title>
     <mat-card-subtitle>
       Categoria: {{ getCategoryText(expense) }}

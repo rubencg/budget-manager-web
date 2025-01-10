@@ -73,6 +73,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SpendingPlannedExpensesComponent } from './spending-plan/spending-planned-expenses/spending-planned-expenses.component';
 import { RemainingProgressComponent } from './spending-plan/spending-planned-expenses/remaining-progress/remaining-progress.component';
 import { PlannedExpenseComponent } from './transactions/dialogs/planned-spending/planned-expense.component';
+import { ConfirmationDialogComponent } from './transactions/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import { PlannedExpenseComponent } from './transactions/dialogs/planned-spending
     BaseTableComponent,
     SpendingPlannedExpensesComponent,
     RemainingProgressComponent,
-    PlannedExpenseComponent
+    PlannedExpenseComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     NavbarComponent,
