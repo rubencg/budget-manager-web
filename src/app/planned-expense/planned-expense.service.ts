@@ -28,8 +28,8 @@ export class PlannedExpenseService {
 
   update(uid: string, plannedExpense: PlannedExpense): Promise<void> {
     return this.db.list(`${uid}/${this.entityName}`).update(plannedExpense.key, {
+      name: plannedExpense.name,
       totalAmount: plannedExpense.totalAmount,
-      remainingAmount: plannedExpense.remainingAmount,
       category: plannedExpense.category,
       subCategory: plannedExpense.subCategory,
     });
@@ -37,8 +37,8 @@ export class PlannedExpenseService {
 
   create(uid: string, plannedExpense: PlannedExpense) {
     return this.db.list(`${uid}/${this.entityName}`).push({
+      name: plannedExpense.name,
       totalAmount: plannedExpense.totalAmount,
-      remainingAmount: plannedExpense.remainingAmount,
       category: plannedExpense.category,
       subCategory: plannedExpense.subCategory,
     });

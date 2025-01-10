@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" class="transaction-dialog-content">
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'signature']"></fa-icon>
+            </span>
+            <mat-label>Nombre</mat-label>
+            <input formControlName="name" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+            </span>
+            <mat-label>Cantidad</mat-label>
+            <input type="number" formControlName="amount" class="amount" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'tag']"></fa-icon>
+            </span>
+            <mat-label>Categoria</mat-label>
+            <input matInput [matAutocomplete]="autoCategory" formControlName="category">
+            <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayFn" (optionSelected)="categorySelected($event)">
+                <mat-option class="autocomplete-option" *ngFor="let category of filteredCategories | async" [value]="category">
+                    <div class="element-circle" [ngStyle]="{'background-color':category.color}">
+                        <fa-icon [icon]="['fas', category.image]"></fa-icon>
+                    </div>
+                    <span>{{category.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
+            <mat-label>Subcategoria</mat-label>
+            <input matInput [matAutocomplete]="autoSubcategory" formControlName="subcategory">
+            <mat-autocomplete #autoSubcategory="matAutocomplete">
+                <mat-option class="autocomplete-option" *ngFor="let subcategory of filteredSubcategories | async"
+                    [value]="subcategory">
+                    <span>{{subcategory}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button [disabled]="!form.dirty || form.invalid" color="ok-button" (click)="save()">GUARDAR</button>
+</div>

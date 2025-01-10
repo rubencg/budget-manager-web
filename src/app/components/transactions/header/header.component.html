@@ -15,7 +15,7 @@
             <button *ngIf="displayFeatures['AddIncome']" mat-menu-item (click)="createIncomeDialog()">Agregar ingreso</button>
             <button *ngIf="displayFeatures['AddExpense']" mat-menu-item (click)="createExpenseDialog()">Agregar gasto</button>
             <button *ngIf="displayFeatures['AddTransfer']" mat-menu-item (click)="createTransferDialog()">Agregar transferencia</button>
-            <button *ngIf="displayFeatures['AddPlannedExpense']" mat-menu-item (click)="createTransferDialog()">Agregar gasto planeado</button>
+            <button *ngIf="displayFeatures['AddPlannedExpense']" mat-menu-item (click)="createPlannedSpendingDialog()">Agregar gasto planeado</button>
         </mat-menu>
         <div *ngIf="displayFeatures['FilterButton']" class="header-button" (click)="createFilterDialog()" matTooltip="Filtrar transacciones">
             <fa-icon [icon]="['fas', 'filter']"></fa-icon>

@@ -72,6 +72,7 @@ import { BaseTableComponent } from './transactions/base-table/base-table.compone
 import { MatCardModule } from '@angular/material/card';
 import { SpendingPlannedExpensesComponent } from './spending-plan/spending-planned-expenses/spending-planned-expenses.component';
 import { RemainingProgressComponent } from './spending-plan/spending-planned-expenses/remaining-progress/remaining-progress.component';
+import { PlannedExpenseComponent } from './transactions/dialogs/planned-spending/planned-expense.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { RemainingProgressComponent } from './spending-plan/spending-planned-exp
     SpSummaryComponent,
     BaseTableComponent,
     SpendingPlannedExpensesComponent,
-    RemainingProgressComponent
+    RemainingProgressComponent,
+    PlannedExpenseComponent
   ],
   exports: [
     NavbarComponent,

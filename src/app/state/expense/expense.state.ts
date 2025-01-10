@@ -268,7 +268,6 @@ export class ExpenseState {
     let plannedExpense: PlannedExpense = {
       name: action.payload.name,
       totalAmount: action.payload.totalAmount,
-      remainingAmount: action.payload.remainingAmount,
       category: {
         image: action.payload.category.image,
         name: action.payload.category.name,

@@ -5,6 +5,5 @@ export interface PlannedExpense {
     totalAmount: number,
     category: Category,
     subCategory?: string,
-    remainingAmount?: number,
     key?: string,
 }

@@ -23,8 +23,11 @@ import {
   ExpenseComponent,
   FiltersComponent,
   IncomeComponent,
+  PlannedExpenseComponent,
   TransferComponent,
 } from '../dialogs';
+import { PlannedExpense } from 'src/app/planned-expense';
+import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
 
 export enum HeaderFeatures {
   SearchButton = 'SearchButton',
@@ -164,6 +167,21 @@ export class HeaderComponent implements OnInit {
             new ExpenseActions.SaveExpenseTransaction(expenseTransaction)
           );
         }
+      }
+    });
+  }
+
+  createPlannedSpendingDialog() {
+    const dialogRef = this.dialog.open(PlannedExpenseComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((plannedExpense: PlannedExpense) => {
+      if (plannedExpense) {
+        this.store.dispatch(
+          new PlannedExpenseActions.SavePlannedExpense(plannedExpense)
+        );
       }
     });
   }
