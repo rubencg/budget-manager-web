@@ -9,6 +9,12 @@
             <input formControlName="name" matInput>
         </mat-form-field>
         <mat-form-field appearance="fill">
+            <mat-label>Fecha</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
             <span matPrefix class="prefixIcon">
                 <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
             </span>
@@ -43,6 +49,9 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
+        <mat-slide-toggle formControlName="isRecurring">
+            {{ form.get('isRecurring').value ? 'Recurrente' : 'No recurrente' }}
+        </mat-slide-toggle>
     </form>
 </div>
 <div mat-dialog-actions class="buttons-box">

@@ -85,6 +85,10 @@ export class PlannedExpenseComponent implements OnInit {
   subcategoryCtrl = new FormControl('');
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
+    date: new FormControl(new Date(),[
+      Validators.required
+    ]),
+    isRecurring: new FormControl(false),
     amount: new FormControl('', [Validators.required]),
     category: this.categoryCtrl,
     subcategory: this.subcategoryCtrl,
@@ -94,6 +98,8 @@ export class PlannedExpenseComponent implements OnInit {
     let plannedExpense: PlannedExpense = {
       totalAmount: this.form.get('amount').value,
       name: this.form.get('name').value,
+      date: this.form.get('date').value,
+      isRecurring: this.form.get('isRecurring').value,
       category: this.form.get('category').value,
       subCategory: this.form.get('subcategory').value,
     };

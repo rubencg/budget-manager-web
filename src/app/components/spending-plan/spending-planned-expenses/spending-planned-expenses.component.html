@@ -2,6 +2,7 @@
   <mat-card *ngFor="let expense of plannedExpenses" class="expense-card">
     <mat-card-title>
       {{ expense.name }}
+      <fa-icon *ngIf="expense.isRecurring" class="recurring-icon" [icon]="['fas', 'redo-alt']"></fa-icon>
     </mat-card-title>
     <mat-card-subtitle>
       Categoria: {{ getCategoryText(expense) }}

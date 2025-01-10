@@ -267,6 +267,8 @@ export class ExpenseState {
 
     let plannedExpense: PlannedExpense = {
       name: action.payload.name,
+      date: action.payload.date,
+      isRecurring: action.payload.isRecurring,
       totalAmount: action.payload.totalAmount,
       category: {
         image: action.payload.category.image,
