@@ -12,15 +12,7 @@
         {{ expense.totalAmount - getSpentAmount(expense) | currency }} restante
       </div>
       <!-- Agregar la barra de cuanto se ha gastado -->
-      <mat-progress-bar
-      mode="determinate"
-      color="primary"
-      [value]="getSpentPercentage(expense)"
-      ></mat-progress-bar>
-      <div class="total">
-        <span>{{ getSpentAmount(expense) | currency }} gastado</span>
-        <span>de {{ expense.totalAmount | currency }}</span>
-      </div>
+      <remaining-progress [plannedExpense]="expense" [expenses]="expenses"></remaining-progress>
     </mat-card-content>
   </mat-card>
 </div>

@@ -71,6 +71,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BaseTableComponent } from './transactions/base-table/base-table.component';
 import { MatCardModule } from '@angular/material/card';
 import { SpendingPlannedExpensesComponent } from './spending-plan/spending-planned-expenses/spending-planned-expenses.component';
+import { RemainingProgressComponent } from './spending-plan/spending-planned-expenses/remaining-progress/remaining-progress.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { SpendingPlannedExpensesComponent } from './spending-plan/spending-plann
     TransactionMobileComponent,
     SpSummaryComponent,
     BaseTableComponent,
-    SpendingPlannedExpensesComponent
+    SpendingPlannedExpensesComponent,
+    RemainingProgressComponent
   ],
   exports: [
     NavbarComponent,
