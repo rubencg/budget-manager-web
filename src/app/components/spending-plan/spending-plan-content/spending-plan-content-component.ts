@@ -30,7 +30,6 @@ export class SpendingPlanContentComponent implements OnInit {
   plannedExpenses: PlannedExpense[];
   plannedExpensesSum: number;
   expensesForTheMonth: Transaction[];
-  // TODO: Get current date from control
   currentDate: Date = new Date();
   headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
     [HeaderFeatures.SearchButton]: false,
@@ -106,9 +105,10 @@ export class SpendingPlanContentComponent implements OnInit {
       });
     });
     this.plannedExpenses$ = this.store.select(
-      ExpenseState.selectPlannedExpenses()
+      ExpenseState.selectPlannedExpensesForMonth(date)
     );
     this.plannedExpenses$.subscribe((plannedExpenses: PlannedExpense[]) => {
+      if (plannedExpenses == undefined) return;
       this.plannedExpenses = plannedExpenses;
       this.plannedExpensesSum = plannedExpenses.reduce((acc, cur) => acc + cur.totalAmount, 0);
     });
