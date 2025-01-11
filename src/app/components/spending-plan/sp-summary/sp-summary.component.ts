@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngxs/store';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
@@ -9,9 +10,9 @@ import { Transaction } from 'src/app/models';
   styleUrls: ['./sp-summary.component.scss'],
 })
 export class SpSummaryComponent implements OnInit {
-  @Input() incomeTransactions: Transaction[];
+  @Input() incomeTransactions = new MatTableDataSource<Transaction>();
   @Input() incomesSum: number;
-  @Input() expenseTransactions: Transaction[];
+  @Input() expenseTransactions = new MatTableDataSource<Transaction>();
   @Input() expensesSum: number;
 
   displayedColumns: string[];

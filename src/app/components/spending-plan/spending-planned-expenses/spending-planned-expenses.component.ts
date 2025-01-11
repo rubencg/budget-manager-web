@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
 import { PlannedExpense } from 'src/app/planned-expense';
@@ -11,13 +11,14 @@ import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.act
 import { getCategoryTextForPlannedExpense } from 'src/app/utils';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-spending-planned-expenses',
   templateUrl: './spending-planned-expenses.component.html',
   styleUrls: ['./spending-planned-expenses.component.scss'],
 })
-export class SpendingPlannedExpensesComponent implements OnChanges {
+export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewInit {
   constructor(
     private dialog: MatDialog,
     public store: Store,
@@ -36,21 +37,38 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
         ];
   }
 
+  ngAfterViewInit(): void {
+    this.setCurrentTransactionsSource();
+  }
+
   @Input() plannedExpenses: PlannedExpense[];
   @Input() expensesByCategory: Map<string, Expense[]> = new Map();
+  currentTransactionsSource = new MatTableDataSource<Transaction>();
   displayedColumns: string[];
-  filteredExpenses: Transaction[] = [];
+  allExpenses: Transaction[] = [];
   selectedCategory: string = '';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expensesByCategory']) {
       const eByCat: Map<string, Transaction[]> = changes['expensesByCategory']
         .currentValue as unknown as Map<string, Transaction[]>;
-      this.filteredExpenses = [];
+      this.allExpenses = [];
       for (const expensesArray of eByCat.values()) {
-        this.filteredExpenses.push(...expensesArray);
+        this.allExpenses.push(...expensesArray);
       }
+
+      this.setCurrentTransactionsSource();
     }
+  }
+
+  private setCurrentTransactionsSource(): void {
+    this.currentTransactionsSource = new MatTableDataSource<Transaction>(
+      ((this.selectedCategory == ''
+        ? this.allExpenses
+        : this.expensesByCategory.get(
+            this.selectedCategory
+          )) as unknown as Transaction[]) ?? []
+    )
   }
 
   getAmountLeft(plannedExpense: PlannedExpense): number {
@@ -118,16 +136,6 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
     });
   }
 
-  get currentTransactions(): Transaction[] {
-    return (
-      ((this.selectedCategory == ''
-        ? this.filteredExpenses
-        : this.expensesByCategory.get(
-            this.selectedCategory
-          )) as unknown as Transaction[]) ?? []
-    );
-  }
-
   getFilterButtonText(plannedExpense: PlannedExpense): string {
     return this.selectedCategory ==
       getCategoryTextForPlannedExpense(plannedExpense)
@@ -142,5 +150,7 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
     } else {
       this.selectedCategory = category;
     }
+
+    this.setCurrentTransactionsSource();
   }
 }

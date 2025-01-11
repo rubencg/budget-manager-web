@@ -11,6 +11,7 @@ import {
   getCategoryTextForPlannedExpense,
   isExpenseInPlannedExpense,
 } from 'src/app/utils';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -18,17 +19,17 @@ import {
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  selectedSection: string = 'planned'; // Variable para controlar el contenido
+  selectedSection: string = 'income'; // Variable para controlar el contenido
 
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
-  allIncomes: Transaction[];
+  allIncomesSource = new MatTableDataSource<Transaction>();
   incomesSum: number = 0;
   // Expenses
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
-  allExpenses: Transaction[];
+  allExpensesSource = new MatTableDataSource<Transaction>();
   expensesSum: number = 0;
   // Planned expenes
   plannedExpenses$: Observable<PlannedExpense[]>;
@@ -65,8 +66,9 @@ export class SpendingPlanContentComponent implements OnInit {
       this.monthlyIncomes$
         .pipe(delay(0))
         .subscribe((monthlyIncomes: Transaction[]) => {
-          this.allIncomes = monthlyIncomes.concat(incomes);
-          this.incomesSum = this.allIncomes.reduce(
+          let allIncomes = monthlyIncomes.concat(incomes)
+          this.allIncomesSource = new MatTableDataSource<Transaction>(allIncomes);
+          this.incomesSum = allIncomes.reduce(
             (acc, cur) => acc + cur.amount,
             0
           );
@@ -124,12 +126,12 @@ export class SpendingPlanContentComponent implements OnInit {
             });
 
           // Used in sp-summary-component
-          this.allExpenses = monthlyExpenses;
+          this.allExpensesSource = new MatTableDataSource<Transaction>(monthlyExpenses);
           // Mark monthly expenses as applied
           expenses
             .filter((expense) => expense.monthlyKey)
             .forEach((expense) => {
-              this.allExpenses
+              monthlyExpenses
                 .filter((exp) => exp.key == expense.monthlyKey)
                 .forEach((exp) => {
                   exp.applied = true;
