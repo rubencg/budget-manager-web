@@ -9,7 +9,7 @@ import {
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
-import { isExpenseInPlannedExpense } from 'src/app/utils';
+import { getCategoryTextForPlannedExpense, isExpenseInPlannedExpense } from 'src/app/utils';
 
 @Component({
   selector: 'app-spending-planned-expenses',
@@ -50,14 +50,7 @@ export class SpendingPlannedExpensesComponent implements OnInit {
   }
 
   getCategoryText(plannedExpense: PlannedExpense): string {
-    let subCategory =
-      plannedExpense.subCategory == null ||
-      plannedExpense.subCategory == undefined ||
-      plannedExpense.subCategory == ''
-        ? ''
-        : ` - ${plannedExpense.subCategory}`;
-
-    return `${plannedExpense.category.name}${subCategory}`;
+    return getCategoryTextForPlannedExpense(plannedExpense);
   }
 
   delete(plannedExpense: PlannedExpense): void {

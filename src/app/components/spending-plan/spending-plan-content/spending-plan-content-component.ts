@@ -7,6 +7,7 @@ import { PlannedExpense } from 'src/app/planned-expense';
 import { IncomeState, ExpenseState } from 'src/app/state';
 import { HeaderFeatures } from '../../transactions/header/header.component';
 import { Expense } from 'src/app/expense';
+import { getCategoryTextForPlannedExpense, isExpenseInPlannedExpense } from 'src/app/utils';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -31,7 +32,8 @@ export class SpendingPlanContentComponent implements OnInit {
   plannedExpenses: PlannedExpense[];
   plannedExpensesSum: number;
   expensesForTheMonth: Transaction[];
-  expensesByCategory: Record<string, Expense[]>;
+  expensesByCategory: Map<string, Expense[]> = new Map();
+  expensesSumByCategory: Map<string, number> = new Map();
   currentDate: Date = new Date();
   headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
     [HeaderFeatures.SearchButton]: false,
@@ -80,6 +82,9 @@ export class SpendingPlanContentComponent implements OnInit {
     this.expenses$ = this.store.select(
       ExpenseState.selectTransactionsForMonth(date)
     );
+    this.plannedExpenses$ = this.store.select(
+      ExpenseState.selectPlannedExpensesForMonth(date)
+    );
     this.expenses$.subscribe((expenses: Transaction[]) => {
       this.monthlyExpenses$
       .pipe(delay(0))
@@ -88,6 +93,20 @@ export class SpendingPlanContentComponent implements OnInit {
         this.expensesForTheMonth = expenses.filter(
           (t) => t.type == TransactionTypes.Expense
         );
+        this.plannedExpenses$.pipe(delay(0)).subscribe((plannedExpenses: PlannedExpense[]) => {
+          if (plannedExpenses == undefined) return;
+    
+          plannedExpenses
+            .forEach((plannedExpense) => {
+              let category = getCategoryTextForPlannedExpense(plannedExpense);
+              let filteredExpenses = this.expensesForTheMonth.filter(e => isExpenseInPlannedExpense(plannedExpense, e)) as unknown as Expense[]
+              this.expensesByCategory.set(category, filteredExpenses)
+              this.expensesSumByCategory.set(category, filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0))
+            }
+          )
+          this.plannedExpenses = plannedExpenses;
+          this.plannedExpensesSum = plannedExpenses.reduce((acc, cur) => acc + Math.max(cur.totalAmount, this.expensesSumByCategory.get(getCategoryTextForPlannedExpense(cur))), 0);
+        });
         
         // Used in sp-summary-component
         this.allExpenses = monthlyExpenses;
@@ -105,14 +124,6 @@ export class SpendingPlanContentComponent implements OnInit {
         this.expensesSum =
         -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
       });
-    });
-    this.plannedExpenses$ = this.store.select(
-      ExpenseState.selectPlannedExpensesForMonth(date)
-    );
-    this.plannedExpenses$.subscribe((plannedExpenses: PlannedExpense[]) => {
-      if (plannedExpenses == undefined) return;
-      this.plannedExpenses = plannedExpenses;
-      this.plannedExpensesSum = plannedExpenses.reduce((acc, cur) => acc + cur.totalAmount, 0);
     });
   }
 
