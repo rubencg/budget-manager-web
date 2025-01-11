@@ -40,6 +40,7 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
   @Input() expensesByCategory: Map<string, Expense[]> = new Map();
   displayedColumns: string[];
   filteredExpenses: Transaction[] = [];
+  selectedCategory: string = '';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expensesByCategory']) {
@@ -115,5 +116,31 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
         );
       }
     });
+  }
+
+  get currentTransactions(): Transaction[] {
+    return (
+      ((this.selectedCategory == ''
+        ? this.filteredExpenses
+        : this.expensesByCategory.get(
+            this.selectedCategory
+          )) as unknown as Transaction[]) ?? []
+    );
+  }
+
+  getFilterButtonText(plannedExpense: PlannedExpense): string {
+    return this.selectedCategory ==
+      getCategoryTextForPlannedExpense(plannedExpense)
+      ? 'Borrar filtro'
+      : 'Filtrar solo estos';
+  }
+
+  filterTransactions(plannedExpense: PlannedExpense): void {
+    let category = getCategoryTextForPlannedExpense(plannedExpense);
+    if (this.selectedCategory == category) {
+      this.selectedCategory = '';
+    } else {
+      this.selectedCategory = category;
+    }
   }
 }

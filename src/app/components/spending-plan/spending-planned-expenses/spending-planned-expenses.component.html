@@ -12,7 +12,7 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="modify(expense)">Modificar</button>
           <button mat-menu-item (click)="delete(expense)">Eliminar</button>
-          <button mat-menu-item (click)="delete(expense)">Filtrar solo estos</button>
+          <button mat-menu-item (click)="filterTransactions(expense)">{{ getFilterButtonText(expense) }}</button>
         </mat-menu>
       </div>
     </mat-card-title>
@@ -35,4 +35,4 @@
 </div>
 
 <!-- Tabla con los gastos -->
-<app-base-table [displayedColumns]="displayedColumns" [dataSource]="filteredExpenses"></app-base-table>
+<app-base-table [displayedColumns]="displayedColumns" [dataSource]="currentTransactions"></app-base-table>
