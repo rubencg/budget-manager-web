@@ -1,31 +1,36 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Transaction } from 'src/app/models';
+import { Expense } from 'src/app/expense';
 import { PlannedExpense } from 'src/app/planned-expense';
-import { isExpenseInPlannedExpense } from 'src/app/utils';
+import {
+  getCategoryTextForPlannedExpense,
+  isExpenseInPlannedExpense,
+} from 'src/app/utils';
 
 @Component({
   selector: 'remaining-progress',
   templateUrl: './remaining-progress.component.html',
-  styleUrls: ['./remaining-progress.component.scss']
+  styleUrls: ['./remaining-progress.component.scss'],
 })
 export class RemainingProgressComponent implements OnInit {
-  @Input() plannedExpense: PlannedExpense
-  @Input() expenses: Transaction[]
+  @Input() plannedExpense: PlannedExpense;
+  @Input() expensesByCategory: Map<string, Expense[]> = new Map();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   get spentAmount(): number {
-    if (this.expenses == undefined) return 0
-    
-    let expensesForPlannedExpense = this.expenses.filter((e) =>
-      isExpenseInPlannedExpense(this.plannedExpense, e)
-    );
+    const category = getCategoryTextForPlannedExpense(this.plannedExpense);
 
-    return expensesForPlannedExpense.reduce((acc, cur) => acc + cur.amount, 0);
+    if (
+      this.expensesByCategory == undefined ||
+      !this.expensesByCategory.has(category)
+    )
+      return 0;
+
+    return this.expensesByCategory
+      .get(category)
+      .reduce((acc, cur) => acc + cur.amount, 0);
   }
 
   get spentPercentage() {

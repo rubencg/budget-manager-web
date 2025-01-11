@@ -29,7 +29,7 @@
         {{ getAmountLeft(expense) | currency }} {{ getLeftText(expense) }}
       </div>
       <!-- Grafica del restante -->
-      <remaining-progress [plannedExpense]="expense" [expenses]="expenses"></remaining-progress>
+      <remaining-progress [plannedExpense]="expense" [expensesByCategory]="expensesByCategory"></remaining-progress>
     </mat-card-content>
   </mat-card>
 </div>

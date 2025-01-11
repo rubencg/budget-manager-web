@@ -1,7 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
-import { Transaction } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
 import {
   ConfirmationDialogComponent,
@@ -9,11 +8,9 @@ import {
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
-import {
-  getCategoryTextForPlannedExpense,
-  isExpenseInPlannedExpense,
-} from 'src/app/utils';
+import { getCategoryTextForPlannedExpense } from 'src/app/utils';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Transaction } from 'src/app/models';
 
 @Component({
   selector: 'app-spending-planned-expenses',
@@ -40,14 +37,18 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
   }
 
   @Input() plannedExpenses: PlannedExpense[];
-  @Input() expenses: Transaction[];
-  expensesAmountByCategoryMap: Map<string, Expense[]>;
+  @Input() expensesByCategory: Map<string, Expense[]> = new Map();
   displayedColumns: string[];
-  filteredExpenses: Transaction[];
+  filteredExpenses: Transaction[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['expenses'] && changes['expenses'].currentValue) {
-      this.filteredExpenses = this.expenses;
+    if (changes['expensesByCategory']) {
+      const eByCat: Map<string, Transaction[]> = changes['expensesByCategory']
+        .currentValue as unknown as Map<string, Transaction[]>;
+      this.filteredExpenses = [];
+      for (const expensesArray of eByCat.values()) {
+        this.filteredExpenses.push(...expensesArray);
+      }
     }
   }
 
@@ -66,13 +67,17 @@ export class SpendingPlannedExpensesComponent implements OnChanges {
   }
 
   getSpentAmount(plannedExpense: PlannedExpense): number {
-    if (this.expenses == undefined) return 0;
+    const category = getCategoryTextForPlannedExpense(plannedExpense);
 
-    let expensesForPlannedExpense = this.expenses.filter((e) =>
-      isExpenseInPlannedExpense(plannedExpense, e)
-    );
+    if (
+      this.expensesByCategory == undefined ||
+      !this.expensesByCategory.has(category)
+    )
+      return 0;
 
-    return expensesForPlannedExpense.reduce((acc, cur) => acc + cur.amount, 0);
+    return this.expensesByCategory
+      .get(category)
+      .reduce((acc, cur) => acc + cur.amount, 0);
   }
 
   getCategoryText(plannedExpense: PlannedExpense): string {
