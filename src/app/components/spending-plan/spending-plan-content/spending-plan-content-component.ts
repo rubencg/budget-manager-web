@@ -6,6 +6,7 @@ import { Transaction, TransactionTypes } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
 import { IncomeState, ExpenseState } from 'src/app/state';
 import { HeaderFeatures } from '../../transactions/header/header.component';
+import { Expense } from 'src/app/expense';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -30,6 +31,7 @@ export class SpendingPlanContentComponent implements OnInit {
   plannedExpenses: PlannedExpense[];
   plannedExpensesSum: number;
   expensesForTheMonth: Transaction[];
+  expensesByCategory: Record<string, Expense[]>;
   currentDate: Date = new Date();
   headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
     [HeaderFeatures.SearchButton]: false,

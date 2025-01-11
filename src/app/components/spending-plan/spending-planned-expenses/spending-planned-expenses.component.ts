@@ -3,9 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
 import { Transaction } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
-import { ConfirmationDialogComponent, PlannedExpenseComponent } from '../../transactions/dialogs';
+import {
+  ConfirmationDialogComponent,
+  PlannedExpenseComponent,
+} from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
+import { isExpenseInPlannedExpense } from 'src/app/utils';
 
 @Component({
   selector: 'app-spending-planned-expenses',
@@ -26,21 +30,20 @@ export class SpendingPlannedExpensesComponent implements OnInit {
   }
 
   getPercentageLeft(plannedExpense: PlannedExpense): number {
-    return (this.getSpentAmount(plannedExpense) / plannedExpense.totalAmount) * 100;
+    return (
+      (this.getSpentAmount(plannedExpense) / plannedExpense.totalAmount) * 100
+    );
   }
-  
+
   getLeftText(plannedExpense: PlannedExpense): string {
-    return this.getAmountLeft(plannedExpense) < 0 ? "sobrepasado" : "restante";
+    return this.getAmountLeft(plannedExpense) < 0 ? 'sobrepasado' : 'restante';
   }
 
   getSpentAmount(plannedExpense: PlannedExpense): number {
     if (this.expenses == undefined) return 0;
 
-    let expensesForPlannedExpense = this.expenses.filter(
-      (e) =>
-        e.category.name == plannedExpense.category.name &&
-        (plannedExpense.subCategory == null ||
-          plannedExpense.subCategory == e.subcategory)
+    let expensesForPlannedExpense = this.expenses.filter((e) =>
+      isExpenseInPlannedExpense(plannedExpense, e)
     );
 
     return expensesForPlannedExpense.reduce((acc, cur) => acc + cur.amount, 0);
@@ -80,7 +83,7 @@ export class SpendingPlannedExpensesComponent implements OnInit {
       maxWidth: '600px',
       width: 'calc(100% - 64px)',
     });
-    
+
     dialogRef.afterClosed().subscribe((plannedExpense: PlannedExpense) => {
       if (plannedExpense) {
         this.store.dispatch(

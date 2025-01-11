@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Transaction } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
+import { isExpenseInPlannedExpense } from 'src/app/utils';
 
 @Component({
   selector: 'remaining-progress',
@@ -20,12 +21,9 @@ export class RemainingProgressComponent implements OnInit {
   get spentAmount(): number {
     if (this.expenses == undefined) return 0
     
-    let expensesForPlannedExpense = this.expenses.filter(
-      (e) =>
-        e.category.name == this.plannedExpense.category.name &&
-        (this.plannedExpense.subCategory == null ||
-          this.plannedExpense.subCategory == e.subcategory)
-    )
+    let expensesForPlannedExpense = this.expenses.filter((e) =>
+      isExpenseInPlannedExpense(this.plannedExpense, e)
+    );
 
     return expensesForPlannedExpense.reduce((acc, cur) => acc + cur.amount, 0);
   }
