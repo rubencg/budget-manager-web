@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
 import { Transaction } from 'src/app/models';
@@ -9,21 +9,47 @@ import {
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
-import { getCategoryTextForPlannedExpense, isExpenseInPlannedExpense } from 'src/app/utils';
+import {
+  getCategoryTextForPlannedExpense,
+  isExpenseInPlannedExpense,
+} from 'src/app/utils';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-spending-planned-expenses',
   templateUrl: './spending-planned-expenses.component.html',
   styleUrls: ['./spending-planned-expenses.component.scss'],
 })
-export class SpendingPlannedExpensesComponent implements OnInit {
-  constructor(private dialog: MatDialog, public store: Store) {}
+export class SpendingPlannedExpensesComponent implements OnChanges {
+  constructor(
+    private dialog: MatDialog,
+    public store: Store,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.displayedColumns = this.deviceService.isMobile()
+      ? ['transaction-content']
+      : [
+          'date',
+          'category',
+          'account',
+          'amount',
+          'notes',
+          'applied',
+          'actions',
+        ];
+  }
 
   @Input() plannedExpenses: PlannedExpense[];
   @Input() expenses: Transaction[];
   expensesAmountByCategoryMap: Map<string, Expense[]>;
+  displayedColumns: string[];
+  filteredExpenses: Transaction[];
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['expenses'] && changes['expenses'].currentValue) {
+      this.filteredExpenses = this.expenses;
+    }
+  }
 
   getAmountLeft(plannedExpense: PlannedExpense): number {
     return plannedExpense.totalAmount - this.getSpentAmount(plannedExpense);

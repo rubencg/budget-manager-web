@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 
 @Component({
@@ -13,20 +14,24 @@ export class SpSummaryComponent implements OnInit {
   @Input() expenseTransactions: Transaction[];
   @Input() expensesSum: number;
 
-  displayedColumns: string[] = [
-    'date',
-    'category',
-    'account',
-    'amount',
-    'notes',
-    'applied',
-    'actions',
-  ];
+  displayedColumns: string[];
 
-  constructor(public store: Store) {}
-
-  ngOnInit(): void {
-    
+  constructor(
+    public store: Store,
+    private deviceService: DeviceDetectorService
+  ) {
+    this.displayedColumns = this.deviceService.isMobile()
+      ? ['transaction-content']
+      : [
+          'date',
+          'category',
+          'account',
+          'amount',
+          'notes',
+          'applied',
+          'actions',
+        ];
   }
 
+  ngOnInit(): void {}
 }
