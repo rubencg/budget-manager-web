@@ -15,7 +15,18 @@
 .amount-left {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.ok-amount { 
   color: $income-color;
+}
+
+.almost-amount { 
+  color: $not-applied-expense;
+}
+
+.over-amount { 
+  color: $expense-color;
 }
 
 .recurring-icon {

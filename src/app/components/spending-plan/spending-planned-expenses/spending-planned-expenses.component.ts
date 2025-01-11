@@ -21,6 +21,18 @@ export class SpendingPlannedExpensesComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  getAmountLeft(plannedExpense: PlannedExpense): number {
+    return plannedExpense.totalAmount - this.getSpentAmount(plannedExpense);
+  }
+
+  getPercentageLeft(plannedExpense: PlannedExpense): number {
+    return (this.getSpentAmount(plannedExpense) / plannedExpense.totalAmount) * 100;
+  }
+  
+  getLeftText(plannedExpense: PlannedExpense): string {
+    return this.getAmountLeft(plannedExpense) < 0 ? "sobrepasado" : "restante";
+  }
+
   getSpentAmount(plannedExpense: PlannedExpense): number {
     if (this.expenses == undefined) return 0;
 

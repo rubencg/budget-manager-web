@@ -20,8 +20,12 @@
     </mat-card-subtitle>
 
     <mat-card-content>
-      <div class="amount-left">
-        {{ expense.totalAmount - getSpentAmount(expense) | currency }} restante
+      <div class="amount-left" [ngClass]="{
+        'ok-amount': getPercentageLeft(expense) <= 90,
+        'almost-amount': getPercentageLeft(expense) > 90 && getPercentageLeft(expense) <= 100,
+        'over-amount': getPercentageLeft(expense) > 100
+      }">
+        {{ getAmountLeft(expense) | currency }} {{ getLeftText(expense) }}
       </div>
       <!-- Agregar la barra de cuanto se ha gastado -->
       <remaining-progress [plannedExpense]="expense" [expenses]="expenses"></remaining-progress>
