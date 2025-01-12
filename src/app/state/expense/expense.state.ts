@@ -125,6 +125,7 @@ export class ExpenseState {
         if (includeApplied || !filteredExpense) {
           monthlyExpenseTransactions.push({
             amount: monthlyExpense.amount,
+            appliedAmount: filteredExpense?.amount,
             date: new Date(
               date.getFullYear(),
               date.getMonth(),

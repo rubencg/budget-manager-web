@@ -127,12 +127,16 @@ export class BaseTableComponent implements OnChanges {
     }
   }
 
+  getAmountOrAppliedAmount(transaction: Transaction): number {
+    return transaction.appliedAmount ?? transaction.amount;
+  }
+
   getAmountClassByType(transaction: Transaction) {
     switch (transaction.type) {
       case TransactionTypes.Expense:
         return transaction.applied ? 'expense-amount' : 'not-applied-amount';
       case TransactionTypes.MonthlyExpense:
-        return 'not-applied-amount';
+        return transaction.applied ? 'expense-amount' : 'not-applied-amount';
       case TransactionTypes.Transfer:
         return 'transfer-amount';
       case TransactionTypes.Income:

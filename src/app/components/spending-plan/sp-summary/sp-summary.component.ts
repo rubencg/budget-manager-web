@@ -31,7 +31,7 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
           'date',
           'category',
           'account',
-          'amount',
+          'amount-applied',
           'notes',
           'applied',
           'actions',

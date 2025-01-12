@@ -9,6 +9,7 @@ export interface Transaction {
   key?: string;
   subcategory?: string;
   amount: number;
+  appliedAmount?: number;
   date: Date;
   category?: Category;
   account?: Account;

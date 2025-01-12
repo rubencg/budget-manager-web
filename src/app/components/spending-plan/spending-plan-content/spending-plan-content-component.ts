@@ -152,7 +152,7 @@ export class SpendingPlanContentComponent implements OnInit {
             });
 
           this.expensesSum =
-            -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+            -1 * monthlyExpenses.reduce((acc, cur) => acc + (cur.appliedAmount ?? cur.amount), 0);
         });
     });
   }
