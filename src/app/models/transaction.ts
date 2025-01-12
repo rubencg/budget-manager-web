@@ -20,4 +20,5 @@ export interface Transaction {
   monthlyKey?: string;
   recurringTimes?: number;
   recurringType?: RecurringTypes;
+  removeFromSpendingPlan?: Boolean;
 }

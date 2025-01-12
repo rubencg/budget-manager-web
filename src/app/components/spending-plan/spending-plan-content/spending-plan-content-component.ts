@@ -132,6 +132,8 @@ export class SpendingPlanContentComponent implements OnInit {
               this.otherExpenses = this.expensesForTheMonth.filter(
                 (expense) =>
                   !allPlannedExpenses.some((e) => e.key === expense.key)
+                  && !expense.removeFromSpendingPlan
+                  && !expense.monthlyKey
               ) as unknown as Expense[];
               this.otherExpensesSum = -1 * this.otherExpenses.reduce((acc, cur) => acc + cur.amount, 0);
             });

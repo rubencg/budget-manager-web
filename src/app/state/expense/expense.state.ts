@@ -191,6 +191,7 @@ export class ExpenseState {
             key: t.key,
             notes: t.notes,
             monthlyKey: t.monthlyKey,
+            removeFromSpendingPlan: t.removeFromSpendingPlan,
           });
         });
         context.dispatch(new ExpenseActions.GetSuccess(expenses));
@@ -214,6 +215,7 @@ export class ExpenseState {
       account: expense.fromAccount,
       subcategory: expense.subCategory,
       monthlyKey: expense.monthlyKey,
+      removeFromSpendingPlan: expense.removeFromSpendingPlan,
       key: expense.key,
       notes: expense.notes,
       type: TransactionTypes.Expense,
@@ -245,6 +247,7 @@ export class ExpenseState {
       fromAccount: transaction.account,
       key: transaction.monthlyKey ? null : transaction.key,
       monthlyKey: transaction.monthlyKey ? transaction.monthlyKey : null,
+      removeFromSpendingPlan: transaction.removeFromSpendingPlan
     };
   }
 
