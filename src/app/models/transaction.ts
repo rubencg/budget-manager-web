@@ -9,6 +9,7 @@ export interface Transaction {
   key?: string;
   subcategory?: string;
   amount: number;
+  appliedAmount?: number;
   date: Date;
   category?: Category;
   account?: Account;
@@ -20,4 +21,5 @@ export interface Transaction {
   monthlyKey?: string;
   recurringTimes?: number;
   recurringType?: RecurringTypes;
+  removeFromSpendingPlan?: Boolean;
 }

@@ -67,6 +67,9 @@
             <mat-label>Notas</mat-label>
             <input matInput formControlName="notes">
         </mat-form-field>
+        <mat-slide-toggle class="applied-input" formControlName="removeFromSpendingPlan">
+            {{ form.get('removeFromSpendingPlan').value ? 'Quitar de gastos planeados' : 'No quitar de gastos planeados' }}
+        </mat-slide-toggle>
         <show-more *ngIf="showMoreEnabled" [parentForm]="form"></show-more>
     </form>
 </div>

@@ -1,0 +1,27 @@
+<div class="pie-chart">
+  <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+      [colors]="barChartColors" [options]="options">
+  </canvas>
+</div>
+<div>
+  <mat-list>
+    <mat-list-item>
+      <span matLine>
+        <span class="legend-color spent"></span>
+        Gastos planeados
+      </span>
+    </mat-list-item>
+    <mat-list-item>
+      <span matLine>
+        <span class="legend-color other"></span>
+        Otros
+      </span>
+    </mat-list-item>
+    <mat-list-item>
+      <span matLine>
+        <span class="legend-color available"></span>
+        Disponible
+      </span>
+    </mat-list-item>
+  </mat-list>  
+</div>

@@ -92,6 +92,7 @@ export class ExpenseComponent implements OnInit {
         account: transaction.account,
         applied: transaction.applied,
         subcategory: transaction.subcategory,
+        removeFromSpendingPlan: transaction.removeFromSpendingPlan,
       })
     }
   }
@@ -137,6 +138,7 @@ export class ExpenseComponent implements OnInit {
     subcategory: this.subcategoryCtrl,
     account: this.accountCtrl,
     applied: new FormControl(true),
+    removeFromSpendingPlan: new FormControl(false),
     amount: new FormControl('', [
       Validators.required
     ]),
@@ -162,6 +164,7 @@ export class ExpenseComponent implements OnInit {
       isRecurring: this.form.get('repeat').value,
       recurringTimes: this.form.get('times').value,
       recurringType: this.form.get('recurrence').value,
+      removeFromSpendingPlan: this.form.get('removeFromSpendingPlan').value,
     }
 
     this.dialogRef.close(transaction);

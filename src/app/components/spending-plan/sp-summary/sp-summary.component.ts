@@ -1,6 +1,11 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngxs/store';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 
@@ -19,29 +24,32 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
 
   displayedColumns: string[];
 
-  constructor(
-    public store: Store,
-    private deviceService: DeviceDetectorService
-  ) {
+  constructor(private deviceService: DeviceDetectorService) {
     this.displayedColumns = this.deviceService.isMobile()
       ? ['transaction-content']
       : [
           'date',
           'category',
           'account',
-          'amount',
+          'amount-applied',
           'notes',
           'applied',
           'actions',
         ];
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['incomeTransactions'] && changes['incomeTransactions'].currentValue)  {
-      this.incomeTransactions = changes['incomeTransactions'].currentValue
+    if (
+      changes['incomeTransactions'] &&
+      changes['incomeTransactions'].currentValue
+    ) {
+      this.incomeTransactions = changes['incomeTransactions'].currentValue;
       this.setIncomeSource();
     }
-    if (changes['expenseTransactions'] && changes['expenseTransactions'].currentValue)  {
-      this.expenseTransactions = changes['expenseTransactions'].currentValue
+    if (
+      changes['expenseTransactions'] &&
+      changes['expenseTransactions'].currentValue
+    ) {
+      this.expenseTransactions = changes['expenseTransactions'].currentValue;
       this.setExpenseSource();
     }
   }
@@ -52,10 +60,14 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
   }
 
   setIncomeSource() {
-    this.incomeTransactionsSource = new MatTableDataSource<Transaction>(this.incomeTransactions);
+    this.incomeTransactionsSource = new MatTableDataSource<Transaction>(
+      this.incomeTransactions
+    );
   }
 
   setExpenseSource() {
-    this.expenseTransactionsSource = new MatTableDataSource<Transaction>(this.expenseTransactions);
+    this.expenseTransactionsSource = new MatTableDataSource<Transaction>(
+      this.expenseTransactions
+    );
   }
 }

@@ -3,9 +3,16 @@ import { Select, Store } from '@ngxs/store';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Account } from 'src/app/account';
-import { MonthlyBudget, Transaction } from 'src/app/models';
+import { Expense } from 'src/app/expense';
+import { MonthlyBudget, Transaction, TransactionTypes } from 'src/app/models';
+import { PlannedExpense } from 'src/app/planned-expense';
 import { AccountState, ExpenseState, IncomeState } from 'src/app/state';
+import {
+  getCategoryTextForPlannedExpense,
+  isExpenseInPlannedExpense,
+} from 'src/app/utils';
 
 @Component({
   selector: 'monthly-budget',
@@ -17,6 +24,7 @@ export class MonthlyBudgetComponent implements OnInit {
   incomes$: Observable<Transaction[]>;
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
+  plannedExpenses$: Observable<PlannedExpense[]>;
   @Select(AccountState.selectSumsToBudgetAccounts) accounts$: Observable<
     Account[]
   >;
@@ -54,7 +62,7 @@ export class MonthlyBudgetComponent implements OnInit {
     this.setData(new Date());
   }
 
-  public setData(date: Date): void{
+  public setData(date: Date): void {
     // Monthly Budget
     this.monthlyIncomes$ = this.store.select(
       IncomeState.selectMonthlyIncomeTransactionsForMonth(date)
@@ -68,19 +76,27 @@ export class MonthlyBudgetComponent implements OnInit {
     this.expenses$ = this.store.select(
       ExpenseState.selectTransactionsForMonth(date)
     );
+    this.plannedExpenses$ = this.store.select(
+      ExpenseState.selectPlannedExpensesForMonth(date)
+    );
     this.incomes$.subscribe((incomes) => {
       this.expenses$.subscribe((expenses) => {
         this.monthlyExpenses$.subscribe((monthlyExpenses) => {
           this.monthlyIncomes$.subscribe((monthlyIncomes) => {
             this.accounts$.subscribe((accounts) => {
-              this.setMonthlyData(
-                incomes,
-                monthlyIncomes,
-                expenses,
-                monthlyExpenses,
-                accounts,
-                date
-              );
+              this.plannedExpenses$
+                .pipe(delay(0))
+                .subscribe((plannedExpenses: PlannedExpense[]) => {
+                  this.setMonthlyData(
+                    incomes,
+                    monthlyIncomes,
+                    expenses,
+                    monthlyExpenses,
+                    plannedExpenses,
+                    accounts,
+                    date
+                  );
+                });
             });
           });
         });
@@ -93,57 +109,104 @@ export class MonthlyBudgetComponent implements OnInit {
     monthlyIncomes: Transaction[],
     expenses: Transaction[],
     monthlyExpenses: Transaction[],
+    plannedExpenses: PlannedExpense[],
     accounts: Account[],
     date: Date
   ): void {
+    // Incomes
     const incomesAmount: number = incomes.reduce((a, b) => +a + +b.amount, 0);
     const unpaidIncomesAmount: number = incomes
       .filter((e) => !e.applied)
       .reduce((a, b) => +a + +b.amount, 0);
-    const monthlyIncomesAmount: number = monthlyIncomes.reduce((a, b) => +a + +b.amount, 0);
-    const paidExpensesAmount: number = expenses
-      .filter((e) => e.applied)
-      .reduce((a, b) => +a + +b.amount, 0);
-    const unPaidExpensesAmount: number = expenses
-      .filter((e) => !e.applied)
-      .reduce((a, b) => +a + +b.amount, 0);
-    const monthlyExpensesAmount: number = monthlyExpenses.reduce((a, b) => +a + +b.amount, 0);
-    const accountsBalanceAmount: number = accounts.reduce((a, b) => +a + +b.currentBalance, 0);
+    const unpaidMonthlyIncomesAmount: number = monthlyIncomes.reduce(
+      (a, b) => +a + +b.amount,
+      0
+    );
+    // Expenses
+    const unpaidMonthlyExpensesAmount: number = monthlyExpenses.reduce(
+      (a, b) => +a + +b.amount,
+      0
+    );
+    const paidExpensesAmount: number = expenses.reduce(
+      (a, b) => +a + +b.amount,
+      0
+    );
+    // Balance
+    const accountsBalanceAmount: number = accounts.reduce(
+      (a, b) => +a + +b.currentBalance,
+      0
+    );
+
+    // Planned expenses
+    const expensesForTheMonth = expenses.filter(
+      (t) => t.type == TransactionTypes.Expense
+    );
+    const expensesByCategory: Map<string, Expense[]> = new Map();
+    plannedExpenses.forEach((plannedExpense) => {
+      let category = getCategoryTextForPlannedExpense(plannedExpense);
+      let filteredExpenses = expensesForTheMonth.filter((e) =>
+        isExpenseInPlannedExpense(plannedExpense, e)
+      ) as unknown as Expense[];
+      expensesByCategory.set(category, filteredExpenses);
+    });
+    const plannedExpensesAmount: number = plannedExpenses.reduce(
+      (acc, cur) => acc + cur.totalAmount - this.getSpentAmount(cur, expensesByCategory),
+      0
+    );
 
     const monthlyBudgetData: MonthlyBudget = {
-      budgetExpensesAmount: unPaidExpensesAmount + monthlyExpensesAmount,
+      plannedExpensesAmount: plannedExpensesAmount + unpaidMonthlyExpensesAmount,
       expensesAmount: paidExpensesAmount,
-      incomesAmount: incomesAmount + monthlyIncomesAmount,
+      incomesAmount: incomesAmount + unpaidMonthlyIncomesAmount,
       currentBalance: accountsBalanceAmount,
-      monthlyExpensesAmount,
-      monthlyIncomesAmount,
-      unpaidIncomesAmount
+      unpaidIncomesAmount,
+      unpaidMonthlyIncomesAmount
     };
 
     this.initMonthlyDataGraph(monthlyBudgetData, date);
   }
 
-  private initMonthlyDataGraph(monthlyBudgetData: MonthlyBudget, date: Date): void {
+  getSpentAmount(
+    plannedExpense: PlannedExpense,
+    expensesByCategory: Map<string, Expense[]>
+  ): number {
+    const category = getCategoryTextForPlannedExpense(plannedExpense);
+
+    if (expensesByCategory == undefined || !expensesByCategory.has(category))
+      return 0;
+
+    const amount = expensesByCategory
+      .get(category)
+      .reduce((acc, cur) => acc + cur.amount, 0);
+    return Math.min(amount, plannedExpense.totalAmount);
+  }
+
+  private initMonthlyDataGraph(
+    monthlyBudgetData: MonthlyBudget,
+    date: Date
+  ): void {
     this.doughnutChartData = [];
-    this.doughnutChartData.push(monthlyBudgetData.budgetExpensesAmount);
+    this.doughnutChartData.push(monthlyBudgetData.plannedExpensesAmount);
     this.doughnutChartData.push(monthlyBudgetData.expensesAmount);
     this.doughnutChartData.push(monthlyBudgetData.incomesAmount);
     this.totalforMonth = this.calculateTotalForMonth(monthlyBudgetData, date);
   }
 
-  private calculateTotalForMonth(monthlyBudgetData: MonthlyBudget, date: Date): number {
+  private calculateTotalForMonth(
+    monthlyBudgetData: MonthlyBudget,
+    date: Date
+  ): number {
     const today = new Date();
     const todayYearMonth: number = +`${today.getFullYear()}${today.getMonth()}`;
     const dateYearMonth: number = +`${date.getFullYear()}${date.getMonth()}`;
 
-    const isPastMonth = ()  => todayYearMonth > dateYearMonth;
+    const isPastMonth = () => todayYearMonth > dateYearMonth;
 
-    return isPastMonth() ?
-      monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount :
-      monthlyBudgetData.currentBalance
-      + monthlyBudgetData.monthlyIncomesAmount
-      + monthlyBudgetData.unpaidIncomesAmount
-      - monthlyBudgetData.budgetExpensesAmount
-      ;
+    return isPastMonth()
+      ? monthlyBudgetData.incomesAmount - monthlyBudgetData.expensesAmount
+      : monthlyBudgetData.currentBalance +
+          monthlyBudgetData.unpaidMonthlyIncomesAmount +
+          monthlyBudgetData.unpaidIncomesAmount -
+          monthlyBudgetData.plannedExpensesAmount;
   }
 }

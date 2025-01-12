@@ -22,12 +22,19 @@
     <mat-card class="menu-item" (click)="selectSection('other')"
       [ngClass]="{'selected-card': selectedSection === 'other'}">
       <mat-card-title class="card-title">
-        -$500.00
+        {{ (-1) * otherExpensesSum | currency }}
       </mat-card-title>
       <mat-card-content class="card-content">
         Otros gastos
       </mat-card-content>
     </mat-card>
+    <div>
+      <app-available-per-day [availableAmount]="availableAmount"></app-available-per-day>
+    </div>
+    <div>
+      <app-available-graph [availableAmount]="availableAmount"
+        [otherSpentAmount]="otherExpensesSum" [plannedSpendingAmount]="plannedExpensesSum"></app-available-graph>
+    </div>
   </div>
 
   <!-- Right Section -->
@@ -44,6 +51,8 @@
       <app-spending-planned-expenses [plannedExpenses]="plannedExpenses"
         [expensesByCategory]="expensesByCategory"></app-spending-planned-expenses>
     </div>
-    <div *ngIf="selectedSection === 'other'">Other spending content goes here</div>
+    <div *ngIf="selectedSection === 'other'">
+      <app-other-expenses [expenses]="otherExpenses"></app-other-expenses>
+    </div>
   </div>
 </div>

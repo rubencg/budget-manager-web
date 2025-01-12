@@ -10,5 +10,6 @@ export interface Expense{
     fromAccount: Account,
     category: Category,
     subCategory?: string,
-    monthlyKey?: string
+    monthlyKey?: string,
+    removeFromSpendingPlan?: Boolean
 }

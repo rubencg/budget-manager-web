@@ -11,7 +11,6 @@ import {
   getCategoryTextForPlannedExpense,
   isExpenseInPlannedExpense,
 } from 'src/app/utils';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -31,6 +30,10 @@ export class SpendingPlanContentComponent implements OnInit {
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
   expensesSum: number = 0;
+  // Other expenses
+  otherExpenses: Expense[] = [];
+  otherExpensesSum: number = 0;
+  availableAmount: number = 0;
   // Planned expenes
   plannedExpenses$: Observable<PlannedExpense[]>;
   plannedExpenses: PlannedExpense[];
@@ -122,6 +125,27 @@ export class SpendingPlanContentComponent implements OnInit {
                   ),
                 0
               );
+
+              // Other expenses
+              let allPlannedExpenses = Array.from(
+                this.expensesByCategory.values()
+              ).reduce((acc, expenses) => acc.concat(expenses), []);
+              this.otherExpenses = this.expensesForTheMonth.filter(
+                (expense) =>
+                  !allPlannedExpenses.some((e) => e.key === expense.key) &&
+                  !expense.removeFromSpendingPlan &&
+                  !expense.monthlyKey
+              ) as unknown as Expense[];
+              this.otherExpensesSum = this.otherExpenses.reduce(
+                (acc, cur) => acc + cur.amount,
+                0
+              );
+
+              // Calculate available amount
+              this.availableAmount =
+                this.incomesSum +
+                this.expensesSum -
+                (this.plannedExpensesSum + this.otherExpensesSum);
             });
 
           // Used in sp-summary-component
@@ -138,7 +162,11 @@ export class SpendingPlanContentComponent implements OnInit {
             });
 
           this.expensesSum =
-            -1 * monthlyExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+            -1 *
+            monthlyExpenses.reduce(
+              (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
+              0
+            );
         });
     });
   }

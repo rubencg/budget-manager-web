@@ -1,9 +1,8 @@
 export interface MonthlyBudget{
-    budgetExpensesAmount: number,
-    expensesAmount: number,
     incomesAmount: number,
+    expensesAmount: number,
+    plannedExpensesAmount: number,
     unpaidIncomesAmount: number,
-    monthlyIncomesAmount: number,
-    monthlyExpensesAmount: number,
+    unpaidMonthlyIncomesAmount: number,
     currentBalance: number
 }

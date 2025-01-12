@@ -35,6 +35,7 @@ export class ExpenseService {
       subCategory: expense.subCategory,
       fromAccount: expense.fromAccount,
       date: expense.date.toISOString(),
+      removeFromSpendingPlan: expense?.removeFromSpendingPlan ?? false,
     });
   }
 
@@ -52,7 +53,8 @@ export class ExpenseService {
       notes: expense.notes,
       subCategory: expense.subCategory,
       fromAccount: expense.fromAccount,
-      monthlyKey: expense.monthlyKey
+      monthlyKey: expense.monthlyKey,
+      removeFromSpendingPlan: expense?.removeFromSpendingPlan ?? false
     });
   }
 
