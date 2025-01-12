@@ -19,12 +19,12 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  selectedSection: string = 'income'; // Variable para controlar el contenido
+  selectedSection: string = 'planned'; // Variable para controlar el contenido
 
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
   incomes$: Observable<Transaction[]>;
-  allIncomesSource = new MatTableDataSource<Transaction>();
+  allIncomes: Transaction[];
   incomesSum: number = 0;
   // Expenses
   monthlyExpenses$: Observable<Transaction[]>;
@@ -66,9 +66,8 @@ export class SpendingPlanContentComponent implements OnInit {
       this.monthlyIncomes$
         .pipe(delay(0))
         .subscribe((monthlyIncomes: Transaction[]) => {
-          let allIncomes = monthlyIncomes.concat(incomes)
-          this.allIncomesSource = new MatTableDataSource<Transaction>(allIncomes);
-          this.incomesSum = allIncomes.reduce(
+          this.allIncomes = monthlyIncomes.concat(incomes);
+          this.incomesSum = this.allIncomes.reduce(
             (acc, cur) => acc + cur.amount,
             0
           );
