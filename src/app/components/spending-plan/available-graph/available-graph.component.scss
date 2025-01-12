@@ -1,0 +1,35 @@
+@import '../../../../colors.scss';
+
+:host {
+  --income-color: #{$income-color};
+  --pink: #{$pink};
+  --purple: #{$purple};
+}
+
+.pie-chart {
+  margin-top: 10px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.available { 
+  background-color: $income-color;
+}
+
+.spent { 
+  background-color: $purple;
+}
+
+.other { 
+  background-color: $pink;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 24px;
+}

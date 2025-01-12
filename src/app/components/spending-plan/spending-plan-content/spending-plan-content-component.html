@@ -31,6 +31,10 @@
     <div>
       <app-available-per-day [availableAmount]="availableAmount"></app-available-per-day>
     </div>
+    <div>
+      <app-available-graph [availableAmount]="availableAmount"
+        [otherSpentAmount]="otherExpensesSum" [plannedSpendingAmount]="plannedExpensesSum"></app-available-graph>
+    </div>
   </div>
 
   <!-- Right Section -->
