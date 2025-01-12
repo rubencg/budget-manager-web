@@ -11,7 +11,6 @@ import {
   getCategoryTextForPlannedExpense,
   isExpenseInPlannedExpense,
 } from 'src/app/utils';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -30,8 +29,10 @@ export class SpendingPlanContentComponent implements OnInit {
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
-  otherExpenses: Expense[] = [];
   expensesSum: number = 0;
+  // Other expenses
+  otherExpenses: Expense[] = [];
+  otherExpensesSum: number = 0;
   // Planned expenes
   plannedExpenses$: Observable<PlannedExpense[]>;
   plannedExpenses: PlannedExpense[];
@@ -132,6 +133,7 @@ export class SpendingPlanContentComponent implements OnInit {
                 (expense) =>
                   !allPlannedExpenses.some((e) => e.key === expense.key)
               ) as unknown as Expense[];
+              this.otherExpensesSum = -1 * this.otherExpenses.reduce((acc, cur) => acc + cur.amount, 0);
             });
 
           // Used in sp-summary-component
