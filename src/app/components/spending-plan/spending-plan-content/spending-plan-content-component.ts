@@ -18,7 +18,7 @@ import {
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  selectedSection: string = 'other'; // Variable para controlar el contenido
+  selectedSection: string = 'income'; // Variable para controlar el contenido
 
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
