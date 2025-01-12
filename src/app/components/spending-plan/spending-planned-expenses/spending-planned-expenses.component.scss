@@ -1,0 +1,46 @@
+@import "./../../../../colors.scss";
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.expense-card {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.amount-left {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.ok-amount { 
+  color: $income-color;
+}
+
+.almost-amount { 
+  color: $not-applied-expense;
+}
+
+.over-amount { 
+  color: $expense-color;
+}
+
+.recurring-icon {
+  font-size: 0.8rem;
+  color: $disabled-text-color;
+}
+
+.card-title{
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-title > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

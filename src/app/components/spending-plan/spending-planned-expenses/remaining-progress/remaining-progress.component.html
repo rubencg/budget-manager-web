@@ -1,0 +1,5 @@
+<mat-progress-bar mode="determinate" color="primary" [value]="spentPercentage"></mat-progress-bar>
+<div class="total">
+  <span>{{ spentAmount | currency }} gastado</span>
+  <span>de {{ plannedExpense.totalAmount | currency }}</span>
+</div>

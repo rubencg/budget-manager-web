@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,7 +25,7 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './base-table.component.html',
   styleUrls: ['./base-table.component.scss'],
 })
-export class BaseTableComponent implements OnInit, OnChanges, AfterViewInit {
+export class BaseTableComponent implements OnChanges {
   @Input() dataSource = new MatTableDataSource<Transaction>();
   @Input() displayedColumns: string[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,28 +33,11 @@ export class BaseTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(public dialog: MatDialog, public store: Store) {}
 
-  ngOnInit(): void {
-    this.updateDataSource();
-  }
-
-  ngOnChanges(): void {
-    // Configura paginator y sort si cambian
-    this.updateDataSource();
-  }
-
-  ngAfterViewInit(): void {
-    // Configura paginator y sort después de la inicialización de la vista
-    this.updateDataSource();
-  }
-
-  private updateDataSource(): void {
-    if (this.dataSource) {
-      if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
-      if (this.sort) {
-        this.dataSource.sort = this.sort;
-      }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['dataSource'] && changes['dataSource'].currentValue) {
+      this.dataSource = changes['dataSource'].currentValue as MatTableDataSource<Transaction>
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }
   }
 

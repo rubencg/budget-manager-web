@@ -23,6 +23,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthGuard } from './authentication/auth.guard';
+import { PlannedExpenseModule } from './planned-expense';
 
 registerLocaleData(localeES);
 
@@ -36,6 +37,7 @@ registerLocaleData(localeES);
     AccountModule,
     IncomeModule,
     ExpenseModule,
+    PlannedExpenseModule,
     CategoryModule,
     TransferModule,
     ComponentsModule,

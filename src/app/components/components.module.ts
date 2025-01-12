@@ -67,8 +67,13 @@ import { TransactionMobileComponent } from './transactions/table/transaction.mob
 import { SpendingPlanContentComponent } from './spending-plan';
 import { SpSummaryComponent } from './spending-plan/sp-summary/sp-summary.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BaseTableComponent } from './transactions/base-table/base-table.component';
 import { MatCardModule } from '@angular/material/card';
+import { SpendingPlannedExpensesComponent } from './spending-plan/spending-planned-expenses/spending-planned-expenses.component';
+import { RemainingProgressComponent } from './spending-plan/spending-planned-expenses/remaining-progress/remaining-progress.component';
+import { PlannedExpenseComponent } from './transactions/dialogs/planned-spending/planned-expense.component';
+import { ConfirmationDialogComponent } from './transactions/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +132,11 @@ import { MatCardModule } from '@angular/material/card';
     ExpensesBySubcategoryComponent,
     TransactionMobileComponent,
     SpSummaryComponent,
-    BaseTableComponent
+    BaseTableComponent,
+    SpendingPlannedExpensesComponent,
+    RemainingProgressComponent,
+    PlannedExpenseComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     NavbarComponent,
@@ -166,6 +175,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTabsModule,
     MatChipsModule,
     MatExpansionModule,
+    MatProgressBarModule,
     MatCardModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],

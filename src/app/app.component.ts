@@ -15,6 +15,7 @@ import {
   DashboardAccountActions,
 } from './state';
 import { AuthenticationState } from './state/authentication/authentication.state';
+import { PlannedExpenseActions } from './state/expense/planned-expense.actions';
 
 @Component({
   selector: 'app-root',
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
           this.store.dispatch(ExpenseActions.Get);
           this.store.dispatch(MonthlyIncomeActions.Get);
           this.store.dispatch(MonthlyExpenseActions.Get);
+          this.store.dispatch(PlannedExpenseActions.Get);
         }
       }) 
     }

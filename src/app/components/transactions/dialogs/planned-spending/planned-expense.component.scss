@@ -1,0 +1,10 @@
+@import "./../../transactions.component.scss";
+
+.amount {
+  color: $expense-color;
+  font-weight: bold;
+}
+
+.mat-ok-button {
+  background-color: $expense-color !important;
+}

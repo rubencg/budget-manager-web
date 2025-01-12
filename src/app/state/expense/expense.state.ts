@@ -19,11 +19,15 @@ import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
 import { MonthlyExpenseActions } from './monthly.expense.actions';
 import { RecurringExpenseActions } from './recurring.expense.actions';
+import { PlannedExpense } from 'src/app/planned-expense';
+import { PlannedExpenseActions } from './planned-expense.actions';
+import { PlannedExpenseService } from 'src/app/planned-expense/planned-expense.service';
 
 export interface ExpenseStateModel {
   expenses: Expense[];
   monthlyExpenses: MonthlyExpense[];
   transactions: Transaction[];
+  plannedExpenses: PlannedExpense[];
 }
 
 @State<ExpenseStateModel>({
@@ -32,6 +36,7 @@ export interface ExpenseStateModel {
     expenses: [],
     monthlyExpenses: [],
     transactions: [],
+    plannedExpenses: [],
   },
 })
 @Injectable()
@@ -39,8 +44,20 @@ export class ExpenseState {
   constructor(
     private expenseService: ExpenseService,
     private store: Store,
-    private monthlyExpenseService: MonthlyExpenseService
+    private monthlyExpenseService: MonthlyExpenseService,
+    private plannedExpenseService: PlannedExpenseService
   ) {}
+
+  static selectPlannedExpensesForMonth(date: Date) {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) =>
+      state.plannedExpenses.filter(
+        (p: PlannedExpense) =>
+          p.isRecurring ||
+          (p.date.getMonth() == date.getMonth() &&
+            p.date.getFullYear() == date.getFullYear())
+      )
+    );
+  }
 
   static selectTransactionsForMonth(date: Date) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
@@ -56,12 +73,12 @@ export class ExpenseState {
     return createSelector([ExpenseState], (state: ExpenseStateModel) =>
       state.transactions.filter(
         (t: Transaction) =>
-          t.date.getFullYear() >= startDate.getFullYear()
-          && t.date.getMonth() >= startDate.getMonth()
-          && t.date.getDate() >= startDate.getDate()
-          && t.date.getFullYear() <= endDate.getFullYear()
-          && t.date.getMonth() <= endDate.getMonth()
-          && t.date.getDate() <= endDate.getDate()
+          t.date.getFullYear() >= startDate.getFullYear() &&
+          t.date.getMonth() >= startDate.getMonth() &&
+          t.date.getDate() >= startDate.getDate() &&
+          t.date.getFullYear() <= endDate.getFullYear() &&
+          t.date.getMonth() <= endDate.getMonth() &&
+          t.date.getDate() <= endDate.getDate()
       )
     );
   }
@@ -88,7 +105,10 @@ export class ExpenseState {
     );
   }
 
-  static selectMonthlyExpenseTransactionsForMonth(date: Date, includeApplied: boolean = false) {
+  static selectMonthlyExpenseTransactionsForMonth(
+    date: Date,
+    includeApplied: boolean = false
+  ) {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       let monthlyExpenseTransactions: Transaction[] = [];
       let expenses = state.expenses.filter(
@@ -132,45 +152,57 @@ export class ExpenseState {
           t.date.getFullYear() == date.getFullYear() &&
           t.isApplied
       );
-      const expensesByCategory = _.groupBy(appliedExpenses, (e: Expense) => e.category.name);
-      
-      const topExpenses: TopExpense[] = _.map(expensesByCategory, function(value, key) {
-        const topExpense: TopExpense = { 
-          name: key, 
-          amount: value.reduce((a, b: Expense) => +a + b.amount, 0)
-        };
-        return topExpense;
-      });
-      
+      const expensesByCategory = _.groupBy(
+        appliedExpenses,
+        (e: Expense) => e.category.name
+      );
+
+      const topExpenses: TopExpense[] = _.map(
+        expensesByCategory,
+        function (value, key) {
+          const topExpense: TopExpense = {
+            name: key,
+            amount: value.reduce((a, b: Expense) => +a + b.amount, 0),
+          };
+          return topExpense;
+        }
+      );
+
       return topExpenses;
     });
   }
 
   @Action(ExpenseActions.Get)
   getAllExpenses(context: StateContext<ExpenseStateModel>) {
-    this.expenseService.getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid).subscribe((inputExpenses: Expense[]) => {
-      let expenses: Expense[] = [];
-      inputExpenses.forEach((t) => {
-        expenses.push({
-          amount: t.amount,
-          date: new Date(t.date),
-          fromAccount: t.fromAccount,
-          category: t.category,
-          subCategory: t.subCategory,
-          isApplied: t.isApplied,
-          key: t.key,
-          notes: t.notes,
-          monthlyKey: t.monthlyKey,
+    this.expenseService
+      .getAll(
+        this.store.selectSnapshot((state) => state.authenticationState.user).uid
+      )
+      .subscribe((inputExpenses: Expense[]) => {
+        let expenses: Expense[] = [];
+        inputExpenses.forEach((t) => {
+          expenses.push({
+            amount: t.amount,
+            date: new Date(t.date),
+            fromAccount: t.fromAccount,
+            category: t.category,
+            subCategory: t.subCategory,
+            isApplied: t.isApplied,
+            key: t.key,
+            notes: t.notes,
+            monthlyKey: t.monthlyKey,
+          });
         });
-      });
-      context.dispatch(new ExpenseActions.GetSuccess(expenses));
+        context.dispatch(new ExpenseActions.GetSuccess(expenses));
 
-      let transactions: Transaction[] = [];
-      expenses.forEach((e) => {
-        transactions.push(this.getTransactionFromExpense(e));
+        let transactions: Transaction[] = [];
+        expenses.forEach((e) => {
+          transactions.push(this.getTransactionFromExpense(e));
+        });
+        context.dispatch(
+          new ExpenseActions.GetTransactionsSuccess(transactions)
+        );
       });
-      context.dispatch(new ExpenseActions.GetTransactionsSuccess(transactions));
-    });
   }
 
   private getTransactionFromExpense(expense: Expense): Transaction {
@@ -216,11 +248,95 @@ export class ExpenseState {
     };
   }
 
+  // Planned Expense actions
+  @Action(PlannedExpenseActions.Get)
+  getAllPlannedExpense(context: StateContext<ExpenseStateModel>) {
+    this.plannedExpenseService
+      .getAll(
+        this.store.selectSnapshot((state) => state.authenticationState.user).uid
+      )
+      .subscribe((inputPlannedExpenses: PlannedExpense[]) => {
+        let plannedExpenses: PlannedExpense[] = [];
+        inputPlannedExpenses.forEach((p) => {
+          plannedExpenses.push({
+            name: p.name,
+            category: p.category,
+            subCategory: p.subCategory,
+            date: new Date(p.date),
+            isRecurring: p.isRecurring,
+            totalAmount: p.totalAmount,
+            key: p.key
+          });
+        });
+        context.dispatch(new PlannedExpenseActions.GetSuccess(plannedExpenses));
+      });
+  }
+
+  @Action(PlannedExpenseActions.GetSuccess)
+  plannedExpensesLoaded(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.GetSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      plannedExpenses: action.payload,
+    });
+  }
+
+  @Action(PlannedExpenseActions.DeletePlannedExpense)
+  deletePlannedExpense(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.DeletePlannedExpense
+  ) {
+    this.plannedExpenseService.delete(
+      this.store.selectSnapshot((state) => state.authenticationState.user).uid,
+      action.payload.key
+    );
+  }
+
+  @Action(PlannedExpenseActions.SavePlannedExpense)
+  savePlannedExpenseTransaction(
+    ctx: StateContext<ExpenseStateModel>,
+    action: PlannedExpenseActions.SavePlannedExpense
+  ) {
+    const uid: string = this.store.selectSnapshot(
+      (state) => state.authenticationState.user
+    ).uid;
+
+    let plannedExpense: PlannedExpense = {
+      name: action.payload.name,
+      date: action.payload.date,
+      isRecurring: action.payload.isRecurring,
+      totalAmount: action.payload.totalAmount,
+      category: {
+        image: action.payload.category.image,
+        name: action.payload.category.name,
+        color: action.payload.category.color,
+        subcategories: action.payload.category.subcategories
+          ? action.payload.category.subcategories
+          : [],
+      },
+      subCategory: action.payload.subCategory
+        ? action.payload.subCategory
+        : null,
+      key: action.payload.key,
+    };
+
+    if (plannedExpense.key) {
+      this.plannedExpenseService.update(uid, plannedExpense);
+    } else {
+      this.plannedExpenseService.create(uid, plannedExpense);
+    }
+  }
+
   /* Monthly Expense Categories */
   @Action(MonthlyExpenseActions.Get)
   getAllMonthlyExpense(context: StateContext<ExpenseStateModel>) {
     this.monthlyExpenseService
-      .getAll(this.store.selectSnapshot((state) => state.authenticationState.user).uid)
+      .getAll(
+        this.store.selectSnapshot((state) => state.authenticationState.user).uid
+      )
       .subscribe((monthlyExpenses: MonthlyExpense[]) =>
         context.dispatch(new MonthlyExpenseActions.GetSuccess(monthlyExpenses))
       );
@@ -267,7 +383,10 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: MonthlyExpenseActions.DeleteMonthlyExpense
   ) {
-    this.monthlyExpenseService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
+    this.monthlyExpenseService.delete(
+      this.store.selectSnapshot((state) => state.authenticationState.user).uid,
+      action.payload.key
+    );
   }
 
   @Action(ExpenseActions.ApplyExpenseTransaction)
@@ -298,7 +417,10 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: ExpenseActions.DeleteExpense
   ) {
-    this.expenseService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
+    this.expenseService.delete(
+      this.store.selectSnapshot((state) => state.authenticationState.user).uid,
+      action.payload.key
+    );
 
     ctx.setState(
       patch({
@@ -325,7 +447,9 @@ export class ExpenseState {
     action: ExpenseActions.SaveExpenseTransaction
   ) {
     let expense: Expense = this.getExpenseFromTransaction(action.payload);
-    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+    const uid: string = this.store.selectSnapshot(
+      (state) => state.authenticationState.user
+    ).uid;
 
     if (action.payload.key && action.payload.type == TransactionTypes.Expense) {
       const stateExpense: Expense = ctx
@@ -375,7 +499,10 @@ export class ExpenseState {
         ctx.dispatch(new ExpenseActions.GetSuccess(ctx.getState().expenses));
       });
 
-      if (expense.isApplied && action.payload.type == TransactionTypes.Expense) {
+      if (
+        expense.isApplied &&
+        action.payload.type == TransactionTypes.Expense
+      ) {
         this.store.dispatch(
           new AccountActions.AdjustAccountBalance({
             adjustment: expense.amount * -1,
@@ -391,7 +518,9 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: MonthlyExpenseActions.SaveMonthlyExpenseTransaction
   ) {
-    const uid: string = this.store.selectSnapshot((state) => state.authenticationState.user).uid;
+    const uid: string = this.store.selectSnapshot(
+      (state) => state.authenticationState.user
+    ).uid;
 
     let monthlyExpense: MonthlyExpense = {
       amount: action.payload.amount,

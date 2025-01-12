@@ -23,8 +23,20 @@ import {
   ExpenseComponent,
   FiltersComponent,
   IncomeComponent,
+  PlannedExpenseComponent,
   TransferComponent,
 } from '../dialogs';
+import { PlannedExpense } from 'src/app/planned-expense';
+import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
+
+export enum HeaderFeatures {
+  SearchButton = 'SearchButton',
+  AddIncome = 'AddIncome',
+  AddExpense = 'AddExpense',
+  AddTransfer = 'AddTransfer',
+  AddPlannedExpense = 'AddPlannedExpense',
+  FilterButton = 'FilterButton',
+}
 
 @Component({
   selector: 'transactions-header',
@@ -34,6 +46,8 @@ import {
 export class HeaderComponent implements OnInit {
   /* Animations */
   @Input() date: Date;
+  @Input() displayFeatures: Record<HeaderFeatures, boolean>;
+
   startDate: Date;
   endDate: Date;
   @Output() onMonthIncreased: EventEmitter<any> = new EventEmitter();
@@ -153,6 +167,21 @@ export class HeaderComponent implements OnInit {
             new ExpenseActions.SaveExpenseTransaction(expenseTransaction)
           );
         }
+      }
+    });
+  }
+
+  createPlannedSpendingDialog() {
+    const dialogRef = this.dialog.open(PlannedExpenseComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((plannedExpense: PlannedExpense) => {
+      if (plannedExpense) {
+        this.store.dispatch(
+          new PlannedExpenseActions.SavePlannedExpense(plannedExpense)
+        );
       }
     });
   }

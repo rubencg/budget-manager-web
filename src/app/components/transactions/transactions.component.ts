@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filter } from 'src/app/models';
 import { TableComponent } from './table/table.component';
+import { HeaderFeatures } from './header/header.component';
 
 @Component({
   selector: 'app-transactions',
@@ -11,6 +12,14 @@ import { TableComponent } from './table/table.component';
 export class TransactionsComponent implements OnInit {
   date = new Date();
   @ViewChild('transactionsTable') transactionsTable: TableComponent;
+  headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
+        [HeaderFeatures.SearchButton]: true,
+        [HeaderFeatures.AddIncome]: true,
+        [HeaderFeatures.AddExpense]: true,
+        [HeaderFeatures.AddTransfer]: true,
+        [HeaderFeatures.AddPlannedExpense]: false,
+        [HeaderFeatures.FilterButton]: true,
+      };
 
   constructor(private router: Router) {}
 
