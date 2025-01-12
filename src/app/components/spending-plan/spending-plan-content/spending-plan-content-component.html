@@ -37,7 +37,7 @@
         (onMonthDecreased)="monthDecreased()" [date]="currentDate"></transactions-header>
     </div>
     <div *ngIf="selectedSection === 'income'">
-      <app-sp-summary [incomeTransactions]="allIncomes" [incomesSum]="incomesSum" [expenseTransactions]="allExpensesSource"
+      <app-sp-summary [incomeTransactions]="allIncomes" [incomesSum]="incomesSum" [expenseTransactions]="allExpenses"
         [expensesSum]="expensesSum"></app-sp-summary>
     </div>
     <div *ngIf="selectedSection === 'planned'">

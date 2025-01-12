@@ -13,7 +13,8 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
   @Input() incomeTransactions: Transaction[];
   incomeTransactionsSource = new MatTableDataSource<Transaction>();
   @Input() incomesSum: number;
-  @Input() expenseTransactions = new MatTableDataSource<Transaction>();
+  @Input() expenseTransactions: Transaction[];
+  expenseTransactionsSource = new MatTableDataSource<Transaction>();
   @Input() expensesSum: number;
 
   displayedColumns: string[];
@@ -35,18 +36,26 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
         ];
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['incomeTransactions']) {
+    if (changes['incomeTransactions'] && changes['incomeTransactions'].currentValue)  {
       this.incomeTransactions = changes['incomeTransactions'].currentValue
       this.setIncomeSource();
+    }
+    if (changes['expenseTransactions'] && changes['expenseTransactions'].currentValue)  {
+      this.expenseTransactions = changes['expenseTransactions'].currentValue
+      this.setExpenseSource();
     }
   }
 
   ngAfterViewInit(): void {
     this.setIncomeSource();
+    this.setExpenseSource();
   }
 
   setIncomeSource() {
     this.incomeTransactionsSource = new MatTableDataSource<Transaction>(this.incomeTransactions);
   }
 
+  setExpenseSource() {
+    this.expenseTransactionsSource = new MatTableDataSource<Transaction>(this.expenseTransactions);
+  }
 }
