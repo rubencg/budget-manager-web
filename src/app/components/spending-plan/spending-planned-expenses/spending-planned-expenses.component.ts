@@ -32,7 +32,6 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
           'account',
           'amount',
           'notes',
-          'applied',
           'actions',
         ];
   }
