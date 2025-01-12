@@ -216,7 +216,7 @@ export class ExpenseState {
       account: expense.fromAccount,
       subcategory: expense.subCategory,
       monthlyKey: expense.monthlyKey,
-      removeFromSpendingPlan: expense.removeFromSpendingPlan,
+      removeFromSpendingPlan: expense?.removeFromSpendingPlan ?? false,
       key: expense.key,
       notes: expense.notes,
       type: TransactionTypes.Expense,
