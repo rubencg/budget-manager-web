@@ -22,12 +22,15 @@
     <mat-card class="menu-item" (click)="selectSection('other')"
       [ngClass]="{'selected-card': selectedSection === 'other'}">
       <mat-card-title class="card-title">
-        {{ otherExpensesSum | currency }}
+        {{ (-1) * otherExpensesSum | currency }}
       </mat-card-title>
       <mat-card-content class="card-content">
         Otros gastos
       </mat-card-content>
     </mat-card>
+    <div>
+      <app-available-per-day [availableAmount]="availableAmount"></app-available-per-day>
+    </div>
   </div>
 
   <!-- Right Section -->
