@@ -74,6 +74,7 @@ import { SpendingPlannedExpensesComponent } from './spending-plan/spending-plann
 import { RemainingProgressComponent } from './spending-plan/spending-planned-expenses/remaining-progress/remaining-progress.component';
 import { PlannedExpenseComponent } from './transactions/dialogs/planned-spending/planned-expense.component';
 import { ConfirmationDialogComponent } from './transactions/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { OtherExpensesComponent } from './spending-plan/other-expenses/other-expenses.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { ConfirmationDialogComponent } from './transactions/dialogs/confirmation
     SpendingPlannedExpensesComponent,
     RemainingProgressComponent,
     PlannedExpenseComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    OtherExpensesComponent
   ],
   exports: [
     NavbarComponent,

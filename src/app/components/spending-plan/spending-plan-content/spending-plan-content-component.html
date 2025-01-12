@@ -44,6 +44,8 @@
       <app-spending-planned-expenses [plannedExpenses]="plannedExpenses"
         [expensesByCategory]="expensesByCategory"></app-spending-planned-expenses>
     </div>
-    <div *ngIf="selectedSection === 'other'">Other spending content goes here</div>
+    <div *ngIf="selectedSection === 'other'">
+      <app-other-expenses [expenses]="otherExpenses"></app-other-expenses>
+    </div>
   </div>
 </div>

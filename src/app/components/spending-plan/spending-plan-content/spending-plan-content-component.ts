@@ -19,7 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./spending-plan-content-component.scss'],
 })
 export class SpendingPlanContentComponent implements OnInit {
-  selectedSection: string = 'income'; // Variable para controlar el contenido
+  selectedSection: string = 'other'; // Variable para controlar el contenido
 
   // Income
   monthlyIncomes$: Observable<Transaction[]>;
@@ -30,6 +30,7 @@ export class SpendingPlanContentComponent implements OnInit {
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   allExpenses: Transaction[];
+  otherExpenses: Expense[] = [];
   expensesSum: number = 0;
   // Planned expenes
   plannedExpenses$: Observable<PlannedExpense[]>;
@@ -122,6 +123,15 @@ export class SpendingPlanContentComponent implements OnInit {
                   ),
                 0
               );
+
+              // Other expenses
+              let allPlannedExpenses = Array.from(
+                this.expensesByCategory.values()
+              ).reduce((acc, expenses) => acc.concat(expenses), []);
+              this.otherExpenses = this.expensesForTheMonth.filter(
+                (expense) =>
+                  !allPlannedExpenses.some((e) => e.key === expense.key)
+              ) as unknown as Expense[];
             });
 
           // Used in sp-summary-component
