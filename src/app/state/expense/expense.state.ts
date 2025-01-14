@@ -21,13 +21,16 @@ import { MonthlyExpenseActions } from './monthly.expense.actions';
 import { RecurringExpenseActions } from './recurring.expense.actions';
 import { PlannedExpense } from 'src/app/planned-expense';
 import { PlannedExpenseActions } from './planned-expense.actions';
+import { SavingActions } from './saving-actions';
 import { PlannedExpenseService } from 'src/app/planned-expense/planned-expense.service';
+import { Saving, SavingService } from 'src/app/saving';
 
 export interface ExpenseStateModel {
   expenses: Expense[];
   monthlyExpenses: MonthlyExpense[];
   transactions: Transaction[];
   plannedExpenses: PlannedExpense[];
+  savings: Saving[];
 }
 
 @State<ExpenseStateModel>({
@@ -37,6 +40,7 @@ export interface ExpenseStateModel {
     monthlyExpenses: [],
     transactions: [],
     plannedExpenses: [],
+    savings: [],
   },
 })
 @Injectable()
@@ -45,7 +49,8 @@ export class ExpenseState {
     private expenseService: ExpenseService,
     private store: Store,
     private monthlyExpenseService: MonthlyExpenseService,
-    private plannedExpenseService: PlannedExpenseService
+    private plannedExpenseService: PlannedExpenseService,
+    private savingService: SavingService,
   ) {}
 
   static selectPlannedExpensesForMonth(date: Date) {
@@ -171,6 +176,12 @@ export class ExpenseState {
 
       return topExpenses;
     });
+  }
+
+  static getAllSavings() {
+    return createSelector([ExpenseState], (state: ExpenseStateModel) => {
+      return state.savings;
+    })
   }
 
   @Action(ExpenseActions.Get)
@@ -331,6 +342,75 @@ export class ExpenseState {
       this.plannedExpenseService.update(uid, plannedExpense);
     } else {
       this.plannedExpenseService.create(uid, plannedExpense);
+    }
+  }
+
+  // Saving actions
+  @Action(SavingActions.Get)
+  getAllSavings(context: StateContext<ExpenseStateModel>) {
+    this.savingService
+      .getAll(
+        this.store.selectSnapshot((state) => state.authenticationState.user).uid
+      )
+      .subscribe((inputSavings: Saving[]) => {
+        let savings: Saving[] = [];
+        inputSavings.forEach((p) => {
+          savings.push({
+            name: p.name,
+            goalAmount: p.goalAmount,
+            icon: p.icon,
+            savedAmound: p.savedAmound,
+            key: p.key
+          });
+        });
+        context.dispatch(new SavingActions.GetSuccess(savings));
+      });
+  }
+
+  @Action(SavingActions.GetSuccess)
+  savingsLoaded(
+    ctx: StateContext<ExpenseStateModel>,
+    action: SavingActions.GetSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      savings: action.payload,
+    });
+  }
+
+  @Action(SavingActions.DeleteSaving)
+  deleteSaving(
+    ctx: StateContext<ExpenseStateModel>,
+    action: SavingActions.DeleteSaving
+  ) {
+    this.savingService.delete(
+      this.store.selectSnapshot((state) => state.authenticationState.user).uid,
+      action.payload.key
+    );
+  }
+
+  @Action(SavingActions.SaveSaving)
+  saveSaving(
+    ctx: StateContext<ExpenseStateModel>,
+    action: SavingActions.SaveSaving
+  ) {
+    const uid: string = this.store.selectSnapshot(
+      (state) => state.authenticationState.user
+    ).uid;
+
+    let saving: Saving = {
+      name: action.payload.name,
+      goalAmount: action.payload.goalAmount,
+      icon: action.payload.icon,
+      savedAmound: action.payload.savedAmound,
+      key: action.payload.key,
+    };
+
+    if (saving.key) {
+      this.savingService.update(uid, saving);
+    } else {
+      this.savingService.create(uid, saving);
     }
   }
 
