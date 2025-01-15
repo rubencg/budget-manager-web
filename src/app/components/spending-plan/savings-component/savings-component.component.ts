@@ -11,7 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Saving } from 'src/app/saving';
-import { SavingComponent } from '../../transactions/dialogs';
+import { ConfirmationDialogComponent, SavingComponent } from '../../transactions/dialogs';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { SavingActions } from 'src/app/state/expense/saving-actions';
@@ -57,6 +57,23 @@ export class SavingsComponentComponent implements AfterViewInit, OnChanges {
     savingDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.store.dispatch(new SavingActions.SaveSaving(result));
+      }
+    });
+  }
+
+  deleteSaving(saving: Saving): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: {
+        message: '¿Estás seguro de que deseas eliminar este ahorro?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.store.dispatch(
+          new SavingActions.DeleteSaving(saving)
+        );
       }
     });
   }

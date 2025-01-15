@@ -4,7 +4,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ExpenseCategoryIcons } from 'src/app/category';
 import { CategoryIcon } from 'src/app/models';
-import { PlannedExpense } from 'src/app/planned-expense';
 import { Saving } from 'src/app/saving';
 
 @Component({
