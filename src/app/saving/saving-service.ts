@@ -32,7 +32,8 @@ export class SavingService {
       icon: saving.icon,
       goalAmount: saving.goalAmount,
       amountPerMonth: saving.amountPerMonth,
-      savedAmound: saving.savedAmount
+      savedAmount: saving.savedAmount,
+      color: saving.color
     });
   }
 
@@ -42,7 +43,8 @@ export class SavingService {
       icon: saving.icon,
       goalAmount: saving.goalAmount,
       amountPerMonth: saving.amountPerMonth,
-      savedAmound: saving.savedAmount
+      savedAmount: saving.savedAmount,
+      color: saving.color
     });
   }
 

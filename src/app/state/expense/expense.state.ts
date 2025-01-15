@@ -361,6 +361,7 @@ export class ExpenseState {
             amountPerMonth: p.amountPerMonth,
             icon: p.icon,
             savedAmount: p.savedAmount,
+            color: p.color,
             key: p.key
           });
         });
@@ -406,6 +407,7 @@ export class ExpenseState {
       amountPerMonth: action.payload.amountPerMonth,
       icon: action.payload.icon,
       savedAmount: action.payload.savedAmount,
+      color: action.payload.color,
       key: action.payload.key,
     };
 

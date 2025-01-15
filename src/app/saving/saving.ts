@@ -4,5 +4,6 @@ export interface Saving {
     goalAmount: number,
     amountPerMonth: number,
     savedAmount?: number,
+    color: string,
     key?: string,
 }

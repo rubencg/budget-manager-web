@@ -14,7 +14,7 @@ export class SavingsComponentComponent implements AfterViewInit, OnChanges {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource = new MatTableDataSource<Saving>([]);
-  displayedColumns: string[] = ['name', 'amountPerMonth', 'savedAmount', 'goalAmount', 'leftAmount'];
+  displayedColumns: string[] = ['name', 'amountPerMonth', 'savedAmount', 'goalAmount', 'leftAmount', 'actions'];
 
   color: string = '#da60e0'
 
