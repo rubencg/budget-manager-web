@@ -31,15 +31,21 @@ export class SavingComponent implements OnInit {
     });
     if (this.data != undefined && this.data != null) {
       this.title = 'Editar ahorro';
+      let color = this.hexToRgb(
+        this.data.color.substring(1, this.data.color.length)
+      );
 
       this.form.patchValue({
         name: this.data.name,
         savedAmount: this.data.savedAmount,
         goalAmount: this.data.goalAmount,
         amountPerMonth: this.data.amountPerMonth,
-        color: this.data.color,
+        color: new Color(color.r, color.g, color.b),
         icon: this.data.icon,
       });
+      this.categoryIcons
+        .filter((c) => c.icon == this.data.icon)
+        .forEach((cat) => (cat.active = true));
     }
   }
 
@@ -76,7 +82,7 @@ export class SavingComponent implements OnInit {
       savedAmount: this.form.get('savedAmount').value,
       goalAmount: this.form.get('goalAmount').value,
       amountPerMonth: this.form.get('amountPerMonth').value,
-      color: this.form.get('color').value,
+      color: '#' + this.form.get('color').value.hex,
       icon: this.form.get('icon').value,
       key: this.data ? this.data.key : undefined,
     };
