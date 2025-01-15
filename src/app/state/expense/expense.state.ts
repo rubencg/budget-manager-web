@@ -178,7 +178,7 @@ export class ExpenseState {
     });
   }
 
-  static getAllSavings() {
+  static selectAllSavings() {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       return state.savings;
     })
@@ -358,8 +358,9 @@ export class ExpenseState {
           savings.push({
             name: p.name,
             goalAmount: p.goalAmount,
+            amountPerMonth: p.amountPerMonth,
             icon: p.icon,
-            savedAmound: p.savedAmound,
+            savedAmount: p.savedAmount,
             key: p.key
           });
         });
@@ -402,8 +403,9 @@ export class ExpenseState {
     let saving: Saving = {
       name: action.payload.name,
       goalAmount: action.payload.goalAmount,
+      amountPerMonth: action.payload.amountPerMonth,
       icon: action.payload.icon,
-      savedAmound: action.payload.savedAmound,
+      savedAmount: action.payload.savedAmount,
       key: action.payload.key,
     };
 

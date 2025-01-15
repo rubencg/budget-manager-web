@@ -11,6 +11,7 @@ import {
   getCategoryTextForPlannedExpense,
   isExpenseInPlannedExpense,
 } from 'src/app/utils';
+import { Saving } from 'src/app/saving';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -50,6 +51,10 @@ export class SpendingPlanContentComponent implements OnInit {
     [HeaderFeatures.AddPlannedExpense]: true,
     [HeaderFeatures.FilterButton]: false,
   };
+  // Savings
+  savings$: Observable<Saving[]>;
+  savings: Saving[];
+  savingSum: number;
 
   constructor(public store: Store) {}
 
@@ -87,6 +92,16 @@ export class SpendingPlanContentComponent implements OnInit {
     this.plannedExpenses$ = this.store.select(
       ExpenseState.selectPlannedExpensesForMonth(date)
     );
+    this.savings$ = this.store.select(ExpenseState.selectAllSavings());
+
+    this.savings$.subscribe((savings: Saving[]) => {
+      console.log("savings", savings)
+      this.savings = savings;
+      this.savingSum = savings.reduce(
+        (acc, cur) => acc + (cur.goalAmount - (cur.savedAmount ?? 0)), 0
+      );
+    });
+
     this.expenses$.subscribe((expenses: Transaction[]) => {
       this.monthlyExpenses$
         .pipe(delay(0))

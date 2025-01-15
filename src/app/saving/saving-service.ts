@@ -6,7 +6,7 @@ import { Saving } from './saving';
 @Injectable()
 export class SavingService {
 
-  entityName: string = 'saving';
+  entityName: string = 'savings';
 
   constructor(private db: AngularFireDatabase) {
   }
@@ -31,7 +31,8 @@ export class SavingService {
       name: saving.name,
       icon: saving.icon,
       goalAmount: saving.goalAmount,
-      savedAmound: saving.savedAmound
+      amountPerMonth: saving.amountPerMonth,
+      savedAmound: saving.savedAmount
     });
   }
 
@@ -40,7 +41,8 @@ export class SavingService {
       name: saving.name,
       icon: saving.icon,
       goalAmount: saving.goalAmount,
-      savedAmound: saving.savedAmound
+      amountPerMonth: saving.amountPerMonth,
+      savedAmound: saving.savedAmount
     });
   }
 

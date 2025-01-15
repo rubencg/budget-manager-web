@@ -8,6 +8,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
+import { Saving } from 'src/app/saving';
 
 @Component({
   selector: 'app-sp-summary',
@@ -21,6 +22,8 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
   @Input() expenseTransactions: Transaction[];
   expenseTransactionsSource = new MatTableDataSource<Transaction>();
   @Input() expensesSum: number;
+  @Input() savings: Saving[];
+  @Input() savingSum: number;
 
   displayedColumns: string[];
 
