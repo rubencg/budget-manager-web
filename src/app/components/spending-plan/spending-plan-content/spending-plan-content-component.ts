@@ -98,7 +98,7 @@ export class SpendingPlanContentComponent implements OnInit {
       console.log("savings", savings)
       this.savings = savings;
       this.savingSum = savings.reduce(
-        (acc, cur) => acc + (cur.goalAmount - (cur.savedAmount ?? 0)), 0
+        (acc, cur) => acc + cur.amountPerMonth, 0
       );
     });
 
