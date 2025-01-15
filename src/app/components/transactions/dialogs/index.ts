@@ -6,3 +6,4 @@ export * from './filters/filters.component';
 export * from './apply.transaction/apply.transaction.component';
 export * from './planned-spending/planned-expense.component';
 export * from './confirmation-dialog/confirmation-dialog.component';
+export * from './saving/saving.component';

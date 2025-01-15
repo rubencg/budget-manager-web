@@ -78,6 +78,7 @@ import { OtherExpensesComponent } from './spending-plan/other-expenses/other-exp
 import { AvailablePerDayComponent } from './spending-plan/available-per-day/available-per-day.component';
 import { AvailableGraphComponent } from './spending-plan/available-graph/available-graph.component';
 import { SavingsComponentComponent } from './spending-plan/savings-component/savings-component.component';
+import { SavingComponent } from './transactions/dialogs/saving/saving.component';
 
 @NgModule({
   declarations: [
@@ -144,7 +145,8 @@ import { SavingsComponentComponent } from './spending-plan/savings-component/sav
     OtherExpensesComponent,
     AvailablePerDayComponent,
     AvailableGraphComponent,
-    SavingsComponentComponent
+    SavingsComponentComponent,
+    SavingComponent
   ],
   exports: [
     NavbarComponent,

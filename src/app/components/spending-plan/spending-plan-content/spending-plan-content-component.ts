@@ -49,6 +49,7 @@ export class SpendingPlanContentComponent implements OnInit {
     [HeaderFeatures.AddExpense]: false,
     [HeaderFeatures.AddTransfer]: false,
     [HeaderFeatures.AddPlannedExpense]: true,
+    [HeaderFeatures.AddSaving]: true,
     [HeaderFeatures.FilterButton]: false,
   };
   // Savings
@@ -95,7 +96,6 @@ export class SpendingPlanContentComponent implements OnInit {
     this.savings$ = this.store.select(ExpenseState.selectAllSavings());
 
     this.savings$.subscribe((savings: Saving[]) => {
-      console.log("savings", savings)
       this.savings = savings;
       this.savingSum = savings.reduce(
         (acc, cur) => acc + cur.amountPerMonth, 0
