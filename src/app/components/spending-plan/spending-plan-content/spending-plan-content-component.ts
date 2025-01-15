@@ -95,94 +95,98 @@ export class SpendingPlanContentComponent implements OnInit {
     );
     this.savings$ = this.store.select(ExpenseState.selectAllSavings());
 
-    this.savings$.subscribe((savings: Saving[]) => {
-      this.savings = savings;
-      this.savingSum = savings.reduce(
-        (acc, cur) => acc + cur.amountPerMonth, 0
-      );
-    });
-
     this.expenses$.subscribe((expenses: Transaction[]) => {
-      this.monthlyExpenses$
-        .pipe(delay(0))
-        .subscribe((monthlyExpenses: Transaction[]) => {
-          // Used in sp-spending-plan-content
-          this.expensesForTheMonth = expenses.filter(
-            (t) => t.type == TransactionTypes.Expense
-          );
-          this.plannedExpenses$
-            .pipe(delay(0))
-            .subscribe((plannedExpenses: PlannedExpense[]) => {
-              if (plannedExpenses == undefined) return;
-
-              let expensesByCategoryTemp: Map<string, Expense[]> = new Map();
-              plannedExpenses.forEach((plannedExpense) => {
-                let category = getCategoryTextForPlannedExpense(plannedExpense);
-                let filteredExpenses = this.expensesForTheMonth.filter((e) =>
-                  isExpenseInPlannedExpense(plannedExpense, e)
-                ) as unknown as Expense[];
-                expensesByCategoryTemp.set(category, filteredExpenses);
-                this.expensesSumByCategory.set(
-                  category,
-                  filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0)
-                );
-              });
-              this.expensesByCategory = expensesByCategoryTemp;
-              this.plannedExpenses = plannedExpenses;
-              this.plannedExpensesSum = plannedExpenses.reduce(
-                (acc, cur) =>
-                  acc +
-                  Math.max(
-                    cur.totalAmount,
-                    this.expensesSumByCategory.get(
-                      getCategoryTextForPlannedExpense(cur)
-                    )
-                  ),
-                0
-              );
-
-              // Other expenses
-              let allPlannedExpenses = Array.from(
-                this.expensesByCategory.values()
-              ).reduce((acc, expenses) => acc.concat(expenses), []);
-              this.otherExpenses = this.expensesForTheMonth.filter(
-                (expense) =>
-                  !allPlannedExpenses.some((e) => e.key === expense.key) &&
-                  !expense.removeFromSpendingPlan &&
-                  !expense.monthlyKey
-              ) as unknown as Expense[];
-              this.otherExpensesSum = this.otherExpenses.reduce(
-                (acc, cur) => acc + cur.amount,
-                0
-              );
-
-              // Calculate available amount
-              this.availableAmount =
-                this.incomesSum +
-                this.expensesSum -
-                (this.plannedExpensesSum + this.otherExpensesSum);
-            });
-
-          // Used in sp-summary-component
-          this.allExpenses = monthlyExpenses;
-          // Mark monthly expenses as applied
-          expenses
-            .filter((expense) => expense.monthlyKey)
-            .forEach((expense) => {
-              monthlyExpenses
-                .filter((exp) => exp.key == expense.monthlyKey)
-                .forEach((exp) => {
-                  exp.applied = true;
-                });
-            });
-
-          this.expensesSum =
-            -1 *
-            monthlyExpenses.reduce(
-              (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
-              0
+      this.savings$.subscribe((savings: Saving[]) => {
+        this.monthlyExpenses$
+          .pipe(delay(0))
+          .subscribe((monthlyExpenses: Transaction[]) => {
+            // Used in sp-spending-plan-content
+            this.expensesForTheMonth = expenses.filter(
+              (t) => t.type == TransactionTypes.Expense
             );
-        });
+            this.plannedExpenses$
+              .pipe(delay(0))
+              .subscribe((plannedExpenses: PlannedExpense[]) => {
+                if (plannedExpenses == undefined) return;
+
+                let expensesByCategoryTemp: Map<string, Expense[]> = new Map();
+                plannedExpenses.forEach((plannedExpense) => {
+                  let category =
+                    getCategoryTextForPlannedExpense(plannedExpense);
+                  let filteredExpenses = this.expensesForTheMonth.filter((e) =>
+                    isExpenseInPlannedExpense(plannedExpense, e)
+                  ) as unknown as Expense[];
+                  expensesByCategoryTemp.set(category, filteredExpenses);
+                  this.expensesSumByCategory.set(
+                    category,
+                    filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0)
+                  );
+                });
+                this.expensesByCategory = expensesByCategoryTemp;
+                this.plannedExpenses = plannedExpenses;
+                this.plannedExpensesSum = plannedExpenses.reduce(
+                  (acc, cur) =>
+                    acc +
+                    Math.max(
+                      cur.totalAmount,
+                      this.expensesSumByCategory.get(
+                        getCategoryTextForPlannedExpense(cur)
+                      )
+                    ),
+                  0
+                );
+
+                // Other expenses
+                let allPlannedExpenses = Array.from(
+                  this.expensesByCategory.values()
+                ).reduce((acc, expenses) => acc.concat(expenses), []);
+                this.otherExpenses = this.expensesForTheMonth.filter(
+                  (expense) =>
+                    !allPlannedExpenses.some((e) => e.key === expense.key) &&
+                    !expense.removeFromSpendingPlan &&
+                    !expense.monthlyKey
+                ) as unknown as Expense[];
+                this.otherExpensesSum = this.otherExpenses.reduce(
+                  (acc, cur) => acc + cur.amount,
+                  0
+                );
+
+                // Caclulate savings
+                this.savings = savings;
+                this.savingSum = savings.reduce(
+                  (acc, cur) => acc + cur.amountPerMonth,
+                  0
+                );
+
+                // Calculate available amount
+                this.availableAmount =
+                  this.incomesSum +
+                  this.expensesSum -
+                  this.savingSum -
+                  (this.plannedExpensesSum + this.otherExpensesSum);
+              });
+
+            // Used in sp-summary-component
+            this.allExpenses = monthlyExpenses;
+            // Mark monthly expenses as applied
+            expenses
+              .filter((expense) => expense.monthlyKey)
+              .forEach((expense) => {
+                monthlyExpenses
+                  .filter((exp) => exp.key == expense.monthlyKey)
+                  .forEach((exp) => {
+                    exp.applied = true;
+                  });
+              });
+
+            this.expensesSum =
+              -1 *
+              monthlyExpenses.reduce(
+                (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
+                0
+              );
+          });
+      });
     });
   }
 
