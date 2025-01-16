@@ -1,1 +1,6 @@
 @import "../../../../table.scss";
+@import "../../../../colors.scss";
+
+.applied-background{
+  background-color: $income-color;
+}

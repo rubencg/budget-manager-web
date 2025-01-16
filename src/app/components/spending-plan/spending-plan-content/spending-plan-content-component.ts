@@ -164,7 +164,15 @@ export class SpendingPlanContentComponent implements OnInit {
                     .forEach((t) => {
                       transferSavingAmountMap.set(t.savingKey, t.amount);
                     });
-                  this.savings = savings;
+                  this.savings = savings.map((s) => ({
+                    ...s,
+                    applied:
+                      transferSavingAmountMap.has(s.key) &&
+                      s.amountPerMonth -
+                        (transferSavingAmountMap.get(s.key) ?? 0) <=
+                        0,
+                  }));
+
                   this.savingSum = savings.reduce(
                     (acc, cur) =>
                       acc +

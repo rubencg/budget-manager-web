@@ -39,6 +39,7 @@ export class SavingsComponentComponent implements AfterViewInit, OnChanges {
     'savedAmount',
     'goalAmount',
     'leftAmount',
+    'applied',
     'actions',
   ];
 
