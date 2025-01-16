@@ -11,10 +11,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Saving } from 'src/app/saving';
-import { ConfirmationDialogComponent, SavingComponent } from '../../transactions/dialogs';
+import {
+  ConfirmationDialogComponent,
+  SavingComponent,
+  TransferComponent,
+} from '../../transactions/dialogs';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { SavingActions } from 'src/app/state/expense/saving-actions';
+import { Transfer } from 'src/app/transfer';
+import { TransferActions } from 'src/app/state';
+import { Transaction } from 'src/app/models';
 
 @Component({
   selector: 'app-savings-component',
@@ -71,8 +78,25 @@ export class SavingsComponentComponent implements AfterViewInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.store.dispatch(new SavingActions.DeleteSaving(saving));
+      }
+    });
+  }
+
+  createTransfer(saving: Saving) {
+    const transfer = {
+      savingKey: saving.key
+    }
+    const dialogRef = this.dialog.open(TransferComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+      data: transfer,
+    });
+
+    dialogRef.afterClosed().subscribe((transaction: Transaction) => {
+      if (transaction) {
         this.store.dispatch(
-          new SavingActions.DeleteSaving(saving)
+          new TransferActions.SaveTransferTransaction(transaction)
         );
       }
     });

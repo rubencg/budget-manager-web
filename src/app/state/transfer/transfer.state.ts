@@ -5,6 +5,7 @@ import { Transaction, TransactionTypes } from 'src/app/models';
 import { Transfer, TransferService } from '../../transfer';
 import { AccountActions } from '../account';
 import { TransferActions } from './transfer.actions';
+import { SavingActions } from '../expense/saving-actions';
 
 export interface TransferStateModel {
   transfers: Transfer[];
@@ -58,6 +59,7 @@ export class TransferState {
           fromAccount: t.fromAccount,
           toAccount: t.toAccount,
           key: t.key,
+          savingKey: t.savingKey,
           notes: t.notes,
         });
       });
@@ -148,6 +150,7 @@ export class TransferState {
       date: action.payload.date,
       fromAccount: action.payload.account,
       toAccount: action.payload.transferAccount,
+      savingKey: (action.payload as unknown as Transfer).savingKey,
       key: action.payload.monthlyKey ? null : action.payload.key,
       notes: action.payload.notes,
     };
@@ -204,6 +207,16 @@ export class TransferState {
           adjustment: transfer.amount,
         })
       );
+
+      // Save to Savings if needed
+      if (transfer.savingKey){
+        ctx.dispatch(
+          new SavingActions.UpdateSavingAmount({
+            increment: transfer.amount,
+            key: transfer.savingKey
+          })
+        )
+      }
     }
   }
 }

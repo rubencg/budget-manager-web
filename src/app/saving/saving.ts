@@ -1,9 +1,14 @@
 export interface Saving {
-    name: string,
-    icon: string,
-    goalAmount: number,
-    amountPerMonth: number,
-    savedAmount?: number,
-    color: string,
-    key?: string,
+  name: string;
+  icon: string;
+  goalAmount: number;
+  amountPerMonth: number;
+  savedAmount?: number;
+  color: string;
+  key?: string;
+}
+
+export interface SavingAmount {
+    key: string;
+    increment: number;
 }

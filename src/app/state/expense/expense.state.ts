@@ -14,7 +14,12 @@ import {
   MonthlyExpense,
   MonthlyExpenseService,
 } from 'src/app/expense';
-import { RecurringTypes, TopExpense, Transaction, TransactionTypes } from 'src/app/models';
+import {
+  RecurringTypes,
+  TopExpense,
+  Transaction,
+  TransactionTypes,
+} from 'src/app/models';
 import { AccountActions } from '../account';
 import { ExpenseActions } from './expense.actions';
 import { MonthlyExpenseActions } from './monthly.expense.actions';
@@ -50,7 +55,7 @@ export class ExpenseState {
     private store: Store,
     private monthlyExpenseService: MonthlyExpenseService,
     private plannedExpenseService: PlannedExpenseService,
-    private savingService: SavingService,
+    private savingService: SavingService
   ) {}
 
   static selectPlannedExpensesForMonth(date: Date) {
@@ -181,7 +186,7 @@ export class ExpenseState {
   static selectAllSavings() {
     return createSelector([ExpenseState], (state: ExpenseStateModel) => {
       return state.savings;
-    })
+    });
   }
 
   @Action(ExpenseActions.Get)
@@ -259,7 +264,7 @@ export class ExpenseState {
       fromAccount: transaction.account,
       key: transaction.monthlyKey ? null : transaction.key,
       monthlyKey: transaction.monthlyKey ? transaction.monthlyKey : null,
-      removeFromSpendingPlan: transaction.removeFromSpendingPlan
+      removeFromSpendingPlan: transaction.removeFromSpendingPlan,
     };
   }
 
@@ -280,7 +285,7 @@ export class ExpenseState {
             date: new Date(p.date),
             isRecurring: p.isRecurring,
             totalAmount: p.totalAmount,
-            key: p.key
+            key: p.key,
           });
         });
         context.dispatch(new PlannedExpenseActions.GetSuccess(plannedExpenses));
@@ -362,7 +367,7 @@ export class ExpenseState {
             icon: p.icon,
             savedAmount: p.savedAmount,
             color: p.color,
-            key: p.key
+            key: p.key,
           });
         });
         context.dispatch(new SavingActions.GetSuccess(savings));
@@ -416,6 +421,28 @@ export class ExpenseState {
     } else {
       this.savingService.create(uid, saving);
     }
+  }
+
+  @Action(SavingActions.UpdateSavingAmount)
+  updateSaving(
+    ctx: StateContext<ExpenseStateModel>,
+    action: SavingActions.UpdateSavingAmount
+  ) {
+    const stateSaving: Saving = ctx.getState().savings.find((i) => i.key == action.payload.key);
+    let saving: Saving = { ...stateSaving };
+    if (saving.savedAmount) {
+      saving.savedAmount += action.payload.increment;
+    } else {
+      saving.savedAmount = action.payload.increment;
+    }
+
+    ctx.setState(
+      patch({
+        savings: updateItem<Saving>((t) => t.key == saving.key, saving),
+      })
+    );
+
+    this.savingService.update(this.store.selectSnapshot((state) => state.authenticationState.user).uid, saving);
   }
 
   /* Monthly Expense Categories */

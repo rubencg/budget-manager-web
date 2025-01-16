@@ -1,4 +1,4 @@
-import { Saving } from 'src/app/saving';
+import { Saving, SavingAmount } from 'src/app/saving';
 
 export namespace SavingActions {
   export class Get {
@@ -14,6 +14,11 @@ export namespace SavingActions {
   export class SaveSaving {
     static readonly type = '[TransactionsPage] CreateSaving';
     constructor(public payload: Saving) {}
+  }
+
+  export class UpdateSavingAmount{
+    static readonly type = '[TransactionsPage] UpdateSavingAmount';
+    constructor(public payload: SavingAmount) {}
   }
 
   export class DeleteSaving {

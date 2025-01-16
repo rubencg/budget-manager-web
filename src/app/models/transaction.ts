@@ -20,6 +20,7 @@ export interface Transaction {
   isRecurring?: Boolean;
   monthlyKey?: string;
   recurringTimes?: number;
+  savingKey?: string;
   recurringType?: RecurringTypes;
   removeFromSpendingPlan?: Boolean;
 }

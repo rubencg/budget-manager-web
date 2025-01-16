@@ -30,6 +30,7 @@ export class TransferService {
       date: transfer.date.toISOString(),
       fromAccount: transfer.fromAccount,
       notes: transfer.notes,
+      savingKey: transfer.savingKey,
       toAccount: transfer.toAccount
     });
   }
@@ -44,6 +45,7 @@ export class TransferService {
       notes: transfer.notes,
       fromAccount: transfer.fromAccount,
       toAccount: transfer.toAccount,
+      savingKey: transfer.savingKey,
       date: transfer.date.toISOString(),
     });
   }

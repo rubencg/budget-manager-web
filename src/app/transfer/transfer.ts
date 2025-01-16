@@ -6,5 +6,6 @@ export interface Transfer{
     fromAccount: Account,
     toAccount: Account,
     notes?: String,
+    savingKey?: string,
     key?: string
 }
