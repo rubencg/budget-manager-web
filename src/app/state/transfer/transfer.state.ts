@@ -200,6 +200,15 @@ export class TransferState {
           adjustment: transfer.amount,
         })
       );
+      // Save to Savings
+      if (transfer.savingKey){
+        ctx.dispatch(
+          new SavingActions.UpdateSavingAmount({
+            increment: transfer.amount - oldTransfer.amount,
+            key: transfer.savingKey
+          })
+        )
+      }
 
       this.transferService.update(uid, transfer);
     } else {

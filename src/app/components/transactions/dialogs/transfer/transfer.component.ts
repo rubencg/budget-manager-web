@@ -60,13 +60,13 @@ export class TransferComponent implements OnInit {
     this.title = 'Nueva transferencia';
     const transfer = this.data as unknown as Transfer;
     if (this.data != undefined && this.data != null) {
-      if (transfer.savingKey) {
+      this.savingKey = transfer.savingKey;
+
+      if (transfer.savingKey && !transfer.key) {
         this.title = 'Crear transferencia para ahorro';
-        this.savingKey = transfer.savingKey;
       } else {
         this.title = 'Editar transferencia';
         let transaction: Transaction = this.data;
-
         this.form.patchValue({
           amount: Math.abs(transaction.amount),
           date: transaction.date,
