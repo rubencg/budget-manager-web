@@ -8,7 +8,13 @@ import { Account } from 'src/app/account';
 import { Expense } from 'src/app/expense';
 import { MonthlyBudget, Transaction, TransactionTypes } from 'src/app/models';
 import { PlannedExpense } from 'src/app/planned-expense';
-import { AccountState, ExpenseState, IncomeState } from 'src/app/state';
+import { Saving } from 'src/app/saving';
+import {
+  AccountState,
+  ExpenseState,
+  IncomeState,
+  TransferState,
+} from 'src/app/state';
 import {
   getCategoryTextForPlannedExpense,
   isExpenseInPlannedExpense,
@@ -25,6 +31,8 @@ export class MonthlyBudgetComponent implements OnInit {
   monthlyExpenses$: Observable<Transaction[]>;
   expenses$: Observable<Transaction[]>;
   plannedExpenses$: Observable<PlannedExpense[]>;
+  savings$: Observable<Saving[]>;
+  transfers$: Observable<Transaction[]>;
   @Select(AccountState.selectSumsToBudgetAccounts) accounts$: Observable<
     Account[]
   >;
@@ -70,6 +78,10 @@ export class MonthlyBudgetComponent implements OnInit {
     this.incomes$ = this.store.select(
       IncomeState.selectTransactionsForMonth(date)
     );
+    this.savings$ = this.store.select(ExpenseState.selectAllSavings());
+    this.transfers$ = this.store.select(
+      TransferState.selectTransactionsForMonth(date)
+    );
     this.monthlyExpenses$ = this.store.select(
       ExpenseState.selectMonthlyExpenseTransactionsForMonth(date)
     );
@@ -83,20 +95,26 @@ export class MonthlyBudgetComponent implements OnInit {
       this.expenses$.subscribe((expenses) => {
         this.monthlyExpenses$.subscribe((monthlyExpenses) => {
           this.monthlyIncomes$.subscribe((monthlyIncomes) => {
-            this.accounts$.subscribe((accounts) => {
-              this.plannedExpenses$
-                .pipe(delay(0))
-                .subscribe((plannedExpenses: PlannedExpense[]) => {
-                  this.setMonthlyData(
-                    incomes,
-                    monthlyIncomes,
-                    expenses,
-                    monthlyExpenses,
-                    plannedExpenses,
-                    accounts,
-                    date
-                  );
+            this.savings$.subscribe((savings) => {
+              this.accounts$.subscribe((accounts) => {
+                this.transfers$.subscribe((transfers) => {
+                  this.plannedExpenses$
+                    .pipe(delay(0))
+                    .subscribe((plannedExpenses: PlannedExpense[]) => {
+                      this.setMonthlyData(
+                        incomes,
+                        monthlyIncomes,
+                        expenses,
+                        monthlyExpenses,
+                        plannedExpenses,
+                        savings,
+                        transfers,
+                        accounts,
+                        date
+                      );
+                    });
                 });
+              });
             });
           });
         });
@@ -110,6 +128,8 @@ export class MonthlyBudgetComponent implements OnInit {
     expenses: Transaction[],
     monthlyExpenses: Transaction[],
     plannedExpenses: PlannedExpense[],
+    savings: Saving[],
+    transfers: Transaction[],
     accounts: Account[],
     date: Date
   ): void {
@@ -136,6 +156,19 @@ export class MonthlyBudgetComponent implements OnInit {
       (a, b) => +a + +b.currentBalance,
       0
     );
+    // Savings
+    let transferSavingAmountMap: Map<string, number> = new Map();
+    transfers
+      .filter((t) => t.savingKey)
+      .forEach((t) => {
+        transferSavingAmountMap.set(t.savingKey, t.amount);
+      });
+    const savingSum = savings.reduce(
+      (acc, cur) =>
+        acc +
+        (cur.amountPerMonth - (transferSavingAmountMap.get(cur.key) ?? 0)),
+      0
+    );
 
     // Planned expenses
     const expensesForTheMonth = expenses.filter(
@@ -150,17 +183,20 @@ export class MonthlyBudgetComponent implements OnInit {
       expensesByCategory.set(category, filteredExpenses);
     });
     const plannedExpensesAmount: number = plannedExpenses.reduce(
-      (acc, cur) => acc + cur.totalAmount - this.getSpentAmount(cur, expensesByCategory),
+      (acc, cur) =>
+        acc + cur.totalAmount - this.getSpentAmount(cur, expensesByCategory),
       0
     );
 
     const monthlyBudgetData: MonthlyBudget = {
-      plannedExpensesAmount: plannedExpensesAmount + unpaidMonthlyExpensesAmount,
+      plannedExpensesAmount:
+        plannedExpensesAmount + unpaidMonthlyExpensesAmount,
       expensesAmount: paidExpensesAmount,
       incomesAmount: incomesAmount + unpaidMonthlyIncomesAmount,
       currentBalance: accountsBalanceAmount,
+      savingsAmount: savingSum,
       unpaidIncomesAmount,
-      unpaidMonthlyIncomesAmount
+      unpaidMonthlyIncomesAmount,
     };
 
     this.initMonthlyDataGraph(monthlyBudgetData, date);
@@ -207,6 +243,7 @@ export class MonthlyBudgetComponent implements OnInit {
       : monthlyBudgetData.currentBalance +
           monthlyBudgetData.unpaidMonthlyIncomesAmount +
           monthlyBudgetData.unpaidIncomesAmount -
+          monthlyBudgetData.savingsAmount -
           monthlyBudgetData.plannedExpensesAmount;
   }
 }

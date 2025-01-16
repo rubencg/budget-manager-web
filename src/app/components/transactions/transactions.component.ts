@@ -18,6 +18,7 @@ export class TransactionsComponent implements OnInit {
         [HeaderFeatures.AddExpense]: true,
         [HeaderFeatures.AddTransfer]: true,
         [HeaderFeatures.AddPlannedExpense]: false,
+        [HeaderFeatures.AddSaving]: false,
         [HeaderFeatures.FilterButton]: true,
       };
 

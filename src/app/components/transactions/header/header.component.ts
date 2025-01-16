@@ -24,10 +24,13 @@ import {
   FiltersComponent,
   IncomeComponent,
   PlannedExpenseComponent,
+  SavingComponent,
   TransferComponent,
 } from '../dialogs';
 import { PlannedExpense } from 'src/app/planned-expense';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
+import { Saving } from 'src/app/saving';
+import { SavingActions } from 'src/app/state/expense/saving-actions';
 
 export enum HeaderFeatures {
   SearchButton = 'SearchButton',
@@ -35,6 +38,7 @@ export enum HeaderFeatures {
   AddExpense = 'AddExpense',
   AddTransfer = 'AddTransfer',
   AddPlannedExpense = 'AddPlannedExpense',
+  AddSaving = 'AddSaving',
   FilterButton = 'FilterButton',
 }
 
@@ -181,6 +185,21 @@ export class HeaderComponent implements OnInit {
       if (plannedExpense) {
         this.store.dispatch(
           new PlannedExpenseActions.SavePlannedExpense(plannedExpense)
+        );
+      }
+    });
+  }
+
+  createSavingDialog() {
+    const dialogRef = this.dialog.open(SavingComponent, {
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((saving: Saving) => {
+      if (saving) {
+        this.store.dispatch(
+          new SavingActions.SaveSaving(saving)
         );
       }
     });

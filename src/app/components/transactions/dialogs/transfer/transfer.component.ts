@@ -1,9 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -23,6 +19,7 @@ export class TransferComponent implements OnInit {
   @Select(AccountState.selectAccounts) accounts$: Observable<Account[]>;
   filteredOriginAccounts: Observable<Account[]>;
   filteredDestinationAccounts: Observable<Account[]>;
+  savingKey?: string;
 
   constructor(
     public dialogRef: MatDialogRef<TransferComponent>,
@@ -35,11 +32,12 @@ export class TransferComponent implements OnInit {
       switchMap((val) => this._filterElements(val))
     );
 
-    this.filteredDestinationAccounts = this.destinationAccountCtrl.valueChanges.pipe(
-      startWith(''),
-      map((value) => (typeof value === 'string' ? value : value.name)),
-      switchMap((val) => this._filterElements(val))
-    );
+    this.filteredDestinationAccounts =
+      this.destinationAccountCtrl.valueChanges.pipe(
+        startWith(''),
+        map((value) => (typeof value === 'string' ? value : value.name)),
+        switchMap((val) => this._filterElements(val))
+      );
   }
 
   private _filterElements(value: string): Observable<Account[]> {
@@ -60,17 +58,23 @@ export class TransferComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = 'Nueva transferencia';
+    const transfer = this.data as unknown as Transfer;
     if (this.data != undefined && this.data != null) {
-      this.title = 'Editar transferencia';
-      let transaction: Transaction = this.data;
+      this.savingKey = transfer.savingKey;
 
-      this.form.patchValue({
-        amount: Math.abs(transaction.amount),
-        date: transaction.date,
-        notes: transaction.notes,
-        originAccount: transaction.account,
-        destinationAccount: transaction.transferAccount,
-      });
+      if (transfer.savingKey && !transfer.key) {
+        this.title = 'Crear transferencia para ahorro';
+      } else {
+        this.title = 'Editar transferencia';
+        let transaction: Transaction = this.data;
+        this.form.patchValue({
+          amount: Math.abs(transaction.amount),
+          date: transaction.date,
+          notes: transaction.notes,
+          originAccount: transaction.account,
+          destinationAccount: transaction.transferAccount,
+        });
+      }
     }
   }
 
@@ -93,6 +97,7 @@ export class TransferComponent implements OnInit {
       account: this.originAccountCtrl.value,
       transferAccount: this.destinationAccountCtrl.value,
       notes: this.form.get('notes').value,
+      savingKey: this.savingKey,
       key: this.data ? this.data.key : undefined,
     };
 

@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" class="transaction-dialog-content">
+    <mat-form-field appearance="fill">
+      <span matPrefix class="prefixIcon">
+        <fa-icon [icon]="['fas', 'signature']"></fa-icon>
+      </span>
+      <mat-label>Nombre</mat-label>
+      <input type="text" formControlName="name" class="name" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <span matPrefix class="prefixIcon">
+        <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+      </span>
+      <mat-label>Objetivo</mat-label>
+      <input type="number" formControlName="goalAmount" class="amount" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <span matPrefix class="prefixIcon">
+        <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+      </span>
+      <mat-label>Ahorrado</mat-label>
+      <input type="number" formControlName="savedAmount" class="amount" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <span matPrefix class="prefixIcon">
+        <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+      </span>
+      <mat-label>Cantidad por mes</mat-label>
+      <input type="number" formControlName="amountPerMonth" class="amount" matInput>
+    </mat-form-field>
+    <div>
+      <mat-label>Icono</mat-label>
+      <input type="hidden" formControlName="icon">
+      <div class="icon-container">
+        <div class="table-icon disable-select icon-button" *ngFor="let categoryIcon of categoryIcons"
+          [ngStyle]="categoryIcon.active ? {'background-color': form.get('color').value } : ''"
+          (click)="activate(categoryIcon)">
+          <fa-icon [icon]="['fas', categoryIcon.icon]"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <mat-form-field>
+      <mat-label>Color</mat-label>
+      <input matInput [ngxMatColorPicker]="picker" formControlName="color">
+      <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+      <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="buttons-box">
+  <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+  <button mat-raised-button [disabled]="!form.valid" color="ok-button" (click)="save()">GUARDAR</button>
+</div>
