@@ -418,6 +418,11 @@ export class ExpenseState {
 
     if (saving.key) {
       this.savingService.update(uid, saving);
+      ctx.setState(
+        patch({
+          savings: updateItem<Saving>(t => t.key == saving.key, saving),
+        })
+      );
     } else {
       this.savingService.create(uid, saving);
     }

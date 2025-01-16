@@ -73,6 +73,7 @@ export class TransferState {
           transferAccount: t.toAccount,
           key: t.key,
           notes: t.notes,
+          savingKey: t.savingKey,
           type: TransactionTypes.Transfer,
         });
       });
@@ -127,6 +128,16 @@ export class TransferState {
         adjustment: transaction.amount * -1,
       })
     );
+
+    // Remove saving if available
+    if(transaction.savingKey){
+      ctx.dispatch(
+        new SavingActions.UpdateSavingAmount({
+          key: transaction.savingKey,
+          increment: transaction.amount * -1
+        })
+      )
+    }
 
     // Remove transfer and transaction from state
     this.transferService.delete(this.store.selectSnapshot((state) => state.authenticationState.user).uid, action.payload.key);
