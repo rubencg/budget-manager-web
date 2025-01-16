@@ -25,14 +25,22 @@ export class TransferService {
   }
 
   create(uid: string, transfer: Transfer) {
-    this.db.list(`${uid}/${this.entityName}`).push({
+    let obj: any = {
       amount: transfer.amount,
       date: transfer.date.toISOString(),
       fromAccount: transfer.fromAccount,
       notes: transfer.notes,
-      savingKey: transfer.savingKey,
       toAccount: transfer.toAccount
-    });
+    };
+
+    if (transfer.savingKey){
+      obj = {
+        ...obj,
+        savingKey: transfer.savingKey,
+      }
+    }
+
+    this.db.list(`${uid}/${this.entityName}`).push(obj);
   }
 
   delete(uid: string, key: string): Promise<void> {
@@ -40,13 +48,21 @@ export class TransferService {
   }
 
   update(uid: string, transfer: Transfer): Promise<void> {
-    return this.db.list(`${uid}/${this.entityName}`).update(transfer.key, {
+    let obj: any = {
       amount: transfer.amount,
       notes: transfer.notes,
       fromAccount: transfer.fromAccount,
       toAccount: transfer.toAccount,
-      savingKey: transfer.savingKey,
       date: transfer.date.toISOString(),
-    });
+    };
+
+    if (transfer.savingKey){
+      obj = {
+        ...obj,
+        savingKey: transfer.savingKey,
+      }
+    }
+
+    return this.db.list(`${uid}/${this.entityName}`).update(transfer.key, obj);
   }
 }
