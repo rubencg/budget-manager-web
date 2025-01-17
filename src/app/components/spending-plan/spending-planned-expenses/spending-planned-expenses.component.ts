@@ -8,7 +8,7 @@ import {
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
-import { getCategoryTextForPlannedExpense } from 'src/app/utils';
+import { compareTransactionsByDate, getCategoryTextForPlannedExpense } from 'src/app/utils';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 import { MatTableDataSource } from '@angular/material/table';
@@ -61,12 +61,14 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
   }
 
   private setCurrentTransactionsSource(): void {
+    const transactions = ((this.selectedCategory == ''
+      ? this.allExpenses
+      : this.expensesByCategory.get(
+          this.selectedCategory
+        )) as unknown as Transaction[]) ?? [];
+
     this.currentTransactionsSource = new MatTableDataSource<Transaction>(
-      ((this.selectedCategory == ''
-        ? this.allExpenses
-        : this.expensesByCategory.get(
-            this.selectedCategory
-          )) as unknown as Transaction[]) ?? []
+      transactions.sort(compareTransactionsByDate)
     )
   }
 

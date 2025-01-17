@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 import { Saving } from 'src/app/saving';
+import { compareTransactionsByDate } from 'src/app/utils';
 
 @Component({
   selector: 'app-sp-summary',
@@ -64,13 +65,13 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
 
   setIncomeSource() {
     this.incomeTransactionsSource = new MatTableDataSource<Transaction>(
-      this.incomeTransactions
+      this.incomeTransactions.sort(compareTransactionsByDate)
     );
   }
 
   setExpenseSource() {
     this.expenseTransactionsSource = new MatTableDataSource<Transaction>(
-      this.expenseTransactions
+      this.expenseTransactions.sort(compareTransactionsByDate)
     );
   }
 }
