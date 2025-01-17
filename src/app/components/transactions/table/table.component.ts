@@ -19,6 +19,7 @@ import { delay } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute, Params } from '@angular/router';
+import { compareTransactionsByDate } from 'src/app/utils';
 
 @Component({
   selector: 'transactions-table',
@@ -96,11 +97,11 @@ export class TableComponent implements AfterViewInit, OnInit {
                         .concat(monthlyExpenses)
                         .concat(monthlyIncomes)
                         .concat(expenses)
-                        .sort(compareTransactions)
+                        .sort(compareTransactionsByDate)
                     : transfers
                         .concat(incomes.filter((i) => i.applied))
                         .concat(expenses.filter((i) => i.applied))
-                        .sort(compareTransactions);
+                        .sort(compareTransactionsByDate);
 
                   source = this.filterWithQueryParams(source);
 
@@ -192,14 +193,4 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.showNotAppliedTransactions = $event.checked;
     this.loadTable(this.date);
   }
-}
-
-function compareTransactions(a: Transaction, b: Transaction) {
-  if (a.date > b.date) {
-    return -1;
-  }
-  if (a.date < b.date) {
-    return 1;
-  }
-  return 0;
 }

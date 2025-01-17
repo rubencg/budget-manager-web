@@ -4,6 +4,7 @@ import { concat, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Transaction, TransactionTypes } from 'src/app/models';
 import { ExpenseState, IncomeState, TransferState } from 'src/app/state';
+import { compareTransactionsByDate } from 'src/app/utils';
 
 @Component({
   selector: 'last-transactions',
@@ -39,7 +40,7 @@ export class LastTransactionsComponent implements OnInit {
           let transactions = transfers
                   .concat(incomes)
                   .concat(expenses)
-                  .sort(compareTransactions);
+                  .sort(compareTransactionsByDate);
           
           this.data = [];
           for (let index = 0; index < 5; index++) {
@@ -78,14 +79,4 @@ export class LastTransactionsComponent implements OnInit {
         return 'transfer';
     }
   }
-}
-
-function compareTransactions(a: Transaction, b: Transaction) {
-  if (a.date > b.date) {
-    return -1;
-  }
-  if (a.date < b.date) {
-    return 1;
-  }
-  return 0;
 }

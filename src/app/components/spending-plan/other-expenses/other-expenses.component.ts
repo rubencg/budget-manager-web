@@ -12,6 +12,7 @@ import { Expense } from 'src/app/expense';
 import { PieElement, Transaction } from 'src/app/models';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Color } from 'ng2-charts';
+import { compareTransactionsByDate } from 'src/app/utils';
 
 @Component({
   selector: 'app-other-expenses',
@@ -61,7 +62,7 @@ export class OtherExpensesComponent implements AfterViewInit, OnChanges {
   }
 
   setExpenseSource() {
-    this.expensesSource = new MatTableDataSource<Transaction>(this.expenses);
+    this.expensesSource = new MatTableDataSource<Transaction>(this.expenses.sort(compareTransactionsByDate));
     this.setPieData();
   }
 
