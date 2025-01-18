@@ -17,6 +17,10 @@
   font-weight: bold;
 }
 
+.amount-completed {
+  color: $disabled-text-color;
+}
+
 .ok-amount { 
   color: $income-color;
 }
