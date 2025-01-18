@@ -93,6 +93,23 @@ export class BaseTableComponent implements OnChanges {
           }
         });
         break;
+      case TransactionTypes.MonthlyExpense:
+        console.log("transaction", transaction)
+        const monthlyExpenseDialogRef = this.dialog.open(ExpenseComponent, {
+          data: transaction,
+          maxWidth: '600px',
+          width: 'calc(100% - 64px)',
+          autoFocus: false,
+        });
+        monthlyExpenseDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log(result)
+            // this.store.dispatch(
+            //   new MonthlyExpenseActions.SaveMonthlyExpenseTransaction(result)
+            // );
+          }
+        });
+        break;
       case TransactionTypes.Transfer:
         const transferDialogRef = this.dialog.open(TransferComponent, {
           data: transaction,
