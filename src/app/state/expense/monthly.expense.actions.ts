@@ -16,6 +16,11 @@ export namespace MonthlyExpenseActions{
     static readonly type = '[TransactionsPage] CreateMonthlyExpense';
     constructor(public payload: Transaction) {}
   }
+
+  export class SaveMonthlyExpense {
+    static readonly type = '[TransactionsPage] CreateMonthlyExpenseFromMonthlyExpense';
+    constructor(public payload: MonthlyExpense) {}
+  }
   
   export class DeleteMonthlyExpense {
     static readonly type = '[TransactionsPage] DeleteMonthlyExpense';

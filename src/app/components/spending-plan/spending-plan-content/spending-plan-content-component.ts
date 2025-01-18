@@ -45,9 +45,9 @@ export class SpendingPlanContentComponent implements OnInit {
   currentDate: Date = new Date();
   headerDisplayFeatures: Record<HeaderFeatures, boolean> = {
     [HeaderFeatures.SearchButton]: false,
-    [HeaderFeatures.AddIncome]: false,
-    [HeaderFeatures.AddExpense]: false,
-    [HeaderFeatures.AddTransfer]: false,
+    [HeaderFeatures.AddIncome]: true,
+    [HeaderFeatures.AddExpense]: true,
+    [HeaderFeatures.AddTransfer]: true,
     [HeaderFeatures.AddPlannedExpense]: true,
     [HeaderFeatures.AddSaving]: true,
     [HeaderFeatures.FilterButton]: false,

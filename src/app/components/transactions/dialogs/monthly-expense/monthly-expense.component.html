@@ -1,0 +1,72 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" class="transaction-dialog-content">
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'dollar-sign']"></fa-icon>
+            </span>
+            <mat-label>Cantidad</mat-label>
+            <input type="number" formControlName="amount" class="amount" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Fecha</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
+            <mat-label>Cuenta</mat-label>
+            <input matInput [matAutocomplete]="autoAccount" formControlName="account">
+            <mat-autocomplete #autoAccount="matAutocomplete" [displayWith]="displayAccountFn">
+                <mat-option class="autocomplete-option" *ngFor="let account of filteredAccounts | async" [value]="account">
+                    <div class="element-circle" [ngStyle]="{'background-color':account.color}">
+                        <fa-icon [icon]="['fas', account.image]"></fa-icon>
+                    </div>
+                    <span>{{account.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'tag']"></fa-icon>
+            </span>
+            <mat-label>Categoria</mat-label>
+            <input matInput [matAutocomplete]="autoCategory" formControlName="category">
+            <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayFn" (optionSelected)="categorySelected($event)">
+                <mat-option class="autocomplete-option" *ngFor="let category of filteredCategories | async" [value]="category">
+                    <div class="element-circle" [ngStyle]="{'background-color':category.color}">
+                        <fa-icon [icon]="['fas', category.image]"></fa-icon>
+                    </div>
+                    <span>{{category.name}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'university']"></fa-icon>
+            </span>
+            <mat-label>Subcategoria</mat-label>
+            <input matInput [matAutocomplete]="autoSubcategory" formControlName="subcategory">
+            <mat-autocomplete #autoSubcategory="matAutocomplete">
+                <mat-option class="autocomplete-option" *ngFor="let subcategory of filteredSubcategories | async"
+                    [value]="subcategory">
+                    <span>{{subcategory}}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <span matPrefix class="prefixIcon">
+                <fa-icon [icon]="['fas', 'sticky-note']"></fa-icon>
+            </span>
+            <mat-label>Notas</mat-label>
+            <input matInput formControlName="notes">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions class="buttons-box">
+    <button mat-stroked-button color="basic" mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button [disabled]="!form.dirty || form.invalid" color="ok-button" (click)="save()">GUARDAR</button>
+</div>

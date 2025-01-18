@@ -36,7 +36,7 @@ export class MonthlyExpenseService {
   }
 
   create(uid: string, expense: MonthlyExpense) {
-    this.db.list(`${uid}/${this.entityName}`).push({
+    return this.db.list(`${uid}/${this.entityName}`).push({
       amount: expense.amount,
       category: {
         image: expense.category.image,
