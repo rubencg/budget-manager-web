@@ -64,14 +64,18 @@ export class SpSummaryComponent implements AfterViewInit, OnChanges {
   }
 
   setIncomeSource() {
-    this.incomeTransactionsSource = new MatTableDataSource<Transaction>(
-      this.incomeTransactions.sort(compareTransactionsByDate)
-    );
+    if (this.incomeTransactions){
+      this.incomeTransactionsSource = new MatTableDataSource<Transaction>(
+        this.incomeTransactions.sort(compareTransactionsByDate)
+      );
+    }
   }
 
   setExpenseSource() {
-    this.expenseTransactionsSource = new MatTableDataSource<Transaction>(
-      this.expenseTransactions.sort(compareTransactionsByDate)
-    );
+    if (this.expenseTransactions){
+      this.expenseTransactionsSource = new MatTableDataSource<Transaction>(
+        this.expenseTransactions.sort(compareTransactionsByDate)
+      );
+    }
   }
 }
