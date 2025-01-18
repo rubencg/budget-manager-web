@@ -77,23 +77,34 @@ export class ExpenseComponent implements OnInit {
   ngOnInit(): void {
     this.title = 'Nuevo gasto';
     if(this.data != undefined && this.data != null){
-      this.title = 'Editar gasto';
       this.showMoreEnabled = false;
       this.form.get('applied').disable();
       let transaction: Transaction = this.data;
-
       this.setSubcategories(transaction.category);
-      
-      this.form.patchValue({
-        amount: transaction.amount,
-        date: transaction.date,
-        notes: transaction.notes,
-        category: transaction.category,
-        account: transaction.account,
-        applied: transaction.applied,
-        subcategory: transaction.subcategory,
-        removeFromSpendingPlan: transaction.removeFromSpendingPlan,
-      })
+
+      if(this.data.key){
+        this.title = 'Editar gasto';
+
+        this.form.patchValue({
+          amount: transaction.amount,
+          date: transaction.date,
+          notes: transaction.notes,
+          category: transaction.category,
+          account: transaction.account,
+          applied: transaction.applied,
+          subcategory: transaction.subcategory,
+          removeFromSpendingPlan: transaction.removeFromSpendingPlan,
+        })
+      } else {
+        this.title = 'Crear gasto de planeado';
+        
+        this.form.patchValue({
+          amount: transaction.amount,
+          date: transaction.date,
+          category: transaction.category,
+          subcategory: transaction.subcategory,
+        })
+      }
     }
   }
 

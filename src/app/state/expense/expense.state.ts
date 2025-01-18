@@ -313,6 +313,12 @@ export class ExpenseState {
       this.store.selectSnapshot((state) => state.authenticationState.user).uid,
       action.payload.key
     );
+
+    ctx.setState(
+      patch({
+        plannedExpenses: removeItem<PlannedExpense>((t) => t.key == action.payload.key),
+      })
+    );
   }
 
   @Action(PlannedExpenseActions.SavePlannedExpense)
@@ -346,7 +352,9 @@ export class ExpenseState {
     if (plannedExpense.key) {
       this.plannedExpenseService.update(uid, plannedExpense);
     } else {
-      this.plannedExpenseService.create(uid, plannedExpense);
+      this.plannedExpenseService.create(uid, plannedExpense).then(() => {
+        ctx.dispatch(new PlannedExpenseActions.GetSuccess(ctx.getState().plannedExpenses));
+      });
     }
   }
 
@@ -395,6 +403,12 @@ export class ExpenseState {
       this.store.selectSnapshot((state) => state.authenticationState.user).uid,
       action.payload.key
     );
+
+    ctx.setState(
+      patch({
+        savings: removeItem<Saving>((t) => t.key == action.payload.key),
+      })
+    );
   }
 
   @Action(SavingActions.SaveSaving)
@@ -424,7 +438,9 @@ export class ExpenseState {
         })
       );
     } else {
-      this.savingService.create(uid, saving);
+      this.savingService.create(uid, saving).then(() => {
+        ctx.dispatch(new SavingActions.GetSuccess(ctx.getState().savings));
+      });
     }
   }
 

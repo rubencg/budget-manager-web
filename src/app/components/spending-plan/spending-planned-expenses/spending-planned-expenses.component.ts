@@ -4,6 +4,7 @@ import { Expense } from 'src/app/expense';
 import { PlannedExpense } from 'src/app/planned-expense';
 import {
   ConfirmationDialogComponent,
+  ExpenseComponent,
   PlannedExpenseComponent,
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
@@ -12,6 +13,7 @@ import { compareTransactionsByDate, getCategoryTextForPlannedExpense } from 'src
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 import { MatTableDataSource } from '@angular/material/table';
+import { ExpenseActions } from 'src/app/state';
 
 @Component({
   selector: 'app-spending-planned-expenses',
@@ -132,6 +134,27 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
       if (plannedExpense) {
         this.store.dispatch(
           new PlannedExpenseActions.SavePlannedExpense(plannedExpense)
+        );
+      }
+    });
+  }
+  
+  create(plannedExpense: PlannedExpense): void {
+    const dialogRef = this.dialog.open(ExpenseComponent, {
+      data: {
+        amount: 0,
+        date: new Date(),
+        category: plannedExpense.category,
+        subcategory: plannedExpense.subCategory,
+      } as Transaction,
+      maxWidth: '600px',
+      width: 'calc(100% - 64px)',
+    });
+
+    dialogRef.afterClosed().subscribe((expense: Transaction) => {
+      if (expense) {
+        this.store.dispatch(
+          new ExpenseActions.SaveExpenseTransaction(expense)
         );
       }
     });
