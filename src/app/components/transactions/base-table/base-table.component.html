@@ -99,7 +99,7 @@
                   <div *ngIf="transaction.type != 2 && !transaction.applied" matTooltip="Aplicar" class="action-button disable-select" (click)="applyTransaction(transaction)">
                       <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
                   </div>
-                  <div *ngIf="transaction.type != 3 && transaction.type != 4" class="action-button disable-select" (click)="editTransaction(transaction)" matTooltip="Editar">
+                  <div *ngIf="transaction.type != 3" class="action-button disable-select" (click)="editTransaction(transaction)" matTooltip="Editar">
                       <fa-icon [icon]="['far', 'edit']"></fa-icon>
                   </div>
                   <div class="action-button disable-select" (click)="deleteDialog(transaction)" matTooltip="Eliminar">

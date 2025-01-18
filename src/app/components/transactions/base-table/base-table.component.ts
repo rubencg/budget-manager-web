@@ -7,6 +7,7 @@ import {
   DeleteComponent,
   ExpenseComponent,
   IncomeComponent,
+  MonthlyExpenseComponent,
   TransferComponent,
 } from '../dialogs';
 import { MatDialog } from '@angular/material/dialog';
@@ -89,6 +90,20 @@ export class BaseTableComponent implements OnChanges {
           if (result) {
             this.store.dispatch(
               new ExpenseActions.SaveExpenseTransaction(result)
+            );
+          }
+        });
+        break;
+      case TransactionTypes.MonthlyExpense:
+          const monthlyExpenseDialogRef = this.dialog.open(MonthlyExpenseComponent, {
+          data: transaction,
+          maxWidth: '600px',
+          width: 'calc(100% - 64px)'
+        });
+        monthlyExpenseDialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.store.dispatch(
+              new MonthlyExpenseActions.SaveMonthlyExpense(result)
             );
           }
         });

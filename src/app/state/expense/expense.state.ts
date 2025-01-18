@@ -350,7 +350,13 @@ export class ExpenseState {
     };
 
     if (plannedExpense.key) {
-      this.plannedExpenseService.update(uid, plannedExpense);
+      this.plannedExpenseService.update(uid, plannedExpense).then(() => {
+        ctx.setState(
+          patch({
+            plannedExpenses: updateItem<PlannedExpense>(t => t.key == plannedExpense.key, plannedExpense),
+          })
+        );
+      })
     } else {
       this.plannedExpenseService.create(uid, plannedExpense).then(() => {
         ctx.dispatch(new PlannedExpenseActions.GetSuccess(ctx.getState().plannedExpenses));
@@ -654,10 +660,6 @@ export class ExpenseState {
     ctx: StateContext<ExpenseStateModel>,
     action: MonthlyExpenseActions.SaveMonthlyExpenseTransaction
   ) {
-    const uid: string = this.store.selectSnapshot(
-      (state) => state.authenticationState.user
-    ).uid;
-
     let monthlyExpense: MonthlyExpense = {
       amount: action.payload.amount,
       category: {
@@ -677,10 +679,54 @@ export class ExpenseState {
       key: action.payload.key,
     };
 
+    this.saveMonthlyExpenseToDb(ctx, monthlyExpense);
+  }
+
+  @Action(MonthlyExpenseActions.SaveMonthlyExpense)
+  saveMonthlyExpense(
+    ctx: StateContext<ExpenseStateModel>,
+    action: MonthlyExpenseActions.SaveMonthlyExpense
+  ) {
+
+    let monthlyExpense: MonthlyExpense = {
+      amount: action.payload.amount,
+      category: {
+        image: action.payload.category.image,
+        name: action.payload.category.name,
+        color: action.payload.category.color,
+        subcategories: action.payload.category.subcategories
+          ? action.payload.category.subcategories
+          : [],
+      },
+      day: action.payload.day,
+      notes: action.payload.notes,
+      subCategory: action.payload.subCategory
+        ? action.payload.subCategory
+        : null,
+      fromAccount: action.payload.fromAccount,
+      key: action.payload.key,
+    };
+    
+    this.saveMonthlyExpenseToDb(ctx, monthlyExpense);
+  }
+
+  saveMonthlyExpenseToDb(ctx: StateContext<ExpenseStateModel>,
+    monthlyExpense: MonthlyExpense){
+    const uid: string = this.store.selectSnapshot(
+      (state) => state.authenticationState.user
+    ).uid;
+
     if (monthlyExpense.key) {
       this.monthlyExpenseService.update(uid, monthlyExpense);
+      ctx.setState(
+        patch({
+          monthlyExpenses: updateItem<MonthlyExpense>(t => t.key == monthlyExpense.key, monthlyExpense),
+        })
+      );
     } else {
-      this.monthlyExpenseService.create(uid, monthlyExpense);
+      this.monthlyExpenseService.create(uid, monthlyExpense).then(() => {
+        ctx.dispatch(new MonthlyExpenseActions.GetSuccess(ctx.getState().monthlyExpenses));
+      });
     }
   }
 

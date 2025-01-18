@@ -79,6 +79,7 @@ import { AvailablePerDayComponent } from './spending-plan/available-per-day/avai
 import { AvailableGraphComponent } from './spending-plan/available-graph/available-graph.component';
 import { SavingsComponentComponent } from './spending-plan/savings-component/savings-component.component';
 import { SavingComponent } from './transactions/dialogs/saving/saving.component';
+import { MonthlyExpenseComponent } from './transactions/dialogs/monthly-expense/monthly-expense.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,8 @@ import { SavingComponent } from './transactions/dialogs/saving/saving.component'
     AvailablePerDayComponent,
     AvailableGraphComponent,
     SavingsComponentComponent,
-    SavingComponent
+    SavingComponent,
+    MonthlyExpenseComponent
   ],
   exports: [
     NavbarComponent,
