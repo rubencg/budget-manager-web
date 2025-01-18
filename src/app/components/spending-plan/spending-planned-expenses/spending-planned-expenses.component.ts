@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Expense } from 'src/app/expense';
 import { PlannedExpense } from 'src/app/planned-expense';
@@ -9,18 +15,24 @@ import {
 } from '../../transactions/dialogs';
 import { Store } from '@ngxs/store';
 import { PlannedExpenseActions } from 'src/app/state/expense/planned-expense.actions';
-import { compareTransactionsByDate, getCategoryTextForPlannedExpense } from 'src/app/utils';
+import {
+  compareTransactionsByDate,
+  getCategoryTextForPlannedExpense,
+} from 'src/app/utils';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Transaction } from 'src/app/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { ExpenseActions } from 'src/app/state';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-spending-planned-expenses',
   templateUrl: './spending-planned-expenses.component.html',
   styleUrls: ['./spending-planned-expenses.component.scss'],
 })
-export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewInit {
+export class SpendingPlannedExpensesComponent
+  implements OnChanges, AfterViewInit
+{
   constructor(
     private dialog: MatDialog,
     public store: Store,
@@ -28,14 +40,7 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
   ) {
     this.displayedColumns = this.deviceService.isMobile()
       ? ['transaction-content']
-      : [
-          'date',
-          'category',
-          'account',
-          'amount',
-          'notes',
-          'actions',
-        ];
+      : ['date', 'category', 'account', 'amount', 'notes', 'actions'];
   }
 
   ngAfterViewInit(): void {
@@ -43,11 +48,13 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
   }
 
   @Input() plannedExpenses: PlannedExpense[];
+  filteredPlannedExpenses: PlannedExpense[];
   @Input() expensesByCategory: Map<string, Expense[]> = new Map();
   currentTransactionsSource = new MatTableDataSource<Transaction>();
   displayedColumns: string[];
   allExpenses: Transaction[] = [];
   selectedCategory: string = '';
+  showCompletedPlannedExpenses: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expensesByCategory']) {
@@ -63,15 +70,18 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
   }
 
   private setCurrentTransactionsSource(): void {
-    const transactions = ((this.selectedCategory == ''
-      ? this.allExpenses
-      : this.expensesByCategory.get(
-          this.selectedCategory
-        )) as unknown as Transaction[]) ?? [];
+    const transactions =
+      ((this.selectedCategory == ''
+        ? this.allExpenses
+        : this.expensesByCategory.get(
+            this.selectedCategory
+          )) as unknown as Transaction[]) ?? [];
 
     this.currentTransactionsSource = new MatTableDataSource<Transaction>(
       transactions.sort(compareTransactionsByDate)
-    )
+    );
+
+    this.filteredPlannedExpenses = this.plannedExpenses.filter(p => this.showPlannedExpenseCard(p));
   }
 
   getAmountLeft(plannedExpense: PlannedExpense): number {
@@ -123,6 +133,17 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
     });
   }
 
+  freeAmountLeft(plannedExpense: PlannedExpense): void {
+    const updatedPlannedExpense = {
+      ...plannedExpense,
+      totalAmount: this.getSpentAmount(plannedExpense),
+    } as PlannedExpense;
+
+    this.store.dispatch(
+      new PlannedExpenseActions.SavePlannedExpense(updatedPlannedExpense)
+    );
+  }
+
   modify(plannedExpense: PlannedExpense): void {
     const dialogRef = this.dialog.open(PlannedExpenseComponent, {
       data: plannedExpense,
@@ -138,7 +159,7 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
       }
     });
   }
-  
+
   create(plannedExpense: PlannedExpense): void {
     const dialogRef = this.dialog.open(ExpenseComponent, {
       data: {
@@ -153,9 +174,7 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
 
     dialogRef.afterClosed().subscribe((expense: Transaction) => {
       if (expense) {
-        this.store.dispatch(
-          new ExpenseActions.SaveExpenseTransaction(expense)
-        );
+        this.store.dispatch(new ExpenseActions.SaveExpenseTransaction(expense));
       }
     });
   }
@@ -177,4 +196,18 @@ export class SpendingPlannedExpensesComponent implements OnChanges, AfterViewIni
 
     this.setCurrentTransactionsSource();
   }
+
+  completedToggleChanged($event: MatSlideToggleChange) {
+    this.showCompletedPlannedExpenses = $event.checked;
+    this.filteredPlannedExpenses = this.plannedExpenses.filter(p => this.showPlannedExpenseCard(p));
+  }
+
+  isPlannedExpenseCompleted(plannedExpense: PlannedExpense): boolean {
+    return this.getPercentageLeft(plannedExpense) == 100;
+  }
+
+  showPlannedExpenseCard(plannedExpense: PlannedExpense): boolean {
+    return !this.showCompletedPlannedExpenses ? !this.isPlannedExpenseCompleted(plannedExpense) : true;
+  }
+
 }

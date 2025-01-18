@@ -1,5 +1,8 @@
+<mat-slide-toggle (change)="completedToggleChanged($event)">
+  Mostrar gastos planeados completados
+</mat-slide-toggle>
 <div class="cards-container">
-  <mat-card *ngFor="let expense of plannedExpenses" class="expense-card">
+  <mat-card *ngFor="let expense of filteredPlannedExpenses" class="expense-card">
     <mat-card-title class="card-title">
       <div>
         {{ expense.name }}
@@ -13,6 +16,7 @@
           <button mat-menu-item (click)="create(expense)">Crear gasto</button>
           <button mat-menu-item (click)="modify(expense)">Modificar</button>
           <button mat-menu-item (click)="delete(expense)">Eliminar</button>
+          <button *ngIf="!isPlannedExpenseCompleted(expense)" mat-menu-item (click)="freeAmountLeft(expense)">Liberar restante</button>
           <button mat-menu-item (click)="filterTransactions(expense)">{{ getFilterButtonText(expense) }}</button>
         </mat-menu>
       </div>
@@ -22,12 +26,15 @@
     </mat-card-subtitle>
 
     <mat-card-content>
-      <div class="amount-left" [ngClass]="{
+      <div *ngIf="!isPlannedExpenseCompleted(expense)" class="amount-left" [ngClass]="{
         'ok-amount': getPercentageLeft(expense) <= 90,
-        'almost-amount': getPercentageLeft(expense) > 90 && getPercentageLeft(expense) <= 100,
+        'almost-amount': getPercentageLeft(expense) > 90 && getPercentageLeft(expense) < 100,
         'over-amount': getPercentageLeft(expense) > 100
       }">
         {{ getAmountLeft(expense) | currency }} {{ getLeftText(expense) }}
+      </div>
+      <div *ngIf="isPlannedExpenseCompleted(expense)" class="amount-left amount-completed">
+        Completado
       </div>
       <!-- Grafica del restante -->
       <remaining-progress [plannedExpense]="expense" [expensesByCategory]="expensesByCategory"></remaining-progress>
