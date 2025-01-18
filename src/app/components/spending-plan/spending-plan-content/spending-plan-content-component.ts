@@ -183,7 +183,7 @@ export class SpendingPlanContentComponent implements OnInit {
 
                   // Calculate available amount
                   this.availableAmount =
-                    this.incomesSum +
+                    this.incomesSum -
                     this.expensesSum -
                     this.savingSum -
                     (this.plannedExpensesSum + this.otherExpensesSum);
@@ -203,7 +203,6 @@ export class SpendingPlanContentComponent implements OnInit {
                 });
 
               this.expensesSum =
-                -1 *
                 monthlyExpenses.reduce(
                   (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
                   0
