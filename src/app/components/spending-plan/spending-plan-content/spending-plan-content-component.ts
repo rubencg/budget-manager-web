@@ -12,6 +12,7 @@ import {
   isExpenseInPlannedExpense,
 } from 'src/app/utils';
 import { Saving } from 'src/app/saving';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-spending-plan-content',
@@ -58,12 +59,45 @@ export class SpendingPlanContentComponent implements OnInit {
   savings: Saving[];
   savingSum: number;
 
-  constructor(public store: Store) {}
+  constructor(
+    public store: Store,
+    private deviceService: DeviceDetectorService
+  ) {}
 
   ngOnInit(): void {
     this.loadData(this.currentDate);
   }
 
+  isMobile(): boolean {
+    return this.deviceService.isMobile();
+  }
+
+  onTabChange(index: number) {
+    switch (index) {
+      case 0:
+        this.selectSection('income');
+        break;
+      case 1:
+        this.selectSection('planned');
+        break;
+      case 2:
+        this.selectSection('other');
+        break;
+    }
+  }
+
+  getSelectedTabIndex(): number {
+    switch (this.selectedSection) {
+      case 'income':
+        return 0;
+      case 'planned':
+        return 1;
+      case 'other':
+        return 2;
+      default:
+        return 0;
+    }
+  }
   loadData(date: Date) {
     // Get incomes for the current month
     this.monthlyIncomes$ = this.store.select(
@@ -202,11 +236,10 @@ export class SpendingPlanContentComponent implements OnInit {
                     });
                 });
 
-              this.expensesSum =
-                monthlyExpenses.reduce(
-                  (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
-                  0
-                );
+              this.expensesSum = monthlyExpenses.reduce(
+                (acc, cur) => acc + (cur.appliedAmount ?? cur.amount),
+                0
+              );
             });
         });
       });
