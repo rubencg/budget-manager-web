@@ -72,7 +72,7 @@ export class AccountDialogComponent implements OnInit {
   ]);
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    currentBalance: new FormControl('0', [Validators.required]),
+    currentBalance: new FormControl(0, [Validators.required]),
     color: new FormControl(new Color(255, 243, 0), [Validators.required]),
     accountType: this.accountTypeCtrl,
     isSummable: new FormControl(true),
