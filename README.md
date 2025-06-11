@@ -34,3 +34,37 @@ export const environment = {
   }
 };
 ```
+
+### Demo
+
+Dashboard principal:
+
+![image](docs/images/Dashboard.png)
+
+Transacciones:
+
+![image](docs/images/Transacciones.png)
+
+Reportes:
+
+![image](docs/images/Reportes.png)
+
+Cuentas:
+
+![image](docs/images/Cuentas.png)
+
+Categorias:
+
+![image](docs/images/Categorias.png)
+
+Plan de Gastos - Ingresos:
+
+![image](docs/images/PlanDeGastosIngresos.png)
+
+Plan de Gastos - Gastos proyectados:
+
+![image](docs/images/PlanDeGastosGastos.png)
+
+Plan de Gastos - Otros:
+
+![image](docs/images/PlanDeGastosOtros.png)
